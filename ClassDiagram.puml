@@ -1,0 +1,70 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+interface TileAction{
++ perform((player: Player)
+}
+
+BoardGame o-- Board
+BoardGame o-- Dice
+BoardGame o-- Player
+Board o-- Tile
+TileAction <-- Tile
+Dice o-- Die
+Player --> Tile
+
+class BoardGame {
+- board: Board
+- currentPlayer: Player
+- players: List<Player>
+- dice: Dice
++ addPlayer(player: Player): void
++ createBoard(): void
++ createDice(): void
++ play(): void
++ getWinner():Player
+}
+
+class Board{
+- tiles: Map<Integer, Tile>
++ addTile(tile: Tile): void
++ getTile(tileId : int): Tile
+}
+
+class Tile{
+- nextTile: Tile
+- tileId: int
+- landAction: TileAction
++ Tile(tilId:int)
++ landPlayer((player: Player): void
++ leavePlayer((player: Player): void
++setNextTie(nextTile: Tile): void
+}
+
+class Dice{
+- dice: List<Die>
++ Dice(numberOfDice: int)
++ roll(): int
++ getDie(dieNumber: int): int
+}
+
+class Die{
+- latsRolledValue: int
++ roll(): int
++ getValue(): int
+}
+
+class Player{
+- name: String
+- currentTile: Tile
++ Player(name: String, game: BoardGame)
++ placeOnTile(tile: Tile): void
++ move(steps: int): void
+}
+
+
+
+
+
+@enduml

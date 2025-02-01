@@ -1,0 +1,23 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+
+@startuml
+left to right direction
+actor "Player" as pl
+rectangle "Board game Application" {
+  usecase "Select game" as UC1
+  usecase "Choose player amount" as UC2
+  usecase "Choose player piece and name" as UC3
+  usecase "Roll dice and move" as UC4
+  usecase "Perform field action,\n(ascend, descend ect.]" as UC5
+  usecase "See announced winner" as UC6
+}
+
+pl -- UC6
+pl --> UC5
+pl --> UC4
+pl --> UC3
+pl --> UC2
+pl --> UC1
+
+@enduml
