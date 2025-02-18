@@ -1,8 +1,10 @@
 package edu.ntnu.idatt2003.boardgame;
 
 public class Player {
-    String name;
-    Tile currentTile;
+
+    private final BoardGame game;
+    private String name;
+    private Tile currentTile;
 
     public Player(String name, BoardGame game) {
         this.name = name;

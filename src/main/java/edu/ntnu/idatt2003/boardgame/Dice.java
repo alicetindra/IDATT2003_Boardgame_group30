@@ -7,10 +7,17 @@ public class Dice {
   private List<Die> dice;
 
   public Dice(int numberOfDice) {
+    if(numberOfDice <= 0) {
+      throw new IllegalArgumentException("Number of dice cannot be negative or zero");
+    }
+    if(numberOfDice > 100) {
+      throw new IllegalArgumentException("I'm pretty sure you don't need that many dice...");
+    }
     dice = new ArrayList<>();
     for (int i = 0; i < numberOfDice; i++) {
-      dice.add(new Die());
+      this.dice.add(new Die());
     }
+
   }
 
   public int roll(){
@@ -22,6 +29,9 @@ public class Dice {
   }
 
   public int getDie(int dieNumber){
+    if(dieNumber > dice.size()){
+      throw new IndexOutOfBoundsException("Index out of bounds");
+    }
     return dice.get(dieNumber).getValue();
   }
 
