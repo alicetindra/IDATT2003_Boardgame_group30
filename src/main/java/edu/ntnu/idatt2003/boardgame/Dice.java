@@ -13,5 +13,13 @@ public class Dice {
     }
   }
 
+  public int roll(){
+    int total = 0;
+    for(Die die:dice){
+      total += die.roll();
+    }
+    return total;
+  }
+
 
 }
