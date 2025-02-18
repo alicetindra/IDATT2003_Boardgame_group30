@@ -11,7 +11,8 @@ public class Dice {
     for (int i = 0; i < numberOfDice; i++) {
       dice.add(new Die());
     }
-
   }
+
+
 
 }
