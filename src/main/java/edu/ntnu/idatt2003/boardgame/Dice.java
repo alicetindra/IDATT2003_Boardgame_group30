@@ -12,7 +12,6 @@ public class Dice {
       dice.add(new Die());
     }
 
-
   }
 
 }
