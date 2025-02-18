@@ -21,5 +21,9 @@ public class Dice {
     return total;
   }
 
+  public int getDie(int dieNumber){
+    return dice.get(dieNumber).getValue();
+  }
+
 
 }
