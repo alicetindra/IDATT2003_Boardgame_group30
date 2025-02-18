@@ -10,6 +10,11 @@ public class Die {
     return lastRolledValue;
   }
 
+  public int getValue() {
+    return lastRolledValue;
+  }
+
+
 
 
 }
