@@ -17,11 +17,17 @@ public class Player {
         this.game = game;
     }
     public void placeOnTile(Tile tile){
+        if(tile == null){
+            throw new IllegalArgumentException("Tile cannot be null");
+        }
         this.currentTile = tile;
     }
     public void move(int steps){
         //If the player gets past the goal-tile, it should go the opposite
         // way the correct number of tiles
+        if(steps <= 0 ){
+            throw new IllegalArgumentException("Steps cannot be less than 0");
+        }
         if(currentTile.getTileId()+steps > game.board.getMap().size()){
             placeOnTile(game.board.getTile(steps-(game.board.getMap().size()-currentTile.getTileId())));
         }else{
@@ -29,6 +35,9 @@ public class Player {
         }
     }
     public void setCurrentTile(Tile tile){
+        if(tile == null){
+            throw new IllegalArgumentException("You cannot set tile to be null");
+        }
         this.currentTile = tile;
     }
     public Tile getCurrentTile(){
