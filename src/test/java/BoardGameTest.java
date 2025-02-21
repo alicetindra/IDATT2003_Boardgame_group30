@@ -7,5 +7,24 @@ import edu.ntnu.idatt2003.boardgame.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 public class BoardGameTest {
+    private BoardGame game;
+    @BeforeEach
+    void setUp() {
+        game = new BoardGame();
+    }
 
+    @Test
+    public void testAddPlayers() {
+        Player player = new Player("Name",game);
+        Player player2 = new Player("Other name",game);
+        game.addPlayer(player);
+        game.addPlayer(player2);
+
+        assertEquals(game.getPlayers().size(), 2);
+    }
+    @Test
+    public void testAddNullPlayer() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,() -> game.addPlayer(null));
+        assertEquals("Player cannot be null",exception.getMessage());
+    }
 }
