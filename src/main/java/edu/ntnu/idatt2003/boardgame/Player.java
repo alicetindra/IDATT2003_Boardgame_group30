@@ -27,6 +27,11 @@ public class Player {
         }else{
             placeOnTile(game.board.getTile(currentTile.getTileId()+steps));
         }
-
+    }
+    public void setCurrentTile(Tile tile){
+        this.currentTile = tile;
+    }
+    public Tile getCurrentTile(){
+        return currentTile;
     }
 }

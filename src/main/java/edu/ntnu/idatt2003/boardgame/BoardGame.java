@@ -23,4 +23,8 @@ public class BoardGame {
    public Player getWinner(){
        return null;
    }
+
+   public Board getBoard(){
+       return board;
+   }
 }

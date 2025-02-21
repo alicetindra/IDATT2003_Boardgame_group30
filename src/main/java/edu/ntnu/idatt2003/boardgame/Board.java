@@ -6,7 +6,7 @@ public class Board {
     HashMap<Integer, Tile> map = new HashMap<>();
 
     public void addTile(Tile tile) {
-
+        map.put(tile.getTileId(),tile);
     }
     public Tile getTile(int tileId){
         return map.get(tileId);
