@@ -7,7 +7,7 @@ public class Player {
     private Tile currentTile;
 
     public Player(String name, BoardGame game) {
-        if(name == null || name.isEmpty()){
+        if(name == null || name.trim().isEmpty()){
             throw new IllegalArgumentException("Player name cannot be null or empty");
         }
         if(game == null){
@@ -25,8 +25,8 @@ public class Player {
     public void move(int steps){
         //If the player gets past the goal-tile, it should go the opposite
         // way the correct number of tiles
-        if(steps <= 0 ){
-            throw new IllegalArgumentException("Steps cannot be less than 0");
+        if(steps <= 0){
+            throw new IllegalArgumentException("Steps must be greater than 1");
         }
         if(currentTile.getTileId()+steps > game.board.getMap().size()){
             placeOnTile(game.board.getTile(steps-(game.board.getMap().size()-currentTile.getTileId())));
@@ -36,7 +36,7 @@ public class Player {
     }
     public void setCurrentTile(Tile tile){
         if(tile == null){
-            throw new IllegalArgumentException("You cannot set tile to be null");
+            throw new IllegalArgumentException("Tile cannot be null");
         }
         this.currentTile = tile;
     }
