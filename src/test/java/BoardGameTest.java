@@ -27,4 +27,21 @@ public class BoardGameTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,() -> game.addPlayer(null));
         assertEquals("Player cannot be null",exception.getMessage());
     }
+    @Test
+    public void testCreateBoard() {
+        game.createBoard();
+        assertInstanceOf(Board.class, game.getBoard());
+    }
+    @Test
+    public void testGetWinner() {
+        game.createBoard();
+        Player player = new Player("Name",game);
+        game.addPlayer(player);
+        game.setCurrentPlayer(player);
+        game.getBoard().addTile(new Tile(1));
+        game.getBoard().addTile(new Tile(2));
+
+        game.getCurrentPlayer().placeOnTile(game.getBoard().getTile(2));
+        assertEquals(game.getWinner(), game.getCurrentPlayer());
+    }
 }
