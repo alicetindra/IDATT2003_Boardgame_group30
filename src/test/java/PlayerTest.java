@@ -35,6 +35,14 @@ public class PlayerTest {
     assertEquals(tile2, player.getCurrentTile());
 
   }
+  @Test
+  public void testPlayerCorrectTileAfterMove(){
+
+    player.setCurrentTile(tile);
+    player.move(2);
+
+    assertEquals(tile3, player.getCurrentTile());
+  }
 
 
 
