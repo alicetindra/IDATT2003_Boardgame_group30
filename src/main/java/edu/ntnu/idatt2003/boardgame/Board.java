@@ -10,6 +10,9 @@ public class Board {
             throw new IllegalArgumentException("Tile cannot be null");
         }
         map.put(tile.getTileId(),tile);
+        if(tile.getTileId()>1) {
+            map.get(tile.getTileId() - 1).setNextTile(tile);
+        }
     }
     public Tile getTile(int tileId){
         if(tileId < 0 || tileId > map.size()) {
