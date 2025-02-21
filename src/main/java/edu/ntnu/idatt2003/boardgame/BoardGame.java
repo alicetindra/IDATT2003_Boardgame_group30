@@ -6,8 +6,7 @@ import java.util.List;
 public class BoardGame {
     private Board board;
     private Player currentPlayer;
-    private List<Player> players;
-
+    private List<Player> players = new ArrayList<>();
     private Dice dice;
 
    public void addPlayer(Player player) {
