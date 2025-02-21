@@ -11,4 +11,8 @@ public class Board {
     public Tile getTile(int tileId){
         return map.get(tileId);
     }
+
+    public HashMap<Integer, Tile> getMap() {
+        return map;
+    }
 }

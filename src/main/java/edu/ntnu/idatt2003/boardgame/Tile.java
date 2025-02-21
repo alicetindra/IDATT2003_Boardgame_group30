@@ -15,6 +15,7 @@ public class Tile {
 
     }
     public void setNextTile(Tile tile){
-
+        nextTile.tileId = tile.tileId+1;
     }
+
 }
