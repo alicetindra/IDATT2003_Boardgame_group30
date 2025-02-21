@@ -55,4 +55,11 @@ public class BoardGameTest {
         assertEquals(game.getWinner(), game.getCurrentPlayer());
     }
 
+    @Test
+    public void testCreateDiceLessThanOne() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,() -> game.createDice(0));
+        assertEquals("Number of dice must be greater than 0",exception.getMessage());
+    }
+
+
 }
