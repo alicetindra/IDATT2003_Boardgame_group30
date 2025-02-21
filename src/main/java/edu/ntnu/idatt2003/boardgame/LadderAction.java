@@ -3,7 +3,7 @@ package edu.ntnu.idatt2003.boardgame;
 public class LadderAction implements TileAction {
     int destinationTile;
     String description;
-    LadderAction(int destinationTile, String description) {
+    public LadderAction(int destinationTile, String description) {
         this.destinationTile = destinationTile;
     }
 
