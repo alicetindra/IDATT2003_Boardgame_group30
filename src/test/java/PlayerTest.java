@@ -43,6 +43,44 @@ public class PlayerTest {
     assertEquals(tile3, player.getCurrentTile());
   }
 
+//------------------------------Negative tests---------------------------
+
+
+  @Test
+  public void testCreatePlayerNameIsNull(){
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new Player(null, boardGame));
+    assertEquals("Player name cannot be null or empty", exception.getMessage());
+  }
+
+  @Test
+  public void testCreatePlayerNameIsEmpty(){
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new Player(" ", boardGame));
+    assertEquals("Player name cannot be null or empty", exception.getMessage());
+  }
+
+  @Test
+  public void testCreatePlayerBoardGameIsNull(){
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, ()-> new Player("Tindra", null));
+    assertEquals("BoardGame cannot be null", exception.getMessage());
+  }
+
+  @Test
+  public void testPlaceOnTileIsNull(){
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, ()-> player.placeOnTile(null));
+    assertEquals("Tile cannot be null", exception.getMessage());
+  }
+
+  @Test
+  public void testMoveOnStepsLessThanOne(){
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, ()-> player.move(0));
+    assertEquals("Steps must be greater than 1", exception.getMessage());
+  }
+
+  @Test
+  public void testSetCurrentTileIsNull(){
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, ()-> player.setCurrentTile(null));
+    assertEquals("Tile cannot be null", exception.getMessage());
+  }
 
 
 }
