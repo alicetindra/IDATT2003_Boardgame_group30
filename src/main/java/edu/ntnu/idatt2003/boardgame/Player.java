@@ -22,10 +22,10 @@ public class Player {
     public void move(int steps){
         //If the player gets past the goal-tile, it should go the opposite
         // way the correct number of tiles
-        if(currentTile.tileId+steps > game.board.getMap().size()){
-            placeOnTile(game.board.getTile(steps-(game.board.getMap().size()-currentTile.tileId)));
+        if(currentTile.getTileId()+steps > game.board.getMap().size()){
+            placeOnTile(game.board.getTile(steps-(game.board.getMap().size()-currentTile.getTileId())));
         }else{
-            placeOnTile(game.board.getTile(currentTile.tileId+steps));
+            placeOnTile(game.board.getTile(currentTile.getTileId()+steps));
         }
 
     }
