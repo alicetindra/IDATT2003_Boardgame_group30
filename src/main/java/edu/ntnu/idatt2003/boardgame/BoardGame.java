@@ -4,9 +4,9 @@ import java.util.List;
 
 public class BoardGame {
     private Board board;
-    Player currentPlayer;
-    List<Player> players;
-    Dice dice;
+    private Player currentPlayer;
+    private List<Player> players;
+    private Dice dice;
 
    public void addPlayer(Player player) {
      if(players == null) {
