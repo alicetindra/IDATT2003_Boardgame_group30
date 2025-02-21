@@ -1,13 +1,14 @@
 package edu.ntnu.idatt2003.boardgame;
 
 public class Tile {
-    Tile nextTile;
-    int tileId;
-    TileAction landAction;
+    private Tile nextTile;
+    private int tileId;
+    private TileAction landAction;
 
     public Tile(int tileId) {
         this.tileId = tileId;
     }
+
     public void landPlayer(Player player) {
 
     }
