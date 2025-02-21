@@ -18,6 +18,9 @@ public class BoardGame {
        board = new Board();
    }
    public void createDice(int numberOfDice){
+     if(numberOfDice <=0) {
+       throw new IllegalArgumentException("Number of dice must be greater than 0");
+     }
        dice = new Dice(numberOfDice);
    }
    public void Play(){
