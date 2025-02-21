@@ -16,10 +16,13 @@ public class Tile {
 
     }
     public void setNextTile(Tile tile){
-        nextTile.tileId = tile.tileId+1;
+        nextTile = tile;
     }
     public int getTileId(){
         return tileId;
+    }
+    public Tile getNextTile(){
+        return nextTile;
     }
 
 }

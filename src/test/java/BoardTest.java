@@ -15,6 +15,7 @@ public class BoardTest {
             board.addTile(new Tile(i));
         }
     }
+    //Positive tests
     @Test
     public void testFillABoardWithTiles(){
         assertEquals(board.getMap().size(),100);
@@ -25,7 +26,7 @@ public class BoardTest {
 
         assertEquals(board.getTile(3),tileInQuestion);
     }
-    //
+    //Negative tests
     @Test
     public void testAddANullTile(){
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> board.addTile(null));

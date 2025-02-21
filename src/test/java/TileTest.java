@@ -8,21 +8,23 @@ import org.junit.jupiter.api.Test;
 
 public class TileTest {
     @Test
-    public void testThatPlayerGetsPlacedOnCorrectTile(){
+    public void testMakeATile(){
+        Tile tile = new Tile(1);
+
+
+        assertEquals(1, tile.getTileId());
+    }
+    @Test
+    public void testSetNextTile(){
         Tile tile = new Tile(1);
         Tile tile2 = new Tile(2);
         Tile tile3 = new Tile(3);
+        Board board = new Board();
+        board.addTile(tile);
+        board.addTile(tile2);
+        board.addTile(tile3);
 
-        BoardGame game = new BoardGame();
-        game.createBoard();
-        game.getBoard().addTile(tile);
-        game.getBoard().addTile(tile2);
-        game.getBoard().addTile(tile3);
 
-        Player player = new Player("Ludvig",game);
-        player.setCurrentTile(tile);
-        player.move(2);
-
-        assertEquals(tile3, player.getCurrentTile());
+        assertEquals(tile3, tile2.getNextTile());
     }
 }
