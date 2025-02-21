@@ -19,21 +19,20 @@ public class PlayerTest {
   @BeforeEach
   public void setUp() {
     BoardGame game = new BoardGame();
-    player = new Player("Tindra", game);
-
     game.createBoard();
     game.getBoard().addTile(tile);
     game.getBoard().addTile(tile2);
     game.getBoard().addTile(tile3);
+
+    player = new Player("Tindra", game);
   }
 
   //--------------------------Positive tests----------------------------------
 
   @Test
-  public void placeOnTileValidInput(){
+  public void testPlaceOnTileValidInput(){
     player.placeOnTile(tile2);
     assertEquals(tile2, player.getCurrentTile());
-
   }
   @Test
   public void testPlayerCorrectTileAfterMove(){
