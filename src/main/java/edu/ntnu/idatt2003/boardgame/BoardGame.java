@@ -6,7 +6,7 @@ import java.util.List;
 public class BoardGame {
     private Board board;
     private Player currentPlayer;
-    private List<Player> players = new ArrayList<>();
+
     private Dice dice;
 
    public void addPlayer(Player player) {
@@ -19,6 +19,9 @@ public class BoardGame {
        board = new Board();
    }
    public void createDice(int numberOfDice){
+     if(numberOfDice <=0) {
+       throw new IllegalArgumentException("Number of dice must be greater than 0");
+     }
        dice = new Dice(numberOfDice);
    }
    public void Play(){
