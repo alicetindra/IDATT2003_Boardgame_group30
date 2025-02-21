@@ -43,4 +43,7 @@ public class Player {
     public Tile getCurrentTile(){
         return currentTile;
     }
+    public BoardGame getGame(){
+        return game;
+    }
 }
