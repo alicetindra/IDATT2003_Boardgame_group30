@@ -9,6 +9,9 @@ public class BoardGame {
     Dice dice;
 
    public void addPlayer(Player player) {
+     if(players == null) {
+       throw new IllegalArgumentException("Player cannot be null");
+     }
        players.add(player);
    }
    public void createBoard(){
