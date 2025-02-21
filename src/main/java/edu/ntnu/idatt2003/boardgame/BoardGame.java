@@ -1,15 +1,16 @@
 package edu.ntnu.idatt2003.boardgame;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BoardGame {
     private Board board;
     Player currentPlayer;
-    List<Player> players;
+    List<Player> players = new ArrayList<>();
     Dice dice;
 
    public void addPlayer(Player player) {
-     if(players == null) {
+     if(player == null) {
        throw new IllegalArgumentException("Player cannot be null");
      }
        players.add(player);
@@ -32,5 +33,8 @@ public class BoardGame {
    public Board getBoard(){
        return board;
    }
+    public List<Player> getPlayers(){
+        return players;
+    }
 
 }
