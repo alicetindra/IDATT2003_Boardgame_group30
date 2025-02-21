@@ -22,11 +22,21 @@ public class BoardGameTest {
 
         assertEquals(game.getPlayers().size(), 2);
     }
+
+    @Test
+    public void testCreateDice() {
+        game.createDice(4);
+        assertEquals(4, game.getDice().getListOfDice().size());
+    }
+
+    //------------------Negative tests-------------------------------
+
     @Test
     public void testAddNullPlayer() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,() -> game.addPlayer(null));
         assertEquals("Player cannot be null",exception.getMessage());
     }
+
     @Test
     public void testCreateBoard() {
         game.createBoard();
@@ -44,4 +54,5 @@ public class BoardGameTest {
         game.getCurrentPlayer().placeOnTile(game.getBoard().getTile(2));
         assertEquals(game.getWinner(), game.getCurrentPlayer());
     }
+
 }
