@@ -22,9 +22,28 @@ public class BoardGameTest {
 
         assertEquals(game.getPlayers().size(), 2);
     }
+
+    @Test
+    public void testCreateDice() {
+        game.createDice(4);
+        assertEquals(4, game.getDice().getListOfDice().size());
+    }
+
+    //------------------Negative tests-------------------------------
+
     @Test
     public void testAddNullPlayer() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,() -> game.addPlayer(null));
         assertEquals("Player cannot be null",exception.getMessage());
     }
+
+    @Test
+    public void testCreateDiceLessThanOne() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,() -> game.createDice(0));
+        assertEquals("Number of dice must be greater than 0",exception.getMessage());
+
+    }
+
+
+
 }

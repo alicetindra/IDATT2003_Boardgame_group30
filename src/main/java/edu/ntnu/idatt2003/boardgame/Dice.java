@@ -35,5 +35,9 @@ public class Dice {
     return dice.get(dieNumber).getValue();
   }
 
+  public List<Die> getListOfDice() {
+    return dice;
+  }
+
 
 }

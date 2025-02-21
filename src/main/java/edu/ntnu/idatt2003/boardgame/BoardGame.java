@@ -24,6 +24,7 @@ public class BoardGame {
      }
        dice = new Dice(numberOfDice);
    }
+
    public void Play(){
 
    }
@@ -35,6 +36,10 @@ public class BoardGame {
    }
    public Board getBoard(){
        return board;
+   }
+
+   public Dice getDice(){
+     return dice;
    }
     public List<Player> getPlayers(){
         return players;
