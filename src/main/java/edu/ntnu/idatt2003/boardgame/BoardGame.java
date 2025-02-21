@@ -3,7 +3,7 @@ package edu.ntnu.idatt2003.boardgame;
 import java.util.List;
 
 public class BoardGame {
-    Board board;
+    private Board board;
     Player currentPlayer;
     List<Player> players;
     Dice dice;
@@ -21,10 +21,13 @@ public class BoardGame {
 
    }
    public Player getWinner(){
+       if(currentPlayer.getCurrentTile().getNextTile() == null){
+           return currentPlayer;
+       }
        return null;
    }
-
    public Board getBoard(){
        return board;
    }
+
 }

@@ -28,10 +28,10 @@ public class Player {
         if(steps <= 0 ){
             throw new IllegalArgumentException("Steps cannot be less than 0");
         }
-        if(currentTile.getTileId()+steps > game.board.getMap().size()){
-            placeOnTile(game.board.getTile(steps-(game.board.getMap().size()-currentTile.getTileId())));
+        if(currentTile.getTileId()+steps > game.getBoard().getMap().size()){
+            placeOnTile(game.getBoard().getTile(steps-(game.getBoard().getMap().size()-currentTile.getTileId())));
         }else{
-            placeOnTile(game.board.getTile(currentTile.getTileId()+steps));
+            placeOnTile(game.getBoard().getTile(currentTile.getTileId()+steps));
         }
     }
     public void setCurrentTile(Tile tile){
