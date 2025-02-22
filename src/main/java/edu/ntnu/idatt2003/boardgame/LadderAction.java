@@ -5,6 +5,7 @@ public class LadderAction implements TileAction {
     String description;
     public LadderAction(int destinationTile, String description) {
         this.destinationTile = destinationTile;
+        this.description = description;
     }
 
     @Override

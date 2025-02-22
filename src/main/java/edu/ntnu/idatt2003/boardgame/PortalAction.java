@@ -16,6 +16,5 @@ public class PortalAction implements TileAction {
               random = new Random().nextInt(player.getGame().getBoard().getMap().size());
         }
         player.placeOnTile(player.getGame().getBoard().getTile(random));
-        System.out.println(description);
     }
 }

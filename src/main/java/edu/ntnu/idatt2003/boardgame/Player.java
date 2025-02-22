@@ -28,11 +28,17 @@ public class Player {
         if(steps <= 0){
             throw new IllegalArgumentException("Steps must be greater than 1");
         }
-        if(currentTile.getTileId()+steps > game.getBoard().getMap().size()){
-            placeOnTile(game.getBoard().getTile(steps-(game.getBoard().getMap().size()-currentTile.getTileId())));
-        }else{
+        if(currentTile.getTileId()+steps >= game.getBoard().getMap().size()){
+            int stepsOver = currentTile.getTileId() + steps - game.getBoard().getMap().size();
+            placeOnTile(game.getBoard().getTile(game.getBoard().getMap().size() - stepsOver-2));
+        }
+        else if(currentTile.getTileId()+steps == game.getBoard().getMap().size()+1){
+            game.getWinner();
+        }
+        else{
             placeOnTile(game.getBoard().getTile(currentTile.getTileId()+steps));
         }
+        currentTile.landPlayer(this);
     }
     public void setCurrentTile(Tile tile){
         if(tile == null){
@@ -45,5 +51,8 @@ public class Player {
     }
     public BoardGame getGame(){
         return game;
+    }
+    public String getName(){
+        return name;
     }
 }
