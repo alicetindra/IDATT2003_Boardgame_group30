@@ -25,6 +25,8 @@ public class LadderActionTest {
         game.getBoard().addTile(tile4);
         game.getBoard().addTile(tile5);
 
+        game.getBoard().fillActionMap(2,5);
+
         player.placeOnTile(tile1);
     }
     @Test
@@ -41,5 +43,12 @@ public class LadderActionTest {
         LadderAction ladderAction = new LadderAction(-2,"Description");
         assertThrows(IllegalArgumentException.class, ()-> ladderAction.perform(player));
 
+    }
+    @Test
+    public void testClimbALadder() {
+        player.move(2);
+        LadderAction ladderAction = new LadderAction(game.getBoard().getActionMap().get(2),"Description");
+        ladderAction.perform(player);
+        assertEquals(5,player.getCurrentTile().getTileId());
     }
 }

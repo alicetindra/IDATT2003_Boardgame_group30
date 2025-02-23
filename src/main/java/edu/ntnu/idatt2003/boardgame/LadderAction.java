@@ -11,6 +11,6 @@ public class LadderAction implements TileAction {
     @Override
     public void perform(Player player) {
         player.placeOnTile(player.getGame().getBoard().getTile(destinationTile));
-        System.out.println(description);
+        System.out.println(player.getName()+description);
     }
 }

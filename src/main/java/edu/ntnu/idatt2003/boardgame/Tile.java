@@ -1,40 +1,31 @@
 package edu.ntnu.idatt2003.boardgame;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
 public class Tile {
     private Tile nextTile;
     private int tileId;
     private TileAction landAction;
-    private HashMap<Integer,Integer> tileAndDestMap = new HashMap<>();
 
     public Tile(int tileId) {
         this.tileId = tileId;
     }
-    public void fillMap(HashMap<Integer,Integer> tileAndDestMap){
-        tileAndDestMap.put(10,30);
-        tileAndDestMap.put(18,40);
-        tileAndDestMap.put(38,10);
-        tileAndDestMap.put(5,17);
-        tileAndDestMap.put(40,26);
-        tileAndDestMap.put(60,46);
-        tileAndDestMap.put(23,70);
-    }
-
 
     public void landPlayer(Player player) {
-        fillMap(tileAndDestMap);
-        if(tileAndDestMap.containsKey(tileId)){
-            int newId = tileAndDestMap.get(tileId);
-            landAction = new LadderAction(newId,"You moved to tile "+newId);
-            landAction.perform(player);
+        if(player.getGame().getBoard().getActionMap().containsKey(tileId)){
+            if(player.getGame().getBoard().getActionMap().get(tileId) == 0){
+                landAction = new PortalAction(" took a portal!");
+                landAction.perform(player);
+            }
+            else if(player.getGame().getBoard().getActionMap().get(tileId) > player.getCurrentTile().getTileId()){
+                int newId = player.getGame().getBoard().getActionMap().get(tileId);
+                landAction = new LadderAction(newId," climbed a ladder!");
+                landAction.perform(player);
+            }
+            else if(player.getGame().getBoard().getActionMap().get(tileId) < player.getCurrentTile().getTileId()){
+                int newId = player.getGame().getBoard().getActionMap().get(tileId);
+                landAction = new LadderAction(newId," slid down a snake!");
+                landAction.perform(player);
+            }
         }
-
-    }
-    public void leavePlayer(Player player) {
-
     }
     public void setNextTile(Tile tile){
         nextTile = tile;

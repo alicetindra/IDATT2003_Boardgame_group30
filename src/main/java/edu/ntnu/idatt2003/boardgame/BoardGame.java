@@ -28,9 +28,12 @@ public class BoardGame {
    public void Play(){
         for(Player player : players) {
             setCurrentPlayer(player);
+
             int diceRoll = dice.roll();
             player.move(diceRoll);
-            System.out.println(player.getName() + ": " + player.getCurrentTile().getTileId());
+
+            System.out.println(player.getName() + " on tile " + player.getCurrentTile().getTileId());
+
             if(getWinner() != null) {
                 break;
             }

@@ -10,19 +10,21 @@ import org.junit.jupiter.api.Test;
 public class PlayerTest {
 
   private Player player;
-  private BoardGame boardGame;
+  private BoardGame game;
 
   private Tile tile = new Tile(1);
   private Tile tile2 = new Tile(2);
   private Tile tile3 = new Tile(3);
+  private Tile tile4 = new Tile(4);
 
   @BeforeEach
   public void setUp() {
-    BoardGame game = new BoardGame();
+    game = new BoardGame();
     game.createBoard();
     game.getBoard().addTile(tile);
     game.getBoard().addTile(tile2);
     game.getBoard().addTile(tile3);
+    game.getBoard().addTile(tile4);
 
     player = new Player("Tindra", game);
   }
@@ -35,12 +37,19 @@ public class PlayerTest {
     assertEquals(tile2, player.getCurrentTile());
   }
   @Test
+  public void testGoPastFinnish(){
+    player.placeOnTile(tile);
+    player.move(4);
+    assertEquals(tile3, player.getCurrentTile());
+  }
+  @Test
   public void testPlayerCorrectTileAfterMove(){
 
     player.setCurrentTile(tile);
     player.move(2);
+    System.out.println(player.getCurrentTile().getTileId());
 
-    assertEquals(tile3, player.getCurrentTile());
+    assertEquals(tile3.getTileId(), player.getCurrentTile().getTileId());
   }
 
 //------------------------------Negative tests---------------------------
@@ -48,13 +57,13 @@ public class PlayerTest {
 
   @Test
   public void testCreatePlayerNameIsNull(){
-    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new Player(null, boardGame));
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new Player(null, game));
     assertEquals("Player name cannot be null or empty", exception.getMessage());
   }
 
   @Test
   public void testCreatePlayerNameIsEmpty(){
-    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new Player(" ", boardGame));
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new Player(" ", game));
     assertEquals("Player name cannot be null or empty", exception.getMessage());
   }
 
