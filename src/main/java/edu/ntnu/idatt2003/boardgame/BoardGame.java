@@ -18,22 +18,6 @@ public class BoardGame {
 
    public void createBoard(){
        board = new Board();
-
-       for(int i = 0; i<=90; i++){
-       board.addTile(new Tile(i));
-       }
-       //Adding snakes, ladders and portals
-     board.fillActionMap(6, 26);
-     board.fillActionMap(18, 21);
-     board.fillActionMap(55, 73);
-
-     board.fillActionMap(28, 8);
-     board.fillActionMap(42, 24);
-     board.fillActionMap(70, 47);
-     board.fillActionMap(87, 75);
-
-     board.fillActionMap(49, 0);
-     board.fillActionMap(63, 0);
    }
 
    public void createDice(int numberOfDice){
