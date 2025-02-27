@@ -6,12 +6,10 @@ import edu.ntnu.idatt2003.boardgame.Tile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
 public class PlayerTest {
 
   private Player player;
   private BoardGame boardGame;
-
   private Tile tile = new Tile(1);
   private Tile tile2 = new Tile(2);
   private Tile tile3 = new Tile(3);
@@ -36,11 +34,10 @@ public class PlayerTest {
   }
   @Test
   public void testPlayerCorrectTileAfterMove(){
-
     player.placeOnTile(tile);
-    player.move(2);
+    player.move(1);
 
-    assertEquals(tile3, player.getCurrentTile());
+    assertEquals(tile2, player.getCurrentTile());
   }
 
 //------------------------------Negative tests---------------------------
