@@ -37,7 +37,7 @@ public class PlayerTest {
   @Test
   public void testPlayerCorrectTileAfterMove(){
 
-    player.setCurrentTile(tile);
+    player.placeOnTile(tile);
     player.move(2);
 
     assertEquals(tile3, player.getCurrentTile());
@@ -78,7 +78,7 @@ public class PlayerTest {
 
   @Test
   public void testSetCurrentTileIsNull(){
-    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, ()-> player.setCurrentTile(null));
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, ()-> player.placeOnTile(null));
     assertEquals("Tile cannot be null", exception.getMessage());
   }
 
