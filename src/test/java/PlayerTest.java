@@ -39,6 +39,12 @@ public class PlayerTest {
 
     assertEquals(tile2, player.getCurrentTile());
   }
+  @Test
+  public void testMovePastFinnish(){
+    player.placeOnTile(tile);
+    player.move(4);
+    assertEquals(tile, player.getCurrentTile());
+  }
 
 //------------------------------Negative tests---------------------------
 
