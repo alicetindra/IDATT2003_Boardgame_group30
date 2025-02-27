@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 public class Board {
     HashMap<Integer, Tile> map = new HashMap<>();
+    HashMap<Integer, Integer> actionMap = new HashMap<>();
 
     public void addTile(Tile tile) {
         if(tile == null) {
@@ -19,6 +20,14 @@ public class Board {
             throw new IllegalArgumentException("Tile id out of bounds");
         }
         return map.get(tileId);
+    }
+
+    public void fillActionMap(int tile, int dest){
+        actionMap.put(tile,dest);
+    }
+
+    public HashMap<Integer, Integer> getActionMap() {
+        return actionMap;
     }
 
     public HashMap<Integer, Tile> getMap() {

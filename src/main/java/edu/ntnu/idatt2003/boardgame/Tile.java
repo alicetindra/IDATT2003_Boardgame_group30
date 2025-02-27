@@ -10,10 +10,22 @@ public class Tile {
     }
 
     public void landPlayer(Player player) {
-
-    }
-    public void leavePlayer(Player player) {
-
+        if(player.getGame().getBoard().getActionMap().containsKey(tileId)){
+            if(player.getGame().getBoard().getActionMap().get(tileId) == 0){
+                landAction = new PortalAction(" took a portal!");
+                landAction.perform(player);
+            }
+            else if(player.getGame().getBoard().getActionMap().get(tileId) > player.getCurrentTile().getTileId()){
+                int newId = player.getGame().getBoard().getActionMap().get(tileId);
+                landAction = new LadderAction(newId," climbed a ladder!");
+                landAction.perform(player);
+            }
+            else if(player.getGame().getBoard().getActionMap().get(tileId) < player.getCurrentTile().getTileId()){
+                int newId = player.getGame().getBoard().getActionMap().get(tileId);
+                landAction = new LadderAction(newId," slid down a snake!");
+                landAction.perform(player);
+            }
+        }
     }
     public void setNextTile(Tile tile){
         nextTile = tile;

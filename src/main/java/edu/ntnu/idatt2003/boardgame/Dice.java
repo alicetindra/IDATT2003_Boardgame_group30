@@ -17,7 +17,6 @@ public class Dice {
     for (int i = 0; i < numberOfDice; i++) {
       this.dice.add(new Die());
     }
-
   }
 
   public int roll(){

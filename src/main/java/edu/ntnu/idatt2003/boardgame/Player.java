@@ -23,16 +23,20 @@ public class Player {
         this.currentTile = tile;
     }
     public void move(int steps){
-        //If the player gets past the goal-tile, it should go the opposite
-        // way the correct number of tiles
         if(steps <= 0){
             throw new IllegalArgumentException("Steps must be greater than 1");
         }
         if(currentTile.getTileId()+steps > game.getBoard().getMap().size()){
-            placeOnTile(game.getBoard().getTile(steps-(game.getBoard().getMap().size()-currentTile.getTileId())));
-        }else{
+            int newTileId = (2*game.getBoard().getMap().size())-(currentTile.getTileId()+steps);
+            placeOnTile(game.getBoard().getTile(newTileId));
+        }
+        else if(currentTile.getTileId()+steps == game.getBoard().getMap().size()){
+            game.getWinner();
+        }
+        else{
             placeOnTile(game.getBoard().getTile(currentTile.getTileId()+steps));
         }
+        currentTile.landPlayer(this);
     }
     public void setCurrentTile(Tile tile){
         if(tile == null){
@@ -42,5 +46,11 @@ public class Player {
     }
     public Tile getCurrentTile(){
         return currentTile;
+    }
+    public BoardGame getGame(){
+        return game;
+    }
+    public String getName(){
+        return name;
     }
 }

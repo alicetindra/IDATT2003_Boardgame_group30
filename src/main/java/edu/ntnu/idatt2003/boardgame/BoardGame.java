@@ -26,14 +26,28 @@ public class BoardGame {
    }
 
    public void Play(){
+     for(Player player : players) {
+       setCurrentPlayer(player);
+
+       int diceRoll = dice.roll();
+       player.move(diceRoll);
+
+       System.out.println(player.getName() + " on tile " + player.getCurrentTile().getTileId());
+
+       if(getWinner() != null) {
+         break;
+       }
+     }
 
    }
+
    public Player getWinner(){
        if(currentPlayer.getCurrentTile().getNextTile() == null){
            return currentPlayer;
        }
        return null;
    }
+
    public Board getBoard(){
        return board;
    }
@@ -41,12 +55,15 @@ public class BoardGame {
    public Dice getDice(){
      return dice;
    }
+
     public List<Player> getPlayers(){
         return players;
     }
+
     public Player getCurrentPlayer(){
         return currentPlayer;
     }
+
     public void setCurrentPlayer(Player player){
         currentPlayer = player;
     }
