@@ -11,6 +11,7 @@ public class BoardGameApp {
 
     this.boardGame.addPlayer(new Player("Tindra", this.boardGame));
     this.boardGame.addPlayer(new Player("Nicoline", this.boardGame));
+    this.boardGame.addPlayer(new Player("Mark", this.boardGame));
   }
 
   public void start(){

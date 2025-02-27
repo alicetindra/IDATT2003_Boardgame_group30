@@ -38,12 +38,7 @@ public class Player {
         }
         currentTile.landPlayer(this);
     }
-    public void setCurrentTile(Tile tile){
-        if(tile == null){
-            throw new IllegalArgumentException("Tile cannot be null");
-        }
-        this.currentTile = tile;
-    }
+
     public Tile getCurrentTile(){
         return currentTile;
     }
