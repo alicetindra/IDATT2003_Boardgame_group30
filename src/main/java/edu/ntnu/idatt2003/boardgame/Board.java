@@ -33,4 +33,6 @@ public class Board {
     public HashMap<Integer, Tile> getMap() {
         return map;
     }
+
+
 }
