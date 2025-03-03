@@ -1,6 +1,7 @@
 package edu.ntnu.idatt2003.boardgame;
 
 
+
 import javax.swing.*;
 
 
