@@ -1,0 +1,38 @@
+{
+  "name": "Stigespill 90",
+  "description": "Et klassisk stigespill med 90 felt", "tiles": [
+  {
+    "id": 1,
+    "nextTile": 2
+  }, {
+    "id": 2,
+    "nextTile": 3
+  },
+  {
+    "id": 3,
+    "nextTile": 4
+  }, {
+    "id": 4,
+    "nextTile": 5,
+    "action": {
+      "type": "LadderAction",
+      "destinationTileId": 14,
+      "description": "Ladder from 4 to 14"
+    } },
+  {
+    "id": 5
+  },
+  {
+    "id": 6
+  }, {
+    "id": 7
+  },
+  {
+    "id": 8
+  }, {
+    "id": 9
+  {
+    "id": 10,
+    "nextTile": 11
+  }
+] }
