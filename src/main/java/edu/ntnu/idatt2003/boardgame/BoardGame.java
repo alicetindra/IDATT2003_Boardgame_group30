@@ -1,7 +1,10 @@
 package edu.ntnu.idatt2003.boardgame;
 
+
+
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class BoardGame {
     private Board board;
@@ -9,65 +12,77 @@ public class BoardGame {
     private List<Player> players = new ArrayList<>();
     private Dice dice;
 
-   public void addPlayer(Player player) {
-     if(player == null) {
-       throw new IllegalArgumentException("Player cannot be null");
-     }
-       players.add(player);
-   }
 
-   public void createBoard(){
-       board = new Board();
-   }
+    public void addPlayer(Player player) {
+        if(player == null) {
+            throw new IllegalArgumentException("Player cannot be null");
+        }
+        players.add(player);
+    }
 
-   public void createDice(int numberOfDice){
-     if(numberOfDice <=0) {
-       throw new IllegalArgumentException("Number of dice must be greater than 0");
-     }
-       dice = new Dice(numberOfDice);
-   }
 
-   public void Play(){
-     for(Player player : players) {
-       setCurrentPlayer(player);
+    public void createBoard(){
+        board = new Board();
+    }
 
-       int diceRoll = dice.roll();
-       player.move(diceRoll);
 
-       System.out.println(player.getName() + " on tile " + player.getCurrentTile().getTileId());
+    public void createDice(int numberOfDice){
+        if(numberOfDice <=0) {
+            throw new IllegalArgumentException("Number of dice must be greater than 0");
+        }
+        dice = new Dice(numberOfDice);
+    }
 
-       if(getWinner() != null) {
-         break;
-       }
-     }
 
-   }
+    public void Play(){
+        for(Player player : players) {
+            setCurrentPlayer(player);
 
-   public Player getWinner(){
-       if(currentPlayer.getCurrentTile().getNextTile() == null){
-           return currentPlayer;
-       }
-       return null;
-   }
 
-   public Board getBoard(){
-       return board;
-   }
+            int diceRoll = dice.roll();
+            player.move(diceRoll);
 
-   public Dice getDice(){
-     return dice;
-   }
+
+            if(getWinner() != null) {
+                break;
+            }
+        }
+
+
+    }
+
+
+    public Player getWinner(){
+        if(currentPlayer.getCurrentTile().getNextTile() == null){
+            return currentPlayer;
+        }
+        return null;
+    }
+
+
+    public Board getBoard(){
+        return board;
+    }
+
+
+    public Dice getDice(){
+        return dice;
+    }
+
 
     public List<Player> getPlayers(){
         return players;
     }
 
+
     public Player getCurrentPlayer(){
         return currentPlayer;
     }
 
+
     public void setCurrentPlayer(Player player){
         currentPlayer = player;
     }
+
 
 }
