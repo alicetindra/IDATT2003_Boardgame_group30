@@ -1,119 +1,74 @@
 package edu.ntnu.idatt2003.boardgame;
 
+import com.google.gson.JsonObject;
 
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
-import javax.swing.*;
-
-
-public class BoardGameApp {
-
-
-  BoardGame boardGame = new BoardGame();
-
+public class BoardGameApp extends Application {
+  Board board;
+  PlayerHolder playerHolder;
+  Dice dice;
+  Pane pane;
+  VBox vbox;
 
   public void init(){
+    WriteBoard writeBoard = new WriteBoard();
+    ReadBoard readBoard = new ReadBoard();
+
+    WritePlayers writePlayers = new WritePlayers();
+    ReadPlayers readPlayers = new ReadPlayers();
 
 
-    this.boardGame.createBoard();
-    Board board = boardGame.getBoard();
-    for(int i = 0; i<=90; i++){
-      board.addTile(new Tile(i));
-    }
-    //Adding snakes, ladders and portals
-    board.fillActionMap(6, 26);
-    board.fillActionMap(18, 21);
-    board.fillActionMap(55, 73);
+    JsonObject tileJson = writeBoard.serializeTiles(10);
+    writeBoard.writeJsonToFile(tileJson, "src/main/resources/boardGameInfo.json");
 
+    board = readBoard.readTilesFromFile("src/main/resources/boardGameInfo.json");
 
-    board.fillActionMap(28, 8);
-    board.fillActionMap(42, 24);
-    board.fillActionMap(70, 47);
-    board.fillActionMap(87, 75);
+    JsonObject playerJson = writePlayers.serializePlayers();
+    writePlayers.writeJsonToFile(playerJson, "src/main/resources/players.json");
 
+    playerHolder = readPlayers.readPlayersFromFile("src/main/resources/players.json");
 
-    board.fillActionMap(49, 0);
-    board.fillActionMap(63, 0);
-    this.boardGame.createDice(2);
-
-
-    this.boardGame.addPlayer(new Player("Tindra", this.boardGame));
-    this.boardGame.addPlayer(new Player("Nicoline", this.boardGame));
-    this.boardGame.addPlayer(new Player("Mark", this.boardGame));
-
-
-
-
-
-
+    dice = new Dice(2);
   }
 
+  @Override
+  public void start(Stage stage) throws Exception {
+    pane = new Pane();
+    vbox = new VBox();
 
-  public void start(){
-    JFrame frame = new JFrame("Boardgame app");
-    frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setLayout(null);
-
-
-
-
-    JLabel label = new JLabel("SNAKES AND LADDERS");
-    label.setBounds(120, 0, 500, 30);
-
-
-    frame.add(label);
-    frame.add(new JLabel("The following players are playing"));
-    int i = 25;
-    for(Player p: this.boardGame.getPlayers()){
-      JLabel playerLabel = new JLabel(p.getName());
-      frame.add(playerLabel);
-      i += 20;
-      playerLabel.setBounds(1500, i, 100, 10);
+    for(Tile t: board.getTiles()){
+      vbox.getChildren().add(new Text(""+t.getTileId()));
     }
 
-
-    for(Player p: this.boardGame.getPlayers()){
-      this.boardGame.setCurrentPlayer(p);
-      p.placeOnTile(boardGame.getBoard().getTile(1));
+    for(Player p: playerHolder.getPlayers()){
+      vbox.getChildren().add(new Text(p.getName()));
     }
 
+    Button startRoundButton = new Button("Start Round");
+    startRoundButton.setOnAction(this::handleStartRoundButton);
+    vbox.getChildren().add(startRoundButton);
+    pane.getChildren().add(vbox);
 
-    int round = 1;
-    int row = 40;
-    int column = 20;
-
-
-    while (this.boardGame.getWinner() == null){
-      JLabel roundLable = new JLabel("Round nr "+round+":");
-      frame.add(roundLable);
-      roundLable.setBounds(column, row, 100, 10);
-      row += 20;
-      this.boardGame.Play();
-      for(Player p: this.boardGame.getPlayers()){
-        JLabel resultLabel = new JLabel("  "+p.getName() + " on tile " + p.getCurrentTile().getTileId());
-        frame.add(resultLabel);
-        resultLabel.setBounds(column, row, 150, 10);
-        row += 20;
-      }
-      round++;
-      if(row==400 || row==440){
-        column += 200;
-        row = 40;
-      }
-    }
-    JLabel winnerLabel = new JLabel("The winner is " + this.boardGame.getWinner().getName());
-    frame.add(winnerLabel);
-    winnerLabel.setBounds(250, 600, 300, 30);
-
-
-
-
-    frame.setVisible(true);
-
-
-
-
+    Scene scene = new Scene(pane,600,600);
+    stage.setScene(scene);
+    stage.setTitle("Board Game");
+    stage.show();
   }
 
+  private void handleStartRoundButton(ActionEvent actionEvent) {
+    int totalEyes = dice.roll();
+    Text text = new Text("Total Eyes: "+totalEyes);
+    vbox.getChildren().add(text);
+  }
 
 }
+
+
