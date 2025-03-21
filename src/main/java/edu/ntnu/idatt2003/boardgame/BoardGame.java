@@ -26,6 +26,7 @@ public class BoardGame {
     }
 
 
+
     //Dice
     public void createDice(int n){
         dice = new Dice(n);
