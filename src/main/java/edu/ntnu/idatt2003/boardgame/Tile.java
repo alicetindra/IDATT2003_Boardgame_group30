@@ -2,8 +2,8 @@ package edu.ntnu.idatt2003.boardgame;
 
 public class Tile {
     private int id;
-    private Integer action;
     private int next;
+    private TileAction action;
 
     public Tile(){
 
@@ -12,19 +12,22 @@ public class Tile {
         return id;
     }
 
-    public Integer getAction() {
+
+    public TileAction getAction() {
         return action;
     }
-
-    public void setAction(Integer action) {
+    public void setAction(TileAction action) {
         this.action = action;
     }
+
+
     public void setNextTile(Integer next) {
        this.next = next;
     }
     public Integer getNextTile() {
         return next;
     }
+
 
 
     @Override

@@ -4,48 +4,50 @@ package edu.ntnu.idatt2003.boardgame;
 import com.google.gson.JsonObject;
 
 public class BoardGame {
-     Board board;
-     Dice dice;
-     PlayerHolder playerHolder = new PlayerHolder();
+    Board board;
+    Dice dice;
+    PlayerHolder playerHolder = new PlayerHolder();
 
     public BoardGame() {
 
     }
 
     //Board
-    public void createBoard(int n, String filename){
+    public void createBoard(int n, String filename) {
         WriteBoard writeBoard = new WriteBoard();
 
-            JsonObject tileJson = writeBoard.serializeTiles(n);
-            writeBoard.writeJsonToFile(tileJson, filename);
+        JsonObject tileJson = writeBoard.serializeTiles(n);
+        writeBoard.writeJsonToFile(tileJson, filename);
 
-            board = ReadBoard.readTilesFromFile(filename);
+        board = ReadBoard.readTilesFromFile(filename);
     }
-    public Board getBoard(){
+
+    public Board getBoard() {
         return board;
     }
 
 
-
     //Dice
-    public void createDice(int n){
+    public void createDice(int n) {
         dice = new Dice(n);
     }
-    public Dice getDice(){
+
+    public Dice getDice() {
         return dice;
     }
 
 
     //Players
-    public void createPlayerHolder(String filename){
+    public void createPlayerHolder(String filename) {
         playerHolder.setPlayers(ReadPlayers.readPlayersFromFile(filename));
     }
-    public PlayerHolder getPlayerHolder(){
+
+    public PlayerHolder getPlayerHolder() {
         return playerHolder;
     }
 
     //Play
-    public void play(){
+    public void play() {
         //The next player in line is set to current player
         playerHolder = getPlayerHolder();
         playerHolder.setCurrentPlayer(playerHolder.getPlayers().get(playerHolder.getNextPlayerIndex()));
@@ -54,23 +56,27 @@ public class BoardGame {
         int totalEyes = dice.roll();
 
         //Set current players new current tile
-        int destTileId = playerHolder.getCurrentPlayer().getCurrentTile().getTileId()+totalEyes;
+        int destTileId = playerHolder.getCurrentPlayer().getCurrentTile().getTileId() + totalEyes;
 
-        if(destTileId == board.getTiles().getLast().getTileId()){
+        if(destTileId <= getBoard().getTiles().size()-1 && board.getTiles().get(destTileId).getAction() != null) {
+            board.getTiles().get(destTileId).getAction().perform(playerHolder.getCurrentPlayer());
+        }
+        else if (destTileId == board.getTiles().size()-1) {
+            playerHolder.getCurrentPlayer().setCurrentTile(board, destTileId);
             //Declare the winner
             System.out.println("Player " + playerHolder.getCurrentPlayer().getColor() + " has won!");
+
         }
-        else if(destTileId>getBoard().getTiles().size()-1){
-            int newDestTileId = (2*getBoard().getTiles().size()-2)-(destTileId);
-            playerHolder.getCurrentPlayer().setCurrentTile(board, newDestTileId);
+        else if (destTileId > getBoard().getTiles().size()-1) {
+            destTileId = (2 * getBoard().getTiles().size()-2) - (destTileId);
+            playerHolder.getCurrentPlayer().setCurrentTile(board, destTileId);
         }
         else{
             playerHolder.getCurrentPlayer().setCurrentTile(board, destTileId);
-        }    
         }
 
     }
-
+}
 
 
 

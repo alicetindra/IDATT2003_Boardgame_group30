@@ -8,7 +8,9 @@ import java.io.IOException;
 
 public class ReadBoard {
     public static Board readTilesFromFile(String filePath) {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(TileAction.class, new TileActionReader())
+                .create();
         try (FileReader fileReader = new FileReader(filePath)) {
             return gson.fromJson(fileReader, Board.class);
         } catch (IOException e) {
@@ -17,3 +19,4 @@ public class ReadBoard {
         }
     }
 }
+

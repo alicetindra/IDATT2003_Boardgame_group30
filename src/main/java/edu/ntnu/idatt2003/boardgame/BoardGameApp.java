@@ -21,7 +21,7 @@ public class BoardGameApp extends Application {
   Player currentPlayer;
 
   public void init(){
-    game.createBoard(10, "src/main/resources/boardGameInfo.json");
+    game.createBoard(15, "src/main/resources/boardGameInfo.json");
     board = game.getBoard();
 
     game.createDice(1);
@@ -33,6 +33,7 @@ public class BoardGameApp extends Application {
     playerHolder.setCurrentPlayer(playerHolder.getPlayers().getLast());
 
     for(Player p: playerHolder.getPlayers()){
+      p.setBoardGame(game);
       p.setCurrentTile(board, 0);
     }
     playerHolder.setCurrentPlayer(playerHolder.getPlayers().getLast());

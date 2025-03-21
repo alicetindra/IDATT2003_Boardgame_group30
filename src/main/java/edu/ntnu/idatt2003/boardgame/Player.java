@@ -4,6 +4,7 @@ public class Player {
     private String name;
     private Tile currentTile;
     private String color;
+    private BoardGame boardGame;
 
     public Player(String name, String color) {
          this.name = name;
@@ -23,6 +24,12 @@ public class Player {
 
     public Tile getCurrentTile(){
         return currentTile;
+    }
+    public void setBoardGame(BoardGame boardGame){
+        this.boardGame = boardGame;
+    }
+    public BoardGame getBoardGame(){
+        return boardGame;
     }
 
 }

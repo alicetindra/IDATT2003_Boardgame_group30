@@ -36,13 +36,22 @@ public class WriteBoard {
 
             //action map
             if(i == 5){
-                tileJson.addProperty("action", 12);
+                JsonObject actionObj = new JsonObject();
+                actionObj.addProperty("type", "ladder");
+                actionObj.addProperty("destination", 12);
+                tileJson.add("action", actionObj);
             }
-            if(i == 18){
-                tileJson.addProperty("action", 37);
+            if(i == 14){
+                JsonObject actionObj = new JsonObject();
+                actionObj.addProperty("type", "snake");
+                actionObj.addProperty("destination", 3);
+                tileJson.add("action", actionObj);
             }
-            if(i == 50){
-                tileJson.addProperty("action", 9);
+            if(i == 6){
+                JsonObject actionObj = new JsonObject();
+                actionObj.addProperty("type", "portal");
+                actionObj.addProperty("destination", 0);
+                tileJson.add("action", actionObj);
             }
 
             ladderJsonArray.add(tileJson);
