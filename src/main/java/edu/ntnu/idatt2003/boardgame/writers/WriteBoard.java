@@ -21,7 +21,7 @@ public class WriteBoard {
 
         JsonArray ladderJsonArray = new JsonArray();
 
-        for (int i = 0; i<=n; i++) {
+        for (int i = 1; i<=n; i++) {
             //Tile map
             JsonObject tileJson = new JsonObject();
             tileJson.addProperty("id", i);
@@ -30,24 +30,54 @@ public class WriteBoard {
             if(i<n){
                 tileJson.addProperty("next", i+1);
             }
-            else{
-                tileJson.addProperty("next", 0);
-            }
 
             //action map
+            //Ladders
             if(i == 5){
                 JsonObject actionObj = new JsonObject();
                 actionObj.addProperty("type", "ladder");
-                actionObj.addProperty("destination", 12);
+                actionObj.addProperty("destination", 25);
                 tileJson.add("action", actionObj);
             }
-            if(i == 14){
+            if(i == 18){
+                JsonObject actionObj = new JsonObject();
+                actionObj.addProperty("type", "ladder");
+                actionObj.addProperty("destination", 21);
+                tileJson.add("action", actionObj);
+            }
+            if(i == 55){
+                JsonObject actionObj = new JsonObject();
+                actionObj.addProperty("type", "ladder");
+                actionObj.addProperty("destination", 73);
+                tileJson.add("action", actionObj);
+            }
+            //Snakes
+            if(i == 28){
                 JsonObject actionObj = new JsonObject();
                 actionObj.addProperty("type", "snake");
-                actionObj.addProperty("destination", 3);
+                actionObj.addProperty("destination", 8);
                 tileJson.add("action", actionObj);
             }
-            if(i == 6){
+            if(i == 42){
+                JsonObject actionObj = new JsonObject();
+                actionObj.addProperty("type", "snake");
+                actionObj.addProperty("destination", 24);
+                tileJson.add("action", actionObj);
+            }
+            if(i == 70){
+                JsonObject actionObj = new JsonObject();
+                actionObj.addProperty("type", "snake");
+                actionObj.addProperty("destination", 47);
+                tileJson.add("action", actionObj);
+            }
+            if(i == 87){
+                JsonObject actionObj = new JsonObject();
+                actionObj.addProperty("type", "snake");
+                actionObj.addProperty("destination", 75);
+                tileJson.add("action", actionObj);
+            }
+
+            if(i == 49 || i == 63){
                 JsonObject actionObj = new JsonObject();
                 actionObj.addProperty("type", "portal");
                 actionObj.addProperty("destination", 0);
