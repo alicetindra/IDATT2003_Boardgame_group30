@@ -1,9 +1,10 @@
-package edu.ntnu.idatt2003.boardgame;
+package edu.ntnu.idatt2003.boardgame.readers;
 
 import com.google.gson.*;
-import edu.ntnu.idatt2003.boardgame.PortalAction;
-import edu.ntnu.idatt2003.boardgame.TileAction;
-import edu.ntnu.idatt2003.boardgame.LadderAction;
+import edu.ntnu.idatt2003.boardgame.actions.PortalAction;
+import edu.ntnu.idatt2003.boardgame.actions.SnakeAction;
+import edu.ntnu.idatt2003.boardgame.actions.TileAction;
+import edu.ntnu.idatt2003.boardgame.actions.LadderAction;
 
 import java.lang.reflect.Type;
 

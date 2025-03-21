@@ -1,6 +1,6 @@
 import static org.junit.jupiter.api.Assertions.*;
 
-import edu.ntnu.idatt2003.boardgame.Dice;
+import edu.ntnu.idatt2003.boardgame.componentHolders.Dice;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

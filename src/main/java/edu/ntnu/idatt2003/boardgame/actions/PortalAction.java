@@ -1,4 +1,6 @@
-package edu.ntnu.idatt2003.boardgame;
+package edu.ntnu.idatt2003.boardgame.actions;
+
+import edu.ntnu.idatt2003.boardgame.components.Player;
 
 import java.util.Random;
 
@@ -17,7 +19,6 @@ public class PortalAction implements TileAction {
         while(random == player.getCurrentTile().getTileId() || random == 0){
             random = new Random().nextInt(player.getBoardGame().getBoard().getTiles().size());
         }
-        System.out.println(random);
         player.setCurrentTile(player.getBoardGame().getBoard(),random);
         System.out.println("Portal action performed.");
         if(player.getCurrentTile().getAction() != null){

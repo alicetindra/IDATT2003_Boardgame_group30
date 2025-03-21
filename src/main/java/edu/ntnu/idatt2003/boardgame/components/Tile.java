@@ -1,4 +1,6 @@
-package edu.ntnu.idatt2003.boardgame;
+package edu.ntnu.idatt2003.boardgame.components;
+
+import edu.ntnu.idatt2003.boardgame.actions.TileAction;
 
 public class Tile {
     private int id;

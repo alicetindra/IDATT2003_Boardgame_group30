@@ -1,4 +1,6 @@
-package edu.ntnu.idatt2003.boardgame;
+package edu.ntnu.idatt2003.boardgame.readers;
+
+import edu.ntnu.idatt2003.boardgame.components.Player;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

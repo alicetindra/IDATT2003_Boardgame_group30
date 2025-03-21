@@ -1,7 +1,10 @@
-package edu.ntnu.idatt2003.boardgame;
+package edu.ntnu.idatt2003.boardgame.componentHolders;
 
 
 import com.google.gson.JsonObject;
+import edu.ntnu.idatt2003.boardgame.readers.ReadBoard;
+import edu.ntnu.idatt2003.boardgame.readers.ReadPlayers;
+import edu.ntnu.idatt2003.boardgame.writers.WriteBoard;
 
 public class BoardGame {
     Board board;

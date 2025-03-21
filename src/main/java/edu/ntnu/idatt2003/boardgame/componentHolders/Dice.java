@@ -1,4 +1,6 @@
-package edu.ntnu.idatt2003.boardgame;
+package edu.ntnu.idatt2003.boardgame.componentHolders;
+
+import edu.ntnu.idatt2003.boardgame.components.Die;
 
 import java.util.ArrayList;
 import java.util.List;

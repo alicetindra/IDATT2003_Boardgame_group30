@@ -1,4 +1,4 @@
-package edu.ntnu.idatt2003.boardgame;
+package edu.ntnu.idatt2003.boardgame.components;
 import java.util.Random;
 
 public class Die {

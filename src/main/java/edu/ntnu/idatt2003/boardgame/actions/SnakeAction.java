@@ -1,10 +1,12 @@
-package edu.ntnu.idatt2003.boardgame;
+package edu.ntnu.idatt2003.boardgame.actions;
 
-public class LadderAction implements TileAction {
+import edu.ntnu.idatt2003.boardgame.components.Player;
+
+public class SnakeAction implements TileAction {
     int destinationTile;
     String description;
 
-    public LadderAction(int destinationTile, String description) {
+    public SnakeAction(int destinationTile, String description) {
         this.destinationTile = destinationTile;
         this.description = description;
     }
@@ -12,6 +14,6 @@ public class LadderAction implements TileAction {
     @Override
     public void perform(Player player) {
         player.setCurrentTile(player.getBoardGame().getBoard(),destinationTile);
-        System.out.println("Ladder action performed.");
+        System.out.println("Snake action performed.");
     }
 }

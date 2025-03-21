@@ -1,4 +1,7 @@
-package edu.ntnu.idatt2003.boardgame;
+package edu.ntnu.idatt2003.boardgame.components;
+
+import edu.ntnu.idatt2003.boardgame.componentHolders.Board;
+import edu.ntnu.idatt2003.boardgame.componentHolders.BoardGame;
 
 public class Player {
     private String name;

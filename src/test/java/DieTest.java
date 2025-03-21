@@ -1,6 +1,6 @@
 import static org.junit.jupiter.api.Assertions.*;
 
-import edu.ntnu.idatt2003.boardgame.Die;
+import edu.ntnu.idatt2003.boardgame.components.Die;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

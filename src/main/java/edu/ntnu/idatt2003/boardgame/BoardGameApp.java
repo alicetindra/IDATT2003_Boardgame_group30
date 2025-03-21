@@ -1,7 +1,11 @@
 package edu.ntnu.idatt2003.boardgame;
 
-import com.google.gson.JsonObject;
-
+import edu.ntnu.idatt2003.boardgame.componentHolders.Board;
+import edu.ntnu.idatt2003.boardgame.componentHolders.BoardGame;
+import edu.ntnu.idatt2003.boardgame.componentHolders.Dice;
+import edu.ntnu.idatt2003.boardgame.componentHolders.PlayerHolder;
+import edu.ntnu.idatt2003.boardgame.components.Player;
+import edu.ntnu.idatt2003.boardgame.components.Tile;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;

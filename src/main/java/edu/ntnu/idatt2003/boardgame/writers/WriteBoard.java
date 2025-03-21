@@ -1,4 +1,4 @@
-package edu.ntnu.idatt2003.boardgame;
+package edu.ntnu.idatt2003.boardgame.writers;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
