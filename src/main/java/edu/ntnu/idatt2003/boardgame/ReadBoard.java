@@ -12,7 +12,7 @@ public class ReadBoard {
         try (FileReader fileReader = new FileReader(filePath)) {
             return gson.fromJson(fileReader, Board.class);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error reading file " + filePath);
             return null;
         }
     }

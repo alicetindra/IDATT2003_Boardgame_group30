@@ -17,26 +17,26 @@ public class BoardGameApp extends Application {
   Dice dice;
   Pane pane;
   VBox vbox;
+  BoardGame game = new BoardGame();
+  Player currentPlayer;
 
   public void init(){
-    WriteBoard writeBoard = new WriteBoard();
-    ReadBoard readBoard = new ReadBoard();
+    game.createBoard(10, "src/main/resources/boardGameInfo.json");
+    board = game.getBoard();
 
-    WritePlayers writePlayers = new WritePlayers();
-    ReadPlayers readPlayers = new ReadPlayers();
+    game.createDice(1);
+    dice = game.getDice();
 
+    game.createPlayerHolder("src/main/resources/players.csv");
+    playerHolder = game.getPlayerHolder();
 
-    JsonObject tileJson = writeBoard.serializeTiles(10);
-    writeBoard.writeJsonToFile(tileJson, "src/main/resources/boardGameInfo.json");
+    playerHolder.setCurrentPlayer(playerHolder.getPlayers().getLast());
 
-    board = readBoard.readTilesFromFile("src/main/resources/boardGameInfo.json");
-
-    JsonObject playerJson = writePlayers.serializePlayers();
-    writePlayers.writeJsonToFile(playerJson, "src/main/resources/players.json");
-
-    playerHolder = readPlayers.readPlayersFromFile("src/main/resources/players.json");
-
-    dice = new Dice(2);
+    for(Player p: playerHolder.getPlayers()){
+      p.setCurrentTile(board, 0);
+    }
+    playerHolder.setCurrentPlayer(playerHolder.getPlayers().getLast());
+    currentPlayer = playerHolder.getCurrentPlayer();
   }
 
   @Override
@@ -64,11 +64,10 @@ public class BoardGameApp extends Application {
   }
 
   private void handleStartRoundButton(ActionEvent actionEvent) {
-    int totalEyes = dice.roll();
-    Text text = new Text("Total Eyes: "+totalEyes);
+    game.play();
+
+    Text text = new Text(playerHolder.getCurrentPlayer().getColor()+" moves "+dice.getTotalSumOfEyes()+"spots and is now on tile "+playerHolder.getCurrentPlayer().getCurrentTile().getTileId());
     vbox.getChildren().add(text);
   }
 
 }
-
-

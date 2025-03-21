@@ -1,25 +1,28 @@
 package edu.ntnu.idatt2003.boardgame;
 
-import java.util.ArrayList;
-
 public class Player {
     private String name;
-    private String next;
+    private Tile currentTile;
+    private String color;
 
-    public Player() {
+    public Player(String name, String color) {
+         this.name = name;
+         this.color = color;
+    }
+    public String getColor(){
+        return color;
+    }
 
-    }
-    public void setName(){
-        this.name = name;
-    }
     public String getName(){
         return name;
     }
-    public void setNext(){
-        this.next = next;
+
+    public void setCurrentTile(Board board, int id){
+        this.currentTile = board.getTiles().get(id);
     }
-    public String getNext(){
-        return next;
+
+    public Tile getCurrentTile(){
+        return currentTile;
     }
 
 }

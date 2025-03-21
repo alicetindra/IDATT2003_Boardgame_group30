@@ -20,17 +20,18 @@ public class WriteBoard {
         JsonObject tileBook = new JsonObject();
 
         JsonArray ladderJsonArray = new JsonArray();
+
         for (int i = 0; i<=n; i++) {
             //Tile map
             JsonObject tileJson = new JsonObject();
             tileJson.addProperty("id", i);
 
             //adding the next tile
-            if(i<50){
+            if(i<n){
                 tileJson.addProperty("next", i+1);
             }
             else{
-                tileJson.addProperty("next", false);
+                tileJson.addProperty("next", 0);
             }
 
             //action map
@@ -46,6 +47,7 @@ public class WriteBoard {
 
             ladderJsonArray.add(tileJson);
         }
+        /*
 
         JsonArray diamondJsonArray = new JsonArray();
         for (int i = 0; i<=n; i++) {
@@ -60,9 +62,11 @@ public class WriteBoard {
 
             diamondJsonArray.add(tileJson);
         }
+        */
+
 
         tileBook.add("tiles", ladderJsonArray);
-        tileBook.add("tileDiamond", diamondJsonArray);
+        //tileBook.add("tileDiamond", diamondJsonArray);
 
         return tileBook;
     }

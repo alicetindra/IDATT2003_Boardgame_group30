@@ -38,5 +38,13 @@ public class Dice {
     return dice;
   }
 
+  public int getTotalSumOfEyes(){
+    int sum = 0;
+    for(Die d: getListOfDice()){
+      sum += d.getValue();
+    }
+    return sum;
+  }
+
 
 }

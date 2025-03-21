@@ -1,19 +1,35 @@
 package edu.ntnu.idatt2003.boardgame;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReadPlayers {
-    public static PlayerHolder readPlayersFromFile(String filePath) {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        try (FileReader fileReader = new FileReader(filePath)) {
-            return gson.fromJson(fileReader, PlayerHolder.class);
+
+    public static List<Player> readPlayersFromFile(String fileName) {
+        List<Player> players = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+
+                String[] parts = line.split(",");
+
+                if (parts.length >= 2) {
+                    String name = parts[0].trim();
+                    String color = parts[1].trim();
+
+                    Player player = new Player(name, color);
+                    players.add(player);
+                }
+            }
         } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            System.out.println("Error reading file: " + fileName);
         }
+        return players;
     }
 }
+
