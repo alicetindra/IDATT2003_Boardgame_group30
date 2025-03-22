@@ -21,7 +21,7 @@ public class BoardGame {
 
     }
 
-    //Board
+    //Board, det verkar osm vi kan ta bort de 3 första raderna, vi behöver bara writeboard om vi ska ändra antalet tiles.
     public void createBoard(int n, String filename) {
         WriteBoard writeBoard = new WriteBoard();
 
@@ -48,7 +48,10 @@ public class BoardGame {
 
     //Players
     public void createPlayerHolder(String filename, List<String> playerString) throws IOException {
-        WritePlayers.writePlayersToFile(filename, playerString);
+        //if(playerString.isEmpty()) {
+            playerHolder.setPlayers(ReadPlayers.readPlayersFromFile(filename));
+        //}
+        //WritePlayers.writePlayersToFile(filename, playerString);
         playerHolder.setPlayers(ReadPlayers.readPlayersFromFile(filename));
     }
 

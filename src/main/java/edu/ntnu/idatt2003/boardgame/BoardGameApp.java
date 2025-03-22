@@ -1,5 +1,8 @@
 package edu.ntnu.idatt2003.boardgame;
 
+import edu.ntnu.idatt2003.boardgame.actions.LadderAction;
+import edu.ntnu.idatt2003.boardgame.actions.PortalAction;
+import edu.ntnu.idatt2003.boardgame.actions.SnakeAction;
 import edu.ntnu.idatt2003.boardgame.componentHolders.Board;
 import edu.ntnu.idatt2003.boardgame.componentHolders.BoardGame;
 import edu.ntnu.idatt2003.boardgame.componentHolders.Dice;
@@ -8,20 +11,27 @@ import edu.ntnu.idatt2003.boardgame.components.Player;
 import edu.ntnu.idatt2003.boardgame.components.Tile;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 
 public class BoardGameApp extends Application {
   Board board;
@@ -37,39 +47,191 @@ public class BoardGameApp extends Application {
   VBox playerBox;
   Button startRoundButton;
 
-  public void init() throws IOException {
-    game.createBoard(90, "src/main/resources/boardGameInfo.json");
-    board = game.getBoard();
-
-    game.createDice(1);
-    dice = game.getDice();
-
-    List<String> playerStrings = new ArrayList<>();
-    playerStrings.add("Tindra,green");
-    playerStrings.add("Nicoline,blue");
-    playerStrings.add("Mark,red");
-
-    game.createPlayerHolder("src/main/resources/players.csv", playerStrings);
-    playerHolder = game.getPlayerHolder();
-
-    playerHolder.setCurrentPlayer(playerHolder.getPlayers().getLast());
-
-    for(Player p: playerHolder.getPlayers()){
-      p.setBoardGame(game);
-      p.setCurrentTile(board, 1);
-    }
-    playerHolder.setCurrentPlayer(playerHolder.getPlayers().getLast());
-    currentPlayer = playerHolder.getCurrentPlayer();
+  public static void main(String[] args){
+    launch(args);
   }
 
   @Override
-  public void start(Stage stage) throws Exception {
-    scrollpane = new ScrollPane();
-    Pane pane = new Pane();
-    vbox = new VBox();
-    vbox.setLayoutX(200);
-    vbox.setLayoutY(100);
+  public void start(Stage stage){
+    double windowWidth = 1000;
+    double windowHeight = 600;
+
+    VBox menuBox = new VBox();
+    menuBox.setSpacing(15);
+    menuBox.setAlignment(Pos.CENTER);
+
+    Button snakesAndLAddersButton = new Button("Snakes and Ladders");
+    snakesAndLAddersButton.setOnAction(e-> startSnakesAndLAdders(stage));
+
+    menuBox.getChildren().add(snakesAndLAddersButton);
+
+    Scene menuScene = new Scene(menuBox, windowWidth, windowHeight);
+    stage.setScene(menuScene);
+    stage.setTitle("Choose your game");
+    stage.show();
+  }
+
+
+  public void startSnakesAndLAdders(Stage stage){
+    try{
+      //The board og the game
+      game.createBoard(90, "src/main/resources/snakesAndLaddersBoard.json");
+      board = game.getBoard();
+      //Initialize dice and players.
+      game.createDice(1);
+      dice = game.getDice();
+
+      game.createPlayerHolder("src/main/resources/players.csv", null);
+      playerHolder = game.getPlayerHolder();
+
+      for(Player p: playerHolder.getPlayers()){
+        p.setBoardGame(game);
+        p.setCurrentTile(board, 1);
+      }
+      playerHolder.setCurrentPlayer(playerHolder.getPlayers().getLast());
+      currentPlayer = playerHolder.getCurrentPlayer();
+
+      //Setting custom fonts
+      Font customFontTitle = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),50);
+
+      Font customFontSubTitle = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),30);
+
+      Font customFontButton = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
+
+
+      // Lägg till rubriken högst upp
+      Text title = new Text("Snakes and Ladders");
+      title.setFont(customFontTitle);
+      title.setStyle("-fx-fill: #4A90E2;");
+      VBox titleBox = new VBox(title);
+      titleBox.setAlignment(Pos.CENTER);
+      VBox.setMargin(titleBox, new Insets(20,0,0,0));
+
+
+      //Information on rules box to the left
+      VBox rulesColumn = new VBox();
+      rulesColumn.setSpacing(10);
+      rulesColumn.setPrefWidth(200);
+      rulesColumn.setStyle(
+          "-fx-background-color: #6f9c6f; "
+          + "-fx-border-color: #6f9c6f;");
+      rulesColumn.setAlignment(Pos.CENTER);
+
+      //Rules
+      Text rulesTitle = new Text("Game Rules");
+      rulesTitle.setFont(customFontSubTitle);
+      rulesTitle.setStyle("-fx-fill: #4A90E2;");
+      rulesColumn.getChildren().add(rulesTitle);
+
+      Text rule1 = new Text("1. Roll the dice to move.");
+      Text rule2 = new Text("2. Ladders move you up.");
+      Text rule3 = new Text("3. Snakes move you down.");
+      rule1.setStyle("-fx-font-size: 14px; -fx-fill: black;");
+      rule2.setStyle("-fx-font-size: 14px; -fx-fill: black;");
+      rule3.setStyle("-fx-font-size: 14px; -fx-fill: black;");
+      rulesColumn.getChildren().addAll(rule1, rule2, rule3);
+
+
+      //set up board grid for snakes and ladders
+      VBox boardGrid = createBoardGrid();
+      boardGrid.setAlignment(Pos.CENTER);
+
+      //Player information to the right
+      VBox infoColumn = new VBox();
+      infoColumn.setSpacing(10);
+      infoColumn.setPrefWidth(200);
+      infoColumn.setStyle(
+          "-fx-background-color: #6f9c6f; "
+              + "-fx-border-color: #6f9c6f;");
+      infoColumn.setAlignment(Pos.CENTER);
+
+      Text infoTitle = new Text("Player Info");
+      infoTitle.setFont(customFontSubTitle);
+      infoTitle.setStyle("-fx-fill: #4A90E2;");
+      infoColumn.getChildren().add(infoTitle);
+
+      for(Player p: playerHolder.getPlayers()){
+        Text playerName = new Text(p.getName());
+        playerName.setStyle("-fx-font-size: 14px; -fx-fill: black;");
+        infoColumn.getChildren().add(playerName);
+      }
+      infoColumn.getChildren().add(displayInfoBox);
+
+
+      //Start button down to the right
+      startRoundButton = new Button("Roll Dice");
+      startRoundButton.setFont(customFontButton);
+      startRoundButton.setStyle(
+          "-fx-background-color: #416c42; " +  // Bakgrundsfärg
+          "-fx-text-fill: white; " +           // Textfärg
+          "-fx-background-radius: 20px; " +    // Rundade hörn
+          "-fx-border-color: #053005; " +      // Kantfärg
+          "-fx-border-width: 2px;" +
+              "-fx-border-radius: 20px" );
+      startRoundButton.setPrefSize(150, 50);
+      startRoundButton.setOnAction(this::handleStartRoundButton);
+
+      VBox.setMargin(startRoundButton, new Insets(20,0,0,0));
+      infoColumn.getChildren().add(startRoundButton);
+
+      //Layout borderPane with everything
+      BorderPane mainLayout = new BorderPane();
+      mainLayout.setTop(titleBox);
+      mainLayout.setLeft(rulesColumn);
+      mainLayout.setCenter(boardGrid);
+      mainLayout.setRight(infoColumn);
+
+      mainLayout.setStyle("-fx-background-color: #6f9c6f;");
+
+
+      Scene scene = new Scene(mainLayout,1000,600);
+      stage.setScene(scene);
+      stage.setTitle("Board Game: Snakes and Ladders");
+      stage.show();
+    } catch(IOException e){
+      e.printStackTrace();
+    }
+  }
+
+
+
+  private void handleStartRoundButton(ActionEvent actionEvent) {
+    displayInfoBox.getChildren().clear();
+    game.play();
+
+    int newTile = playerHolder.getCurrentPlayer().getCurrentTile().getTileId();
+    Text text = new Text(playerHolder.getCurrentPlayer().getColor()+" threw a "+dice.getTotalSumOfEyes()+" and landed on " + newTile);
+    text.setStyle("-fx-font-size: 14;");
+    text.setWrappingWidth(180);
+    if(game.getWinner()!=null){
+      displayInfoBox.getChildren().add(new Text("Winner: "+game.getWinner().getName()));
+      startRoundButton.setDisable(true);
+    }
+    displayInfoBox.getChildren().add(text);
+  }
+
+
+
+
+  private VBox createBoardGrid(){
+    VBox vbox = new VBox();
+    HBox rowBox = null;
     int i = 10;
+
+    //List for destinations for colour
+    List<Integer> snakeDestination = new ArrayList<>();
+    List<Integer> ladderDestination = new ArrayList<>();
+
+    //Collect destinations
+    for(Tile t : board.getTiles()){
+      if(t.getAction() instanceof SnakeAction){
+        SnakeAction action = (SnakeAction) t.getAction();
+        snakeDestination.add(action.getDestinationTile());
+      } else if(t.getAction() instanceof LadderAction){
+        LadderAction action = (LadderAction) t.getAction();
+        ladderDestination.add(action.getDestinationTile());
+      }
+    }
 
     for(Tile t: board.getTiles().reversed()){
       if(i %10==0) {
@@ -79,58 +241,66 @@ public class BoardGameApp extends Application {
           rowBox.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
         }
       }
+
+      //create tile and colour
       VBox tileBox = new VBox();
       tileBox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
       tileBox.getChildren().add(new Text(""+t.getTileId()));
       tileBox.setPrefWidth(60);
       tileBox.setPrefHeight(60);
-      tileBox.setStyle("-fx-background-color: #aeaeff; -fx-border-color: #000000");
-      rowBox.getChildren().add(tileBox);
-      if(i %10 ==0) {
+
+      if(snakeDestination.contains(t.getTileId())){
+        tileBox.setStyle(
+            "-fx-background-color: #FBC4C4; "
+                + "-fx-border-color: #000000");
+      }else if(ladderDestination.contains(t.getTileId())){
+        tileBox.setStyle(
+            "-fx-background-color: #D3F9D8; "
+            + "-fx-border-color: #000000");
+      }
+      else if (t.getAction() instanceof PortalAction) {
+        tileBox.setStyle("-fx-background-color: #77b7d8; -fx-border-color: #000000");
+        // Lägg till bild för portaler
+        Image portalImage = new Image(Objects.requireNonNull(getClass().getResource("/images/portal.png")).toExternalForm());
+        ImageView portalImageView = new ImageView(portalImage);
+        portalImageView.setFitWidth(40);
+        portalImageView.setFitHeight(40);
+        portalImageView.setPreserveRatio(true);
+
+        tileBox.setAlignment(Pos.CENTER);
+        tileBox.getChildren().add(portalImageView);
+      }
+      else if(t.getAction() != null){
+        switch (t.getAction().getClass().getSimpleName()){
+          case "LadderAction":
+            tileBox.setStyle(
+                "-fx-background-color: #8aca84; "
+                    + "-fx-border-color: #000000");
+            break;
+          case "SnakeAction":
+            tileBox.setStyle(
+                "-fx-background-color: #e85b5b;"
+                + " -fx-border-color: #000000");
+            break;
+          default:
+            tileBox.setStyle("-fx-background-color: #E0E0E0; -fx-border-color: #000000");
+        }
+      }else{
+        tileBox.setStyle("-fx-background-color: #E0E0E0; -fx-border-color: #000000");
+      }
+
+
+      if (rowBox != null){
+        rowBox.getChildren().add(tileBox);
+      }
+
+      if(i %10 ==0 && rowBox != null) {
         rowBox.setAlignment(Pos.CENTER_LEFT);
         vbox.getChildren().add(rowBox);
       }
       i++;
-
     }
-
-    playerBox = new VBox();
-    for(Player p: playerHolder.getPlayers()){
-      playerBox.getChildren().add(new Text(p.getName()));
-    }
-
-    displayInfoBox.setLayoutY(200);
-
-
-    buttonBox = new VBox();
-    buttonBox.setLayoutY(300);
-    buttonBox.setLayoutX(850);
-    startRoundButton = new Button("Start Round");
-    startRoundButton.setOnAction(this::handleStartRoundButton);
-    buttonBox.getChildren().add(startRoundButton);
-
-
-    pane.getChildren().addAll(vbox,playerBox,buttonBox, displayInfoBox);
-    scrollpane.setContent(pane);
-
-    Scene scene = new Scene(scrollpane,1000,600);
-    stage.setScene(scene);
-    stage.setTitle("Board Game");
-    stage.show();
-  }
-
-  private void handleStartRoundButton(ActionEvent actionEvent) {
-    displayInfoBox.getChildren().clear();
-    game.play();
-
-    int newTile = playerHolder.getCurrentPlayer().getCurrentTile().getTileId();
-    Text text = new Text(playerHolder.getCurrentPlayer().getColor()+" threw a "+dice.getTotalSumOfEyes()+" and landed on " + newTile);
-    text.setStyle("-fx-font-size: 16;");
-    if(game.getWinner()!=null){
-      displayInfoBox.getChildren().add(new Text("Winner: "+game.getWinner().getName()));
-      startRoundButton.setDisable(true);
-    }
-    displayInfoBox.getChildren().add(text);
+    return vbox;
   }
 
 }
