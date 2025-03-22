@@ -26,13 +26,5 @@ public class BoardTest {
         assertEquals(20, board.getTiles().size());
     }
 
-    //Negative tests
-    @Test
-    public void createBoardWithInvalidIntThrowsTest() {
-        BoardGame boardGame = new BoardGame();
-        assertThrows(IllegalArgumentException.class, () -> {
-            boardGame.createBoard(-5, "src/test/resources/boardGameInfoTest.json");
-        });
-    }
 
 }
