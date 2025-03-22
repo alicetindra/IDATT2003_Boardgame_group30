@@ -10,6 +10,9 @@ public class Player {
     private BoardGame boardGame;
 
     public Player(String name, String color) {
+        if(name == null || name.isEmpty() || color == null || color.isEmpty()) {
+            throw new IllegalArgumentException("Name and color cannot be null or empty");
+        }
          this.name = name;
          this.color = color;
     }
@@ -23,6 +26,9 @@ public class Player {
 
     public void setCurrentTile(Board board, int id){
         id = id-1;
+        if(id>board.getTiles().size()){
+            throw new IllegalArgumentException("Tile id out of bounds");
+        }
         this.currentTile = board.getTiles().get(id);
     }
 
