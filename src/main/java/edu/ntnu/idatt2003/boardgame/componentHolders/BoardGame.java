@@ -23,6 +23,10 @@ public class BoardGame {
 
     //Board
     public void createBoard(int n, String filename) {
+        if (n <= 0) {
+            throw new IllegalArgumentException("Number of tiles must be greater than zero");
+        }
+
         WriteBoard writeBoard = new WriteBoard();
 
         JsonObject tileJson = writeBoard.serializeTiles(n);
