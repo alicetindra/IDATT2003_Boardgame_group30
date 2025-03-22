@@ -15,12 +15,12 @@ public class PortalAction implements TileAction {
 
     @Override
     public void perform(Player player) {
-        int random = 0;
-        while(random == player.getCurrentTile().getTileId() || random == 0){
-            random = new Random().nextInt(player.getBoardGame().getBoard().getTiles().size());
+        int random = player.getCurrentTile().getTileId();
+        while(random == player.getCurrentTile().getTileId()){
+            random = new Random().nextInt(0,player.getBoardGame().getBoard().getTiles().size());
         }
         player.setCurrentTile(player.getBoardGame().getBoard(),random);
-        System.out.println("Portal action performed.");
+        System.out.println(description);
         if(player.getCurrentTile().getAction() != null){
             player.getCurrentTile().getAction().perform(player);
         }

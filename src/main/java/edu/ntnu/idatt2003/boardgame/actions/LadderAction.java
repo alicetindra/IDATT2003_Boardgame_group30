@@ -13,7 +13,10 @@ public class LadderAction implements TileAction {
 
     @Override
     public void perform(Player player) {
+        if(destinationTile < 0 || destinationTile > player.getBoardGame().getBoard().getTiles().size() - 1) {
+            throw new IllegalArgumentException("Destination-tile is not on the board");
+        }
         player.setCurrentTile(player.getBoardGame().getBoard(),destinationTile);
-        System.out.println("Ladder action performed.");
+        System.out.println(description);
     }
 }
