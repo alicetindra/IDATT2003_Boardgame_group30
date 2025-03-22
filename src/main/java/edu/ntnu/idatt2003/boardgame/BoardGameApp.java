@@ -102,10 +102,10 @@ public class BoardGameApp extends Application {
       // Lägg till rubriken högst upp
       Text title = new Text("Snakes and Ladders");
       title.setFont(customFontTitle);
-      title.setStyle("-fx-fill: #4A90E2;");
+      title.setStyle("-fx-fill: #19599f");
       VBox titleBox = new VBox(title);
       titleBox.setAlignment(Pos.CENTER);
-      VBox.setMargin(titleBox, new Insets(20,0,0,0));
+      titleBox.setPadding(new Insets(20,0,0,0));
 
 
       //Information on rules box to the left
@@ -120,15 +120,27 @@ public class BoardGameApp extends Application {
       //Rules
       Text rulesTitle = new Text("Game Rules");
       rulesTitle.setFont(customFontSubTitle);
-      rulesTitle.setStyle("-fx-fill: #4A90E2;");
+      rulesTitle.setStyle("-fx-fill: #19599f");
       rulesColumn.getChildren().add(rulesTitle);
 
-      Text rule1 = new Text("1. Roll the dice to move.");
-      Text rule2 = new Text("2. Ladders move you up.");
-      Text rule3 = new Text("3. Snakes move you down.");
-      rule1.setStyle("-fx-font-size: 14px; -fx-fill: black;");
-      rule2.setStyle("-fx-font-size: 14px; -fx-fill: black;");
-      rule3.setStyle("-fx-font-size: 14px; -fx-fill: black;");
+      Text rule1 = new Text("1. Roll the dice to move when it's your turn.");
+      Text rule2 = new Text("2. If you land on...\n"
+          + "\ndark green, climb up to light green.\n"
+          + "\ndark red, slide down to light red.\n"
+          + "\ndark blue, you will be transported to a random tile.");
+      Text rule3 = new Text("3. The first player at the finish is the winner.");
+      rule1.setWrappingWidth(180);
+      rule1.setStyle("-fx-font-size: 14px; "
+          + "-fx-fill: black;"
+          + "-fx-font-family: Georgia");
+      rule2.setWrappingWidth(180);
+      rule2.setStyle("-fx-font-size: 14px; "
+          + "-fx-fill: black;"
+          + "-fx-font-family: Georgia");
+      rule3.setWrappingWidth(180);
+      rule3.setStyle("-fx-font-size: 14px; "
+          + "-fx-fill: black;"
+          + "-fx-font-family: Georgia");
       rulesColumn.getChildren().addAll(rule1, rule2, rule3);
 
 
@@ -147,12 +159,14 @@ public class BoardGameApp extends Application {
 
       Text infoTitle = new Text("Player Info");
       infoTitle.setFont(customFontSubTitle);
-      infoTitle.setStyle("-fx-fill: #4A90E2;");
+      infoTitle.setStyle("-fx-fill: #19599f");
       infoColumn.getChildren().add(infoTitle);
 
       for(Player p: playerHolder.getPlayers()){
         Text playerName = new Text(p.getName());
-        playerName.setStyle("-fx-font-size: 14px; -fx-fill: black;");
+        playerName.setStyle("-fx-font-size: 14px; "
+            + "-fx-fill: black;"
+            + "-fx-font-family: Georgia");
         infoColumn.getChildren().add(playerName);
       }
       infoColumn.getChildren().add(displayInfoBox);
