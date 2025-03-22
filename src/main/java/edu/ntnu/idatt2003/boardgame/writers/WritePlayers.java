@@ -1,6 +1,16 @@
 package edu.ntnu.idatt2003.boardgame.writers;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
+
 public class WritePlayers {
-    //So far ive just put in the players manually
-    //Make methods for writing to players.csv here for the BoardGameApp to interact with
+    public static void writePlayersToFile(String fileName, List<String> players) throws IOException {
+        try (FileWriter fileWriter = new FileWriter(fileName)) {
+            for (String s : players) {
+                fileWriter.write(s + System.lineSeparator());
+            }
+        }
+    }
+
 }

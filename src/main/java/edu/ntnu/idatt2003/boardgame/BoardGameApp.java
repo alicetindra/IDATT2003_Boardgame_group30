@@ -19,6 +19,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class BoardGameApp extends Application {
   Board board;
   PlayerHolder playerHolder;
@@ -31,22 +35,28 @@ public class BoardGameApp extends Application {
   HBox rowBox;
   VBox buttonBox;
   VBox playerBox;
+  Button startRoundButton;
 
-  public void init(){
+  public void init() throws IOException {
     game.createBoard(90, "src/main/resources/boardGameInfo.json");
     board = game.getBoard();
 
     game.createDice(1);
     dice = game.getDice();
 
-    game.createPlayerHolder("src/main/resources/players.csv");
+    List<String> playerStrings = new ArrayList<>();
+    playerStrings.add("Tindra,green");
+    playerStrings.add("Nicoline,blue");
+    playerStrings.add("Mark,red");
+
+    game.createPlayerHolder("src/main/resources/players.csv", playerStrings);
     playerHolder = game.getPlayerHolder();
 
     playerHolder.setCurrentPlayer(playerHolder.getPlayers().getLast());
 
     for(Player p: playerHolder.getPlayers()){
       p.setBoardGame(game);
-      p.setCurrentTile(board, 0);
+      p.setCurrentTile(board, 1);
     }
     playerHolder.setCurrentPlayer(playerHolder.getPlayers().getLast());
     currentPlayer = playerHolder.getCurrentPlayer();
@@ -91,10 +101,11 @@ public class BoardGameApp extends Application {
 
     displayInfoBox.setLayoutY(200);
 
+
     buttonBox = new VBox();
     buttonBox.setLayoutY(300);
     buttonBox.setLayoutX(850);
-    Button startRoundButton = new Button("Start Round");
+    startRoundButton = new Button("Start Round");
     startRoundButton.setOnAction(this::handleStartRoundButton);
     buttonBox.getChildren().add(startRoundButton);
 
@@ -109,10 +120,16 @@ public class BoardGameApp extends Application {
   }
 
   private void handleStartRoundButton(ActionEvent actionEvent) {
+    displayInfoBox.getChildren().clear();
     game.play();
 
-    Text text = new Text(playerHolder.getCurrentPlayer().getColor()+" moves "+dice.getTotalSumOfEyes()+"spots and is now on tile "+playerHolder.getCurrentPlayer().getCurrentTile().getTileId());
+    int newTile = playerHolder.getCurrentPlayer().getCurrentTile().getTileId();
+    Text text = new Text(playerHolder.getCurrentPlayer().getColor()+" threw a "+dice.getTotalSumOfEyes()+" and landed on " + newTile);
     text.setStyle("-fx-font-size: 16;");
+    if(game.getWinner()!=null){
+      displayInfoBox.getChildren().add(new Text("Winner: "+game.getWinner().getName()));
+      startRoundButton.setDisable(true);
+    }
     displayInfoBox.getChildren().add(text);
   }
 

@@ -22,6 +22,7 @@ public class Player {
     }
 
     public void setCurrentTile(Board board, int id){
+        id = id-1;
         this.currentTile = board.getTiles().get(id);
     }
 
