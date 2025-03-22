@@ -1,4 +1,6 @@
-package edu.ntnu.idatt2003.boardgame;
+package edu.ntnu.idatt2003.boardgame.actions;
+
+import edu.ntnu.idatt2003.boardgame.components.Player;
 
 public class LadderAction implements TileAction {
     int destinationTile;
@@ -11,7 +13,7 @@ public class LadderAction implements TileAction {
 
     @Override
     public void perform(Player player) {
-        player.placeOnTile(player.getGame().getBoard().getTile(destinationTile));
-        System.out.println(player.getName()+description);
+        player.setCurrentTile(player.getBoardGame().getBoard(),destinationTile);
+        System.out.println("Ladder action performed.");
     }
 }

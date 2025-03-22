@@ -1,4 +1,6 @@
-package edu.ntnu.idatt2003.boardgame;
+package edu.ntnu.idatt2003.boardgame.componentHolders;
+
+import edu.ntnu.idatt2003.boardgame.components.Die;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,14 @@ public class Dice {
 
   public List<Die> getListOfDice() {
     return dice;
+  }
+
+  public int getTotalSumOfEyes(){
+    int sum = 0;
+    for(Die d: getListOfDice()){
+      sum += d.getValue();
+    }
+    return sum;
   }
 
 
