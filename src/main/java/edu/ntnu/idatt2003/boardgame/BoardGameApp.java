@@ -7,6 +7,7 @@ import edu.ntnu.idatt2003.boardgame.componentHolders.Board;
 import edu.ntnu.idatt2003.boardgame.componentHolders.BoardGame;
 import edu.ntnu.idatt2003.boardgame.componentHolders.Dice;
 import edu.ntnu.idatt2003.boardgame.componentHolders.PlayerHolder;
+import edu.ntnu.idatt2003.boardgame.components.Die;
 import edu.ntnu.idatt2003.boardgame.components.Player;
 import edu.ntnu.idatt2003.boardgame.components.Tile;
 import java.util.HashMap;
@@ -44,6 +45,7 @@ public class BoardGameApp extends Application {
   VBox displayInfoBox = new VBox();
   HBox rowBox;
   Button startRoundButton;
+  HBox dieBox = new HBox();
 
   public static void main(String[] args){
     launch(args);
@@ -77,10 +79,18 @@ public class BoardGameApp extends Application {
       board = game.getBoard();
       VBox boardGrid = createBoardGrid();
       //Initialize dice and players.
-      game.createDice(1);
+      game.createDice(2);
       dice = game.getDice();
 
-      game.createPlayerHolder("src/main/resources/players.csv", null);
+
+
+      List<String> stringOfPlayers = new ArrayList<>();
+      stringOfPlayers.add("Tindra,green");
+      stringOfPlayers.add("Nicoline,blue");
+      stringOfPlayers.add("Markus,yellow");
+      stringOfPlayers.add("Julie,red");
+
+      game.createPlayerHolder("src/main/resources/players.csv",stringOfPlayers);
       playerHolder = game.getPlayerHolder();
 
       for(Player p: playerHolder.getPlayers()){
@@ -177,6 +187,10 @@ public class BoardGameApp extends Application {
       //set up board grid for snakes and ladders
 
       boardGrid.setAlignment(Pos.CENTER);
+      boardGrid.setMaxWidth(750);
+      boardGrid.setMinWidth(750);
+      boardGrid.setMaxHeight(675);
+      boardGrid.setMinHeight(675);
 
       //Player information to the right
       VBox infoColumn = new VBox();
@@ -218,6 +232,7 @@ public class BoardGameApp extends Application {
       VBox.setMargin(startRoundButton, new Insets(20,0,0,0));
       infoColumn.getChildren().add(startRoundButton);
 
+
       //Layout borderPane with everything
       BorderPane mainLayout = new BorderPane();
       mainLayout.setTop(titleWithImage);
@@ -243,6 +258,8 @@ public class BoardGameApp extends Application {
     displayInfoBox.getChildren().clear();
     game.play();
 
+    displayDice();
+
     Player currentPlayer = playerHolder.getCurrentPlayer();
     int newTileId = currentPlayer.getCurrentTile().getTileId();
 
@@ -258,6 +275,18 @@ public class BoardGameApp extends Application {
     //Check for winner
     checkForWinner();
   }
+
+  public void displayDice(){
+    dieBox.getChildren().clear();
+    for(Die d : game.getDice().getListOfDice()){
+      ImageView die = new ImageView(new Image("/images/dice"+d.getValue()+".png"));
+      die.setFitHeight(40);
+      die.setFitWidth(40);
+      dieBox.getChildren().add(die);
+    }
+    displayInfoBox.getChildren().add(dieBox);
+  }
+
 
   /**
    * Removes picture of player from old tile
@@ -296,7 +325,7 @@ public class BoardGameApp extends Application {
    * @param newTileId
    */
   private void updateInfoBox(Player player, int newTileId){
-    String message = player.getColor() + " threw a " + dice.getTotalSumOfEyes() + " and landed on tile " + newTileId;
+    String message = player.getColor() + " moved to " + newTileId;
 
     Text text = new Text(message);
     text.setStyle("-fx-font-size: 14;");
@@ -324,17 +353,20 @@ public class BoardGameApp extends Application {
   private ImageView createPlayerImage(String color) {
     String piecePath = "/images/default_piece.png";
     if (color.equalsIgnoreCase("red")) {
-      piecePath = "/images/red_piece.png";
+      piecePath = "/images/red.png";
     } else if (color.equalsIgnoreCase("blue")) {
-      piecePath = "/images/blue_piece.png";
+      piecePath = "/images/blue.png";
     } else if (color.equalsIgnoreCase("green")) {
-      piecePath = "/images/green_piece.png";
+      piecePath = "/images/green.png";
+    }
+    else if (color.equalsIgnoreCase("yellow")) {
+      piecePath = "/images/yellow.png";
     }
 
     Image playerImage = new Image(Objects.requireNonNull(getClass().getResource(piecePath)).toExternalForm());
     ImageView playerImageView = new ImageView(playerImage);
-    playerImageView.setFitWidth(20); //
-    playerImageView.setFitHeight(20);
+    playerImageView.setFitWidth(25); //
+    playerImageView.setFitHeight(30);
     playerImageView.setPreserveRatio(true);
 
     return playerImageView;
@@ -365,6 +397,10 @@ public class BoardGameApp extends Application {
 
       //create visual representation of a tile
       VBox tileBox = createTileBox(t, snakeDestination, ladderDestination);
+      tileBox.setMaxHeight(75);
+      tileBox.setMaxWidth(75);
+      tileBox.setMinHeight(75);
+      tileBox.setMinWidth(75);
       t.setTileBox(tileBox);
 
       rowBox.getChildren().add(tileBox);
