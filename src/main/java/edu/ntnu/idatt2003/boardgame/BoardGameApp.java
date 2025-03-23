@@ -164,6 +164,11 @@ public class BoardGameApp extends Application {
       //set up board grid for snakes and ladders
       VBox boardGrid = createBoardGrid();
       boardGrid.setAlignment(Pos.CENTER);
+      //Setting the height and width to the grid so it does not adjust with the screen
+      boardGrid.setMaxHeight(540);
+      boardGrid.setMaxWidth(600);
+      boardGrid.setMinHeight(540);
+      boardGrid.setMinWidth(600);
 
       //Player information to the right
       VBox infoColumn = new VBox();
@@ -272,7 +277,6 @@ public class BoardGameApp extends Application {
           rowBox.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
         }
       }
-
       //create tile and colour
       VBox tileBox = new VBox();
       tileBox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
