@@ -67,10 +67,11 @@ public class BoardGame {
 
         //Current player rolls the dice
         int totalEyes = dice.roll();
-        System.out.println(board.getTiles().size());
+
         //Set current players new current tile
         int destTileId = playerHolder.getCurrentPlayer().getCurrentTile().getTileId() + totalEyes;
 
+        //Handle special cases for destination tile
         if(destTileId <= getBoard().getTiles().size()-1 && board.getTiles().get(destTileId-1).getAction() != null) {
             board.getTiles().get(destTileId-1).getAction().perform(playerHolder.getCurrentPlayer());
         }
@@ -88,6 +89,7 @@ public class BoardGame {
         }
 
     }
+
     public void declareWinner(Player winner) {
         this.winner = winner;
     }

@@ -18,13 +18,12 @@ import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -40,13 +39,10 @@ public class BoardGameApp extends Application {
   Board board;
   PlayerHolder playerHolder;
   Dice dice;
-  VBox vbox;
   BoardGame game = new BoardGame();
   Player currentPlayer;
   VBox displayInfoBox = new VBox();
   HBox rowBox;
-  VBox buttonBox;
-  VBox playerBox;
   Button startRoundButton;
 
   public static void main(String[] args){
@@ -248,35 +244,83 @@ public class BoardGameApp extends Application {
     game.play();
 
     Player currentPlayer = playerHolder.getCurrentPlayer();
-    int newTile = currentPlayer.getCurrentTile().getTileId();
+    int newTileId = currentPlayer.getCurrentTile().getTileId();
 
-    //ta bort spelarens bild från gammal tile
+    //Ta bort spelaren bild från gammal tile
+    removePlayerImageFromOldTile(currentPlayer);
+
+    //Lägg till spelares bild på ny tile
+    addPlayerImageToNewTile(currentPlayer, newTileId);
+
+    //uppdatera infoboxen med spelares drag
+    updateInfoBox(currentPlayer, newTileId);
+
+    //Check for winner
+    checkForWinner();
+  }
+
+  /**
+   * Removes picture of player from old tile
+   * @param player
+   */
+  private void removePlayerImageFromOldTile(Player player){
     for(Tile t : board.getTiles()){
-      if(t.getTileId() == currentPlayer.getCurrentTile().getTileId()){
-        t.getTileBox().getChildren().removeIf(node -> node instanceof ImageView);
+      t.getTileBox().getChildren().removeIf(node ->
+          node instanceof ImageView && matchesPlayerImage((ImageView) node, player.getColor()));
+    }
+  }
+
+
+  private boolean matchesPlayerImage(ImageView imageView, String playerColor){
+    //kontrollera om bildens filväg matchar spelarens färg
+    String imagePath = imageView.getImage().getUrl();
+    return imagePath != null && imagePath.contains(playerColor.toLowerCase());
+  }
+
+  /**
+   * Add player image to the new position of the player, on the new tile
+   * @param player
+   * @param newTileId
+   */
+  private void addPlayerImageToNewTile(Player player, int newTileId){
+    for(Tile t : board.getTiles()){
+      if(t.getTileId() == newTileId){
+        t.getTileBox().getChildren().add(createPlayerImage(player.getColor()));
       }
     }
+  }
 
-    //lägg till bild på ny tile
-    for(Tile t : board.getTiles()){
-      if(t.getTileId() == newTile){
-        t.getTileBox().getChildren().add(createPlayerImage(currentPlayer.getColor()));
-      }
-    }
+  /**
+   * Update displayInfoBox to show players latest move and dice results.
+   * @param player
+   * @param newTileId
+   */
+  private void updateInfoBox(Player player, int newTileId){
+    String message = player.getColor() + " threw a " + dice.getTotalSumOfEyes() + " and landed on tile " + newTileId;
 
-    currentPlayer.setCurrentTile(board, newTile);
-
-    Text text = new Text(playerHolder.getCurrentPlayer().getColor()+" threw a "+dice.getTotalSumOfEyes()+" and landed on " + newTile);
+    Text text = new Text(message);
     text.setStyle("-fx-font-size: 14;");
     text.setWrappingWidth(180);
 
-    if(game.getWinner()!=null){
-      displayInfoBox.getChildren().add(new Text("Winner: "+game.getWinner().getName()));
-      startRoundButton.setDisable(true);
-    }
     displayInfoBox.getChildren().add(text);
   }
 
+  /**
+   * Checking for winner and if winner is crowned the button disables.
+   */
+  private void checkForWinner(){
+    if(game.getWinner()!=null){
+      String winnerMessage = "Winner: " + game.getWinner().getName() + " has won!";
+      displayInfoBox.getChildren().add(new Text(winnerMessage));
+      startRoundButton.setDisable(true);
+    }
+  }
+
+  /**
+   * Creation of imageview for the players images that move along the board
+   * @param color
+   * @return
+   */
   private ImageView createPlayerImage(String color) {
     String piecePath = "/images/default_piece.png";
     if (color.equalsIgnoreCase("red")) {
@@ -296,8 +340,10 @@ public class BoardGameApp extends Application {
     return playerImageView;
   }
 
-
-
+  /**
+   * Creation of the board for snakes and ladders game
+   * @return
+   */
   private VBox createBoardGrid(){
     VBox vbox = new VBox();
     int tileCounter = 10;
@@ -316,7 +362,6 @@ public class BoardGameApp extends Application {
           rowBox.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
         }
       }
-
 
       //create visual representation of a tile
       VBox tileBox = createTileBox(t, snakeDestination, ladderDestination);
