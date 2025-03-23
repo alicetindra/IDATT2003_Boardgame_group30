@@ -72,173 +72,235 @@ public class BoardGameApp extends Application {
 
   public void startSnakesAndLAdders(Stage stage){
     try{
-      //The board og the game
-      game.createBoard(90, "src/main/resources/snakesAndLaddersBoard.json");
-      board = game.getBoard();
+      //Initialize game components
+      initializeGameSL();
+
+      //Set up board grid
       VBox boardGrid = createBoardGrid();
-      //Initialize dice and players.
-      game.createDice(1);
-      dice = game.getDice();
 
-      game.createPlayerHolder("src/main/resources/players.csv", null);
-      playerHolder = game.getPlayerHolder();
+      //Add players to the board
+      initializePlayers();
 
-      for(Player p: playerHolder.getPlayers()){
-        p.setBoardGame(game);
-        p.setCurrentTile(board, 1);
+      //Set up UI components
+      HBox titleWithImage = createTitle();
+      VBox rulesColumn = createRulesColumn();
+      VBox infoColumn = createInfoColumn();
+      Button startRoundButton = createStartButton();
 
-        //lägg spelares bild på tile 1
-        for(Tile t : board.getTiles()){
-          if(t.getTileId() == 1) {
-            ImageView playerImageView = createPlayerImage(p.getColor());
-
-            // Justera positionen för att skapa överlappning
-            playerImageView.setTranslateX(Math.random() * 5); // Slumpmässig liten förskjutning i X
-            playerImageView.setTranslateY(Math.random() * 5); // Slumpmässig liten förskjutning i Y
-
-            t.getTileBox().getChildren().add(playerImageView);
-          }
-        }
-      }
-
-      playerHolder.setCurrentPlayer(playerHolder.getPlayers().getLast());
-      currentPlayer = playerHolder.getCurrentPlayer();
-
-      //Setting custom fonts
-      Font customFontTitle = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),50);
-      Font customFontSubTitle = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),30);
-      Font customFontButton = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
-
-
-      // Lägg till rubriken högst upp med bilder
-      HBox titleWithImage = new HBox();
-      titleWithImage.setSpacing(10);
-      titleWithImage.setAlignment(Pos.CENTER);
-
-      //Snake image
-      Image snakeImage = new Image(Objects.requireNonNull(getClass().getResource("/images/snake.png")).toExternalForm());
-      ImageView snakeImageView = new ImageView(snakeImage);
-      snakeImageView.setFitHeight(40);
-      snakeImageView.setFitWidth(40);
-      snakeImageView.setPreserveRatio(true);
-
-      //Title
-      Text title = new Text("Snakes and Ladders");
-      title.setFont(customFontTitle);
-      title.setStyle("-fx-fill: #19599f");
-
-      //Ladder image
-      Image ladderImage = new Image(Objects.requireNonNull(getClass().getResource("/images/ladders.png")).toExternalForm());
-      ImageView ladderImageView = new ImageView(ladderImage);
-      ladderImageView.setFitHeight(40);
-      ladderImageView.setFitWidth(40);
-      ladderImageView.setPreserveRatio(true);
-
-      titleWithImage.getChildren().addAll(snakeImageView, title, ladderImageView);
-      titleWithImage.setPadding(new Insets(20,0,0,0));
-
-
-      //Information on rules box to the left
-      VBox rulesColumn = new VBox();
-      rulesColumn.setSpacing(10);
-      rulesColumn.setPrefWidth(200);
-      rulesColumn.setStyle(
-          "-fx-background-color: #6f9c6f; "
-          + "-fx-border-color: #6f9c6f;");
-      rulesColumn.setAlignment(Pos.CENTER);
-
-      //Rules
-      Text rulesTitle = new Text("Game Rules");
-      rulesTitle.setFont(customFontSubTitle);
-      rulesTitle.setStyle("-fx-fill: #19599f");
-      rulesColumn.getChildren().add(rulesTitle);
-
-      Text rule1 = new Text("1. Roll the dice to move when it's your turn.");
-      Text rule2 = new Text("2. If you land on...\n"
-          + "\ndark green, climb up to light green.\n"
-          + "\ndark red, slide down to light red.\n"
-          + "\ndark blue, you will be transported to a random tile.");
-      Text rule3 = new Text("3. The first player at the finish is the winner.");
-      rule1.setWrappingWidth(180);
-      rule1.setStyle("-fx-font-size: 14px; "
-          + "-fx-fill: black;"
-          + "-fx-font-family: Georgia");
-      rule2.setWrappingWidth(180);
-      rule2.setStyle("-fx-font-size: 14px; "
-          + "-fx-fill: black;"
-          + "-fx-font-family: Georgia");
-      rule3.setWrappingWidth(180);
-      rule3.setStyle("-fx-font-size: 14px; "
-          + "-fx-fill: black;"
-          + "-fx-font-family: Georgia");
-      rulesColumn.getChildren().addAll(rule1, rule2, rule3);
-
-
-      //set up board grid for snakes and ladders
-
-      boardGrid.setAlignment(Pos.CENTER);
-
-      //Player information to the right
-      VBox infoColumn = new VBox();
-      infoColumn.setSpacing(10);
-      infoColumn.setPrefWidth(200);
-      infoColumn.setStyle(
-          "-fx-background-color: #6f9c6f; "
-              + "-fx-border-color: #6f9c6f;");
-      infoColumn.setAlignment(Pos.CENTER);
-
-      Text infoTitle = new Text("Player Info");
-      infoTitle.setFont(customFontSubTitle);
-      infoTitle.setStyle("-fx-fill: #19599f");
-      infoColumn.getChildren().add(infoTitle);
-
-      for(Player p: playerHolder.getPlayers()){
-        Text playerName = new Text(p.getName());
-        playerName.setStyle("-fx-font-size: 14px; "
-            + "-fx-fill: black;"
-            + "-fx-font-family: Georgia");
-        infoColumn.getChildren().add(playerName);
-      }
-      infoColumn.getChildren().add(displayInfoBox);
-
-
-      //Start button down to the right
-      startRoundButton = new Button("Roll Dice");
-      startRoundButton.setFont(customFontButton);
-      startRoundButton.setStyle(
-          "-fx-background-color: #416c42; " +  // Bakgrundsfärg
-          "-fx-text-fill: white; " +           // Textfärg
-          "-fx-background-radius: 20px; " +    // Rundade hörn
-          "-fx-border-color: #053005; " +      // Kantfärg
-          "-fx-border-width: 2px;" +
-              "-fx-border-radius: 20px" );
-      startRoundButton.setPrefSize(150, 50);
-      startRoundButton.setOnAction(this::handleStartRoundButton);
-
-      VBox.setMargin(startRoundButton, new Insets(20,0,0,0));
       infoColumn.getChildren().add(startRoundButton);
 
-      //Layout borderPane with everything
-      BorderPane mainLayout = new BorderPane();
-      mainLayout.setTop(titleWithImage);
-      mainLayout.setLeft(rulesColumn);
-      mainLayout.setCenter(boardGrid);
-      mainLayout.setRight(infoColumn);
+      //Set up layout
+      BorderPane mainLayout = createMainLayout(boardGrid, titleWithImage, rulesColumn, infoColumn);
 
-      mainLayout.setStyle("-fx-background-color: #6f9c6f;");
+      //Configure and show stage
+      configureStage(stage, mainLayout);
 
-
-      Scene scene = new Scene(mainLayout,1000,600);
-      stage.setScene(scene);
-      stage.setTitle("Board Game: Snakes and Ladders");
-      stage.show();
     } catch(IOException e){
       e.printStackTrace();
     }
   }
 
+  /**
+   * Initialize the game board, dice, and player holder
+   * @throws IOException
+   */
+  private void initializeGameSL() throws IOException{
+    game.createBoard(90, "src/main/resources/snakesAndLaddersBoard.json");
+    board = game.getBoard();
+    VBox boardGrid = createBoardGrid();
+    //Initialize dice and players.
+    game.createDice(1);
+    dice = game.getDice();
+
+    game.createPlayerHolder("src/main/resources/players.csv", null);
+    playerHolder = game.getPlayerHolder();
+  }
+
+  /**
+   * Adds all players to the board and places their images on the starting tile.
+   */
+  private void initializePlayers(){
+    for(Player p: playerHolder.getPlayers()){
+      p.setBoardGame(game);
+      p.setCurrentTile(board, 1);
+
+      //lägg spelares bild på tile 1
+      for(Tile t : board.getTiles()){
+        if(t.getTileId() == 1) {
+          ImageView playerImageView = createPlayerImage(p.getColor());
+
+          playerImageView.setTranslateX(Math.random() * 5);
+          playerImageView.setTranslateY(Math.random() * 5);
+
+          t.getTileBox().getChildren().add(playerImageView);
+        }
+      }
+    }
+
+    playerHolder.setCurrentPlayer(playerHolder.getPlayers().getLast());
+    currentPlayer = playerHolder.getCurrentPlayer();
+  }
+
+  /**
+   * Creates the title bar with images and text for the game.
+   * @return
+   */
+  private HBox createTitle(){
+    Font customFontTitle = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),50);
+
+    //Snake image
+    Image snakeImage = new Image(Objects.requireNonNull(getClass().getResource("/images/snake.png")).toExternalForm());
+    ImageView snakeImageView = new ImageView(snakeImage);
+    snakeImageView.setFitHeight(40);
+    snakeImageView.setFitWidth(40);
+    snakeImageView.setPreserveRatio(true);
+
+    //Title
+    Text title = new Text("Snakes and Ladders");
+    title.setFont(customFontTitle);
+    title.setStyle("-fx-fill: #19599f");
+
+    //Ladder image
+    Image ladderImage = new Image(Objects.requireNonNull(getClass().getResource("/images/ladders.png")).toExternalForm());
+    ImageView ladderImageView = new ImageView(ladderImage);
+    ladderImageView.setFitHeight(40);
+    ladderImageView.setFitWidth(40);
+    ladderImageView.setPreserveRatio(true);
+
+    HBox titleWithImage = new HBox(10, snakeImageView, title, ladderImageView);
+    titleWithImage.setAlignment(Pos.CENTER);
+    titleWithImage.setPadding(new Insets(20,0,0,0));
+
+    return titleWithImage;
+  }
+
+  /**
+   * Creates the rules column for the game.
+   * @return
+   */
+  private VBox createRulesColumn(){
+    Font customFontSubTitle = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),30);
+
+    //Information on rules box to the left
+    VBox rulesColumn = new VBox(10);
+    rulesColumn.setPrefWidth(200);
+    rulesColumn.setStyle(
+        "-fx-background-color: #6f9c6f; "
+            + "-fx-border-color: #6f9c6f;");
+    rulesColumn.setAlignment(Pos.CENTER);
+
+    Text rulesTitle = new Text("Game Rules");
+    rulesTitle.setFont(customFontSubTitle);
+    rulesTitle.setStyle("-fx-fill: #19599f");
+
+    Text rule1 = createRuleText("1. Roll the dice to move when it's your turn.");
+    Text rule2 = createRuleText("2. Land on dark green to climb, dark red to slide, dark blue to teleport.");
+    Text rule3 = createRuleText("3. The first player at the finish is the winner.");
+
+    rulesColumn.getChildren().addAll(rulesTitle, rule1, rule2, rule3);
+    return rulesColumn;
+  }
+
+  /**
+   * Creates a styled rule text.
+   *
+   * @param content The text content of the rule.
+   * @return A styled Text node.
+   */
+  private Text createRuleText(String content) {
+    Text rule = new Text(content);
+    rule.setWrappingWidth(180);
+    rule.setStyle("-fx-font-size: 14px; -fx-fill: black; -fx-font-family: Georgia;");
+    return rule;
+  }
+
+  private VBox createInfoColumn(){
+    Font customFontSubTitle = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),30);
+
+    VBox infoColumn = new VBox(10);
+    infoColumn.setPrefWidth(200);
+    infoColumn.setStyle(
+        "-fx-background-color: #6f9c6f; "
+            + "-fx-border-color: #6f9c6f;");
+    infoColumn.setAlignment(Pos.CENTER);
+
+    Text infoTitle = new Text("Player Info");
+    infoTitle.setFont(customFontSubTitle);
+    infoTitle.setStyle("-fx-fill: #19599f");
+
+    infoColumn.getChildren().add(infoTitle);
+
+    for(Player p: playerHolder.getPlayers()){
+      Text playerName = new Text(p.getName());
+      playerName.setStyle("-fx-font-size: 14px; "
+          + "-fx-fill: black;"
+          + "-fx-font-family: Georgia");
+      infoColumn.getChildren().add(playerName);
+    }
+    infoColumn.getChildren().add(displayInfoBox);
+    return infoColumn;
+  }
+
+  /**
+   * Creates the "Roll Dice" button.
+   * @return
+   */
+  private Button createStartButton(){
+    Font customFontButton = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
+
+    startRoundButton = new Button("Roll Dice");
+    startRoundButton.setFont(customFontButton);
+    startRoundButton.setStyle(
+        "-fx-background-color: #416c42; " +  // Bakgrundsfärg
+            "-fx-text-fill: white; " +           // Textfärg
+            "-fx-background-radius: 20px; " +    // Rundade hörn
+            "-fx-border-color: #053005; " +      // Kantfärg
+            "-fx-border-width: 2px;" +
+            "-fx-border-radius: 20px" );
+    startRoundButton.setPrefSize(150, 50);
+    startRoundButton.setOnAction(this::handleStartRoundButton);
+
+    VBox.setMargin(startRoundButton, new Insets(20,0,0,0));
+    return startRoundButton;
+  }
+
+  /**
+   * Creates the main layout for the game.
+   * @param boardGrid
+   * @param titleWithImage
+   * @param rulesColumn
+   * @param infoColumn
+   * @return
+   */
+  private BorderPane createMainLayout(VBox boardGrid, HBox titleWithImage, VBox rulesColumn, VBox infoColumn){
+    BorderPane mainLayout = new BorderPane();
+    mainLayout.setTop(titleWithImage);
+    mainLayout.setLeft(rulesColumn);
+    mainLayout.setCenter(boardGrid);
+    mainLayout.setRight(infoColumn);
+
+    mainLayout.setStyle("-fx-background-color: #6f9c6f;");
+    return mainLayout;
+  }
+
+  /**
+   * Configures the stage and sets the scene for the game.
+   * @param stage
+   * @param mainLayout
+   */
+  private void configureStage(Stage stage, BorderPane mainLayout){
+    Scene scene = new Scene(mainLayout,1000,600);
+    stage.setScene(scene);
+    stage.setTitle("Board Game: Snakes and Ladders");
+    stage.show();
+  }
 
 
+
+  /**
+   *
+   * @param actionEvent
+   */
   private void handleStartRoundButton(ActionEvent actionEvent) {
     displayInfoBox.getChildren().clear();
     game.play();
@@ -299,7 +361,8 @@ public class BoardGameApp extends Application {
     String message = player.getColor() + " threw a " + dice.getTotalSumOfEyes() + " and landed on tile " + newTileId;
 
     Text text = new Text(message);
-    text.setStyle("-fx-font-size: 14;");
+    text.setStyle("-fx-font-size: 14;"
+        + "-fx-font-family: Georgia;");
     text.setWrappingWidth(180);
 
     displayInfoBox.getChildren().add(text);
@@ -405,19 +468,6 @@ public class BoardGameApp extends Application {
     return destinations;
   }
 
-
-  /**
-   * Manages creation of new rows based on the tileCounter value
-   * @param tileCounter
-   * @return
-   */
-  private HBox initializeRow(int tileCounter){
-    HBox rowBox = new HBox();
-    rowBox.setNodeOrientation(
-        (tileCounter % 20 == 0) ? NodeOrientation.LEFT_TO_RIGHT : NodeOrientation.RIGHT_TO_LEFT
-    );
-    return rowBox;
-  }
 
 
   /**
