@@ -9,6 +9,8 @@ import edu.ntnu.idatt2003.boardgame.componentHolders.Dice;
 import edu.ntnu.idatt2003.boardgame.componentHolders.PlayerHolder;
 import edu.ntnu.idatt2003.boardgame.components.Player;
 import edu.ntnu.idatt2003.boardgame.components.Tile;
+import java.util.HashMap;
+import java.util.Map;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -22,6 +24,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -37,7 +40,6 @@ public class BoardGameApp extends Application {
   Board board;
   PlayerHolder playerHolder;
   Dice dice;
-  ScrollPane scrollpane;
   VBox vbox;
   BoardGame game = new BoardGame();
   Player currentPlayer;
@@ -77,6 +79,7 @@ public class BoardGameApp extends Application {
       //The board og the game
       game.createBoard(90, "src/main/resources/snakesAndLaddersBoard.json");
       board = game.getBoard();
+      VBox boardGrid = createBoardGrid();
       //Initialize dice and players.
       game.createDice(1);
       dice = game.getDice();
@@ -87,7 +90,21 @@ public class BoardGameApp extends Application {
       for(Player p: playerHolder.getPlayers()){
         p.setBoardGame(game);
         p.setCurrentTile(board, 1);
+
+        //lägg spelares bild på tile 1
+        for(Tile t : board.getTiles()){
+          if(t.getTileId() == 1) {
+            ImageView playerImageView = createPlayerImage(p.getColor());
+
+            // Justera positionen för att skapa överlappning
+            playerImageView.setTranslateX(Math.random() * 5); // Slumpmässig liten förskjutning i X
+            playerImageView.setTranslateY(Math.random() * 5); // Slumpmässig liten förskjutning i Y
+
+            t.getTileBox().getChildren().add(playerImageView);
+          }
+        }
       }
+
       playerHolder.setCurrentPlayer(playerHolder.getPlayers().getLast());
       currentPlayer = playerHolder.getCurrentPlayer();
 
@@ -162,7 +179,7 @@ public class BoardGameApp extends Application {
 
 
       //set up board grid for snakes and ladders
-      VBox boardGrid = createBoardGrid();
+
       boardGrid.setAlignment(Pos.CENTER);
 
       //Player information to the right
@@ -230,10 +247,29 @@ public class BoardGameApp extends Application {
     displayInfoBox.getChildren().clear();
     game.play();
 
-    int newTile = playerHolder.getCurrentPlayer().getCurrentTile().getTileId();
+    Player currentPlayer = playerHolder.getCurrentPlayer();
+    int newTile = currentPlayer.getCurrentTile().getTileId();
+
+    //ta bort spelarens bild från gammal tile
+    for(Tile t : board.getTiles()){
+      if(t.getTileId() == currentPlayer.getCurrentTile().getTileId()){
+        t.getTileBox().getChildren().removeIf(node -> node instanceof ImageView);
+      }
+    }
+
+    //lägg till bild på ny tile
+    for(Tile t : board.getTiles()){
+      if(t.getTileId() == newTile){
+        t.getTileBox().getChildren().add(createPlayerImage(currentPlayer.getColor()));
+      }
+    }
+
+    currentPlayer.setCurrentTile(board, newTile);
+
     Text text = new Text(playerHolder.getCurrentPlayer().getColor()+" threw a "+dice.getTotalSumOfEyes()+" and landed on " + newTile);
     text.setStyle("-fx-font-size: 14;");
     text.setWrappingWidth(180);
+
     if(game.getWinner()!=null){
       displayInfoBox.getChildren().add(new Text("Winner: "+game.getWinner().getName()));
       startRoundButton.setDisable(true);
@@ -241,15 +277,68 @@ public class BoardGameApp extends Application {
     displayInfoBox.getChildren().add(text);
   }
 
+  private ImageView createPlayerImage(String color) {
+    String piecePath = "/images/default_piece.png";
+    if (color.equalsIgnoreCase("red")) {
+      piecePath = "/images/red_piece.png";
+    } else if (color.equalsIgnoreCase("blue")) {
+      piecePath = "/images/blue_piece.png";
+    } else if (color.equalsIgnoreCase("green")) {
+      piecePath = "/images/green_piece.png";
+    }
+
+    Image playerImage = new Image(Objects.requireNonNull(getClass().getResource(piecePath)).toExternalForm());
+    ImageView playerImageView = new ImageView(playerImage);
+    playerImageView.setFitWidth(20); //
+    playerImageView.setFitHeight(20);
+    playerImageView.setPreserveRatio(true);
+
+    return playerImageView;
+  }
 
 
 
   private VBox createBoardGrid(){
     VBox vbox = new VBox();
-    HBox rowBox = null;
-    int i = 10;
+    int tileCounter = 10;
 
-    //List for destinations for colour
+    //Fetch destinations
+    Map<String, List<Integer>> destinations = collectDestinations();
+    List<Integer> snakeDestination = destinations.get("snake");
+    List<Integer> ladderDestination = destinations.get("ladder");
+
+    //Iterate through the boars tiles in reverse order
+    for(Tile t: board.getTiles().reversed()){
+      if(tileCounter %10==0) {
+        rowBox = new HBox();
+        rowBox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+        if(tileCounter %20 == 0){
+          rowBox.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
+        }
+      }
+
+
+      //create visual representation of a tile
+      VBox tileBox = createTileBox(t, snakeDestination, ladderDestination);
+      t.setTileBox(tileBox);
+
+      rowBox.getChildren().add(tileBox);
+
+      // Arr rowBox to vbox if it's the start of a new row
+      if(tileCounter %10 ==0) {
+        rowBox.setAlignment(Pos.CENTER_LEFT);
+        vbox.getChildren().add(rowBox);
+      }
+      tileCounter++;
+    }
+    return vbox;
+  }
+
+
+  /**
+   * Collect the destinations for snakes and ladders
+   */
+  private Map<String, List<Integer>> collectDestinations(){
     List<Integer> snakeDestination = new ArrayList<>();
     List<Integer> ladderDestination = new ArrayList<>();
 
@@ -264,74 +353,127 @@ public class BoardGameApp extends Application {
       }
     }
 
-    for(Tile t: board.getTiles().reversed()){
-      if(i %10==0) {
-        rowBox = new HBox();
-        rowBox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
-        if(i %20 == 0){
-          rowBox.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
-        }
-      }
+    Map<String, List<Integer>> destinations = new HashMap<>();
+    destinations.put("snake", snakeDestination);
+    destinations.put("ladder", ladderDestination);
 
-      //create tile and colour
-      VBox tileBox = new VBox();
-      tileBox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
-      tileBox.getChildren().add(new Text(""+t.getTileId()));
-      tileBox.setPrefWidth(60);
-      tileBox.setPrefHeight(60);
-
-      if(snakeDestination.contains(t.getTileId())){
-        tileBox.setStyle(
-            "-fx-background-color: #FBC4C4; "
-                + "-fx-border-color: #000000");
-      }else if(ladderDestination.contains(t.getTileId())){
-        tileBox.setStyle(
-            "-fx-background-color: #D3F9D8; "
-            + "-fx-border-color: #000000");
-      }
-      else if (t.getAction() instanceof PortalAction) {
-        tileBox.setStyle("-fx-background-color: #77b7d8; -fx-border-color: #000000");
-        // Lägg till bild för portaler
-        Image portalImage = new Image(Objects.requireNonNull(getClass().getResource("/images/portal.png")).toExternalForm());
-        ImageView portalImageView = new ImageView(portalImage);
-        portalImageView.setFitWidth(40);
-        portalImageView.setFitHeight(40);
-        portalImageView.setPreserveRatio(true);
-
-        tileBox.setAlignment(Pos.CENTER);
-        tileBox.getChildren().add(portalImageView);
-      }
-      else if(t.getAction() != null){
-        switch (t.getAction().getClass().getSimpleName()){
-          case "LadderAction":
-            tileBox.setStyle(
-                "-fx-background-color: #8aca84; "
-                    + "-fx-border-color: #000000");
-            break;
-          case "SnakeAction":
-            tileBox.setStyle(
-                "-fx-background-color: #e85b5b;"
-                + " -fx-border-color: #000000");
-            break;
-          default:
-            tileBox.setStyle("-fx-background-color: #E0E0E0; -fx-border-color: #000000");
-        }
-      }else{
-        tileBox.setStyle("-fx-background-color: #E0E0E0; -fx-border-color: #000000");
-      }
-
-
-      if (rowBox != null){
-        rowBox.getChildren().add(tileBox);
-      }
-
-      if(i %10 ==0 && rowBox != null) {
-        rowBox.setAlignment(Pos.CENTER_LEFT);
-        vbox.getChildren().add(rowBox);
-      }
-      i++;
-    }
-    return vbox;
+    return destinations;
   }
+
+
+  /**
+   * Manages creation of new rows based on the tileCounter value
+   * @param tileCounter
+   * @return
+   */
+  private HBox initializeRow(int tileCounter){
+    HBox rowBox = new HBox();
+    rowBox.setNodeOrientation(
+        (tileCounter % 20 == 0) ? NodeOrientation.LEFT_TO_RIGHT : NodeOrientation.RIGHT_TO_LEFT
+    );
+    return rowBox;
+  }
+
+
+  /**
+   * Method handles the creation of a single tile, including text, styling anf any other visuals.
+   * @param t
+   * @param snakeDestination
+   * @param ladderDestination
+   * @return
+   */
+  private VBox createTileBox(Tile t, List<Integer> snakeDestination, List<Integer> ladderDestination){
+    VBox tileBox = new VBox();
+    tileBox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+    tileBox.setPrefWidth(60);
+    tileBox.setPrefHeight(60);
+    tileBox.setMaxWidth(60);
+    tileBox.setMaxHeight(60);
+    tileBox.setAlignment(Pos.CENTER);
+    tileBox.getChildren().add(new Text(""+t.getTileId()));
+
+    //Apply styles based on tile type
+    if(snakeDestination.contains(t.getTileId())){
+      styleSnakeDestination(tileBox);
+    }else if(ladderDestination.contains(t.getTileId())){
+      styleLadderDestination(tileBox);
+    }
+    else if (t.getAction() instanceof PortalAction) {
+      stylePortalTile(tileBox);
+    }
+    else if(t.getAction() != null){
+      styleDefaultTile(tileBox, t);
+    } else{
+      tileBox.setStyle("-fx-background-color: #E0E0E0; -fx-border-color: #000000");
+    }
+
+    return tileBox;
+  }
+
+  /**
+   * Style snake destination box
+   * @param tileBox
+   */
+  private void styleSnakeDestination(VBox tileBox){
+    tileBox.setStyle(
+        "-fx-background-color: #FBC4C4; "
+            + "-fx-border-color: #000000");
+  }
+
+  /**
+   * Style Ladder destination tile
+   * @param tileBox
+   */
+  private void styleLadderDestination(VBox tileBox){
+    tileBox.setStyle(
+        "-fx-background-color: #D3F9D8; "
+            + "-fx-border-color: #000000");
+  }
+
+  /**
+   * Style portal tile with picture
+   * @param tileBox
+   */
+  private void stylePortalTile(VBox tileBox){
+    tileBox.setStyle("-fx-background-color: #77b7d8; -fx-border-color: #000000");
+    // Lägg till bild för portaler
+    Image portalImage = new Image(Objects.requireNonNull(getClass().getResource("/images/portal.png")).toExternalForm());
+    ImageView portalImageView = new ImageView(portalImage);
+    portalImageView.setFitWidth(40);
+    portalImageView.setFitHeight(40);
+    portalImageView.setPreserveRatio(true);
+
+    tileBox.setAlignment(Pos.CENTER);
+    tileBox.getChildren().add(portalImageView);
+  }
+
+  /**
+   * Create Default tiles + actions tiles
+   * @param tileBox
+   * @param t
+   */
+  private void styleDefaultTile(VBox tileBox, Tile t){
+
+      switch (t.getAction().getClass().getSimpleName()){
+        case "LadderAction":
+          tileBox.setStyle(
+              "-fx-background-color: #8aca84; "
+                  + "-fx-border-color: #000000");
+          break;
+        case "SnakeAction":
+          tileBox.setStyle(
+              "-fx-background-color: #e85b5b;"
+                  + " -fx-border-color: #000000");
+          break;
+        default:
+          tileBox.setStyle("-fx-background-color: #E0E0E0; -fx-border-color: #000000");
+      }
+
+  }
+
+
+
+
+
 
 }

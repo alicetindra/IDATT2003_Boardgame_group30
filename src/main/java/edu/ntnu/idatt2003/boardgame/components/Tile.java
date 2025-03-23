@@ -1,11 +1,13 @@
 package edu.ntnu.idatt2003.boardgame.components;
 
 import edu.ntnu.idatt2003.boardgame.actions.TileAction;
+import javafx.scene.layout.VBox;
 
 public class Tile {
     private int id;
     private int next;
     private TileAction action;
+    private transient VBox tileBox;
 
     public Tile(){
 
@@ -14,6 +16,14 @@ public class Tile {
         return id;
     }
 
+
+    public VBox getTileBox(){
+        return tileBox;
+    }
+
+    public void setTileBox(VBox tileBox){
+        this.tileBox = tileBox;
+    }
 
     public TileAction getAction() {
         return action;
