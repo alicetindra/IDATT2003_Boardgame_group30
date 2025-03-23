@@ -24,6 +24,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -52,7 +53,7 @@ public class BoardGameApp extends Application {
   @Override
   public void start(Stage stage){
     double windowWidth = 1000;
-    double windowHeight = 600;
+    double windowHeight = 650;
 
     VBox menuBox = new VBox();
     menuBox.setSpacing(15);
@@ -120,23 +121,39 @@ public class BoardGameApp extends Application {
    * Adds all players to the board and places their images on the starting tile.
    */
   private void initializePlayers(){
+    int playerIndex = 0;
+
     for(Player p: playerHolder.getPlayers()){
       p.setBoardGame(game);
       p.setCurrentTile(board, 1);
 
-      //lägg spelares bild på tile 1
+      //Add image for all players on tile 1
       for(Tile t : board.getTiles()){
         if(t.getTileId() == 1) {
+          // Check if there is already a StackPane for images
           ImageView playerImageView = createPlayerImage(p.getColor());
 
-          playerImageView.setTranslateX(Math.random() * 5);
-          playerImageView.setTranslateY(Math.random() * 5);
-
+          switch (playerIndex % 3) {
+            case 0: // Vänstra hörnet
+              playerImageView.setTranslateX(-15); // Flytta till höger
+              playerImageView.setTranslateY(-15); // Flytta uppåt
+              break;
+            case 1: // Högra hörnet
+              playerImageView.setTranslateX(15); // Flytta till vänster
+              playerImageView.setTranslateY(-15); // Flytta uppåt
+              break;
+            case 2: // Mitten
+              playerImageView.setTranslateX(-15); // Ingen horisontell förskjutning
+              playerImageView.setTranslateY(-10); // Ingen vertikal förskjutning
+              break;
+          }
+          // Lägg till bilden i tileBox
           t.getTileBox().getChildren().add(playerImageView);
+
+          playerIndex++;
         }
       }
     }
-
     playerHolder.setCurrentPlayer(playerHolder.getPlayers().getLast());
     currentPlayer = playerHolder.getCurrentPlayer();
   }
@@ -231,7 +248,7 @@ public class BoardGameApp extends Application {
     infoColumn.getChildren().add(infoTitle);
 
     for(Player p: playerHolder.getPlayers()){
-      Text playerName = new Text(p.getName());
+      Text playerName = new Text(p.getName() + ", " + p.getColor());
       playerName.setStyle("-fx-font-size: 14px; "
           + "-fx-fill: black;"
           + "-fx-font-family: Georgia");
@@ -289,12 +306,12 @@ public class BoardGameApp extends Application {
    * @param mainLayout
    */
   private void configureStage(Stage stage, BorderPane mainLayout){
-    Scene scene = new Scene(mainLayout,1000,600);
+    Scene scene = new Scene(mainLayout,1000,650);
     stage.setScene(scene);
     stage.setTitle("Board Game: Snakes and Ladders");
+    stage.setResizable(false);
     stage.show();
   }
-
 
 
   /**
@@ -308,13 +325,13 @@ public class BoardGameApp extends Application {
     Player currentPlayer = playerHolder.getCurrentPlayer();
     int newTileId = currentPlayer.getCurrentTile().getTileId();
 
-    //Ta bort spelaren bild från gammal tile
+    //Remove current player image from board
     removePlayerImageFromOldTile(currentPlayer);
 
-    //Lägg till spelares bild på ny tile
+    //Add current player image on new tile
     addPlayerImageToNewTile(currentPlayer, newTileId);
 
-    //uppdatera infoboxen med spelares drag
+    //Update infobox with players move
     updateInfoBox(currentPlayer, newTileId);
 
     //Check for winner
@@ -374,7 +391,13 @@ public class BoardGameApp extends Application {
   private void checkForWinner(){
     if(game.getWinner()!=null){
       String winnerMessage = "Winner: " + game.getWinner().getName() + " has won!";
-      displayInfoBox.getChildren().add(new Text(winnerMessage));
+
+      Text text = new Text(winnerMessage);
+      text.setStyle("-fx-font-size: 14;"
+          + "-fx-font-family: Georgia;");
+      text.setWrappingWidth(180);
+
+      displayInfoBox.getChildren().add(text);
       startRoundButton.setDisable(true);
     }
   }
@@ -385,14 +408,7 @@ public class BoardGameApp extends Application {
    * @return
    */
   private ImageView createPlayerImage(String color) {
-    String piecePath = "/images/default_piece.png";
-    if (color.equalsIgnoreCase("red")) {
-      piecePath = "/images/red_piece.png";
-    } else if (color.equalsIgnoreCase("blue")) {
-      piecePath = "/images/blue_piece.png";
-    } else if (color.equalsIgnoreCase("green")) {
-      piecePath = "/images/green_piece.png";
-    }
+    String piecePath = "/images/" + color.toLowerCase() + "_piece.png";
 
     Image playerImage = new Image(Objects.requireNonNull(getClass().getResource(piecePath)).toExternalForm());
     ImageView playerImageView = new ImageView(playerImage);
@@ -468,8 +484,6 @@ public class BoardGameApp extends Application {
     return destinations;
   }
 
-
-
   /**
    * Method handles the creation of a single tile, including text, styling anf any other visuals.
    * @param t
@@ -480,10 +494,7 @@ public class BoardGameApp extends Application {
   private VBox createTileBox(Tile t, List<Integer> snakeDestination, List<Integer> ladderDestination){
     VBox tileBox = new VBox();
     tileBox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
-    tileBox.setPrefWidth(60);
-    tileBox.setPrefHeight(60);
-    tileBox.setMaxWidth(60);
-    tileBox.setMaxHeight(60);
+    tileBox.setMinSize(60,60);
     tileBox.setAlignment(Pos.CENTER);
     tileBox.getChildren().add(new Text(""+t.getTileId()));
 
@@ -565,9 +576,6 @@ public class BoardGameApp extends Application {
       }
 
   }
-
-
-
 
 
 
