@@ -86,6 +86,9 @@ public class WriteBoard {
 
             ladderJsonArray.add(tileJson);
         }
+
+
+
         /*
 
         JsonArray diamondJsonArray = new JsonArray();

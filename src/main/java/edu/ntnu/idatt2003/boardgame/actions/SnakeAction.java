@@ -11,6 +11,10 @@ public class SnakeAction implements TileAction {
         this.description = description;
     }
 
+    public int getDestinationTile() {
+        return destinationTile;
+    }
+
     @Override
     public void perform(Player player) {
         player.setCurrentTile(player.getBoardGame().getBoard(),destinationTile);
