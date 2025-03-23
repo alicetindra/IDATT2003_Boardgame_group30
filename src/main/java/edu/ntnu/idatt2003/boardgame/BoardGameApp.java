@@ -93,19 +93,36 @@ public class BoardGameApp extends Application {
 
       //Setting custom fonts
       Font customFontTitle = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),50);
-
       Font customFontSubTitle = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),30);
-
       Font customFontButton = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
 
 
-      // Lägg till rubriken högst upp
+      // Lägg till rubriken högst upp med bilder
+      HBox titleWithImage = new HBox();
+      titleWithImage.setSpacing(10);
+      titleWithImage.setAlignment(Pos.CENTER);
+
+      //Snake image
+      Image snakeImage = new Image(Objects.requireNonNull(getClass().getResource("/images/snake.png")).toExternalForm());
+      ImageView snakeImageView = new ImageView(snakeImage);
+      snakeImageView.setFitHeight(40);
+      snakeImageView.setFitWidth(40);
+      snakeImageView.setPreserveRatio(true);
+
+      //Title
       Text title = new Text("Snakes and Ladders");
       title.setFont(customFontTitle);
       title.setStyle("-fx-fill: #19599f");
-      VBox titleBox = new VBox(title);
-      titleBox.setAlignment(Pos.CENTER);
-      titleBox.setPadding(new Insets(20,0,0,0));
+
+      //Ladder image
+      Image ladderImage = new Image(Objects.requireNonNull(getClass().getResource("/images/ladders.png")).toExternalForm());
+      ImageView ladderImageView = new ImageView(ladderImage);
+      ladderImageView.setFitHeight(40);
+      ladderImageView.setFitWidth(40);
+      ladderImageView.setPreserveRatio(true);
+
+      titleWithImage.getChildren().addAll(snakeImageView, title, ladderImageView);
+      titleWithImage.setPadding(new Insets(20,0,0,0));
 
 
       //Information on rules box to the left
@@ -190,7 +207,7 @@ public class BoardGameApp extends Application {
 
       //Layout borderPane with everything
       BorderPane mainLayout = new BorderPane();
-      mainLayout.setTop(titleBox);
+      mainLayout.setTop(titleWithImage);
       mainLayout.setLeft(rulesColumn);
       mainLayout.setCenter(boardGrid);
       mainLayout.setRight(infoColumn);
