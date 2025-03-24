@@ -22,11 +22,8 @@ import javafx.scene.control.Button;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -47,6 +44,8 @@ public class BoardGameApp extends Application {
   HBox rowBox;
   Button startRoundButton;
   HBox dieBox = new HBox();
+  Pane mainPane = new Pane();
+  int rowBoxesHeigth;
 
   public static void main(String[] args){
     launch(args);
@@ -83,8 +82,8 @@ public class BoardGameApp extends Application {
       boardGrid.setAlignment(Pos.CENTER);
       boardGrid.setMaxWidth(750);
       boardGrid.setMinWidth(750);
-      boardGrid.setMaxHeight(675);
-      boardGrid.setMinHeight(675);
+      boardGrid.setMaxHeight(rowBoxesHeigth);
+      boardGrid.setMinHeight(rowBoxesHeigth);
 
       //Add players to the board
       initializePlayers();
@@ -113,7 +112,7 @@ public class BoardGameApp extends Application {
    * @throws IOException
    */
   private void initializeGameSL() throws IOException{
-    game.createBoard(90, "src/main/resources/snakesAndLaddersBoard.json");
+    game.createBoard(3, "src/main/resources/snakesAndLaddersBoard.json");
     board = game.getBoard();
     VBox boardGrid = createBoardGrid();
     //Initialize dice and players.
@@ -462,10 +461,13 @@ public class BoardGameApp extends Application {
     List<Integer> snakeDestination = destinations.get("snake");
     List<Integer> ladderDestination = destinations.get("ladder");
 
+    rowBoxesHeigth = 0;
+    int rowBoxesWidth = 0;
     //Iterate through the boars tiles in reverse order
     for(Tile t: board.getTiles().reversed()){
       if(tileCounter %10==0) {
         rowBox = new HBox();
+        rowBoxesHeigth += 75;
         rowBox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
         if(tileCounter %20 == 0){
           rowBox.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
