@@ -35,6 +35,7 @@ import java.util.Objects;
 
 
 public class BoardGameApp extends Application {
+  private BorderPane rootLayout;
   Board board;
   PlayerHolder playerHolder;
   Dice dice;
@@ -53,26 +54,37 @@ public class BoardGameApp extends Application {
 
   @Override
   public void start(Stage stage){
-    double windowWidth = 1000;
-    double windowHeight = 650;
+    //huvudlayout
+    rootLayout = new BorderPane();
 
+    //visa huvudmeny
+    showMainMenu();
+
+    //Skapa scenen
+    Scene menuScene = new Scene(rootLayout, 1000, 650);
+    stage.setScene(menuScene);
+    stage.setTitle("Board Game");
+
+    //maximera fönstret
+    stage.setMaximized(true);
+
+    stage.show();
+  }
+
+  private void showMainMenu(){
     VBox menuBox = new VBox();
     menuBox.setSpacing(15);
     menuBox.setAlignment(Pos.CENTER);
 
     Button snakesAndLAddersButton = new Button("Snakes and Ladders");
-    snakesAndLAddersButton.setOnAction(e-> startSnakesAndLAdders(stage));
+    snakesAndLAddersButton.setOnAction(e-> startSnakesAndLAdders());
 
     menuBox.getChildren().add(snakesAndLAddersButton);
 
-    Scene menuScene = new Scene(menuBox, windowWidth, windowHeight);
-    stage.setScene(menuScene);
-    stage.setTitle("Choose your game");
-    stage.show();
+    rootLayout.setCenter(menuBox);
   }
 
-
-  public void startSnakesAndLAdders(Stage stage){
+  public void startSnakesAndLAdders(){
     try{
       //Initialize game components
       initializeGameSL();
@@ -93,19 +105,22 @@ public class BoardGameApp extends Application {
       VBox rulesColumn = createRulesColumn();
       VBox infoColumn = createInfoColumn();
       Button startRoundButton = createStartButton();
+      Button mainMenuButton = createMainMenuButton();
 
-      infoColumn.getChildren().add(startRoundButton);
+      infoColumn.getChildren().addAll(startRoundButton, mainMenuButton);
 
       //Set up layout
-      BorderPane mainLayout = createMainLayout(boardGrid, titleWithImage, rulesColumn, infoColumn);
+      BorderPane gameLayout = createMainLayout(boardGrid, titleWithImage, rulesColumn, infoColumn);
 
       //Configure and show stage
-      configureStage(stage, mainLayout);
+      rootLayout.setCenter(gameLayout);
+
 
     } catch(IOException e){
       e.printStackTrace();
     }
   }
+
 
   /**
    * Initialize the game board, dice, and player holder
@@ -133,8 +148,6 @@ public class BoardGameApp extends Application {
    * Adds all players to the board and places their images on the starting tile.
    */
   private void initializePlayers(){
-    int playerIndex = 0;
-
     for(Player p: playerHolder.getPlayers()){
       p.setBoardGame(game);
       p.setCurrentTile(board, 1);
@@ -142,27 +155,9 @@ public class BoardGameApp extends Application {
       //Add image for all players on tile 1
       for(Tile t : board.getTiles()){
         if(t.getTileId() == 1) {
-          // Check if there is already a StackPane for images
-          ImageView playerImageView = createPlayerImage(p.getColor());
-
-          switch (playerIndex % 3) {
-            case 0: // Vänstra hörnet
-              playerImageView.setTranslateX(-15); // Flytta till höger
-              playerImageView.setTranslateY(-15); // Flytta uppåt
-              break;
-            case 1: // Högra hörnet
-              playerImageView.setTranslateX(15); // Flytta till vänster
-              playerImageView.setTranslateY(-15); // Flytta uppåt
-              break;
-            case 2: // Mitten
-              playerImageView.setTranslateX(-15); // Ingen horisontell förskjutning
-              playerImageView.setTranslateY(-10); // Ingen vertikal förskjutning
-              break;
-          }
           // Lägg till bilden i tileBox
-          t.getTileBox().getChildren().add(playerImageView);
+          t.getTileBox().getChildren().add(createPlayerImage(p.getColor()));
 
-          playerIndex++;
         }
       }
     }
@@ -293,6 +288,28 @@ public class BoardGameApp extends Application {
     return startRoundButton;
   }
 
+
+  private Button createMainMenuButton(){
+    Font customFontButton = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
+
+    //back to main
+    Button mainMenuButton = new Button("Main menu");
+    mainMenuButton.setFont(customFontButton);
+    mainMenuButton.setStyle(
+        "-fx-background-color: #416c42; " +  // Bakgrundsfärg
+        "-fx-text-fill: white; " +           // Textfärg
+        "-fx-background-radius: 20px; " +    // Rundade hörn
+        "-fx-border-color: #053005; " +      // Kantfärg
+        "-fx-border-width: 2px;" +
+        "-fx-border-radius: 20px" );
+    mainMenuButton.setPrefSize(150, 50);
+    mainMenuButton.setOnAction(e->showMainMenu());
+
+    VBox.setMargin(mainMenuButton, new Insets(20,0,0,0));
+
+    return mainMenuButton;
+  }
+
   /**
    * Creates the main layout for the game.
    * @param boardGrid
@@ -312,19 +329,7 @@ public class BoardGameApp extends Application {
     return mainLayout;
   }
 
-  /**
-   * Configures the stage and sets the scene for the game.
-   * @param stage
-   * @param mainLayout
-   */
-  private void configureStage(Stage stage, BorderPane mainLayout){
-    Scene scene = new Scene(mainLayout,1000,650);
-    stage.setScene(scene);
-    stage.setTitle("Board Game: Snakes and Ladders");
-    //stage.setResizable(false);
-    stage.setMaximized(true);
-    stage.show();
-  }
+
 
 
   /**
