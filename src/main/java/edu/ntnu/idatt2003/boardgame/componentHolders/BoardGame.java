@@ -21,7 +21,7 @@ public class BoardGame {
 
     }
 
-    //Board
+    //Board, det verkar osm vi kan ta bort de 3 första raderna, vi behöver bara writeboard om vi ska ändra antalet tiles.
     public void createBoard(int n, String filename) {
         WriteBoard writeBoard = new WriteBoard();
 
@@ -49,7 +49,9 @@ public class BoardGame {
     //Players
     public void createPlayerHolder(String filename, List<String> playerString) throws IOException {
         WritePlayers.writePlayersToFile(filename, playerString);
+
         playerHolder.setPlayers(ReadPlayers.readPlayersFromFile(filename));
+        this.playerHolder = playerHolder;
     }
 
     public PlayerHolder getPlayerHolder() {
@@ -64,10 +66,11 @@ public class BoardGame {
 
         //Current player rolls the dice
         int totalEyes = dice.roll();
-        System.out.println(board.getTiles().size());
+
         //Set current players new current tile
         int destTileId = playerHolder.getCurrentPlayer().getCurrentTile().getTileId() + totalEyes;
 
+        //Handle special cases for destination tile
         if(destTileId <= getBoard().getTiles().size()-1 && board.getTiles().get(destTileId-1).getAction() != null) {
             board.getTiles().get(destTileId-1).getAction().perform(playerHolder.getCurrentPlayer());
         }
@@ -77,14 +80,18 @@ public class BoardGame {
             System.out.println("Player " + playerHolder.getCurrentPlayer().getColor() + " has won!");
         }
         else if (destTileId > getBoard().getTiles().size()-1) {
-            destTileId = (2 * getBoard().getTiles().size()-2) - (destTileId);
+            destTileId = (2 * getBoard().getTiles().size()) - (destTileId);
             playerHolder.getCurrentPlayer().setCurrentTile(board, destTileId);
+            if(board.getTiles().get(destTileId-1).getAction() != null){
+                board.getTiles().get(destTileId-1).getAction().perform(playerHolder.getCurrentPlayer());
+            }
         }
         else{
             playerHolder.getCurrentPlayer().setCurrentTile(board, destTileId);
         }
 
     }
+
     public void declareWinner(Player winner) {
         this.winner = winner;
     }
