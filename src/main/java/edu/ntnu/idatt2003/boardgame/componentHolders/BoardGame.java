@@ -48,11 +48,10 @@ public class BoardGame {
 
     //Players
     public void createPlayerHolder(String filename, List<String> playerString) throws IOException {
-        //if(playerString.isEmpty()) {
-            playerHolder.setPlayers(ReadPlayers.readPlayersFromFile(filename));
-        //}
-        //WritePlayers.writePlayersToFile(filename, playerString);
+        WritePlayers.writePlayersToFile(filename, playerString);
+
         playerHolder.setPlayers(ReadPlayers.readPlayersFromFile(filename));
+        this.playerHolder = playerHolder;
     }
 
     public PlayerHolder getPlayerHolder() {
@@ -81,8 +80,11 @@ public class BoardGame {
             System.out.println("Player " + playerHolder.getCurrentPlayer().getColor() + " has won!");
         }
         else if (destTileId > getBoard().getTiles().size()-1) {
-            destTileId = (2 * getBoard().getTiles().size()-2) - (destTileId);
+            destTileId = (2 * getBoard().getTiles().size()) - (destTileId);
             playerHolder.getCurrentPlayer().setCurrentTile(board, destTileId);
+            if(board.getTiles().get(destTileId-1).getAction() != null){
+                board.getTiles().get(destTileId-1).getAction().perform(playerHolder.getCurrentPlayer());
+            }
         }
         else{
             playerHolder.getCurrentPlayer().setCurrentTile(board, destTileId);

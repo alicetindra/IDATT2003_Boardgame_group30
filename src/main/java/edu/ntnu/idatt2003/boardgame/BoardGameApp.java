@@ -7,6 +7,7 @@ import edu.ntnu.idatt2003.boardgame.componentHolders.Board;
 import edu.ntnu.idatt2003.boardgame.componentHolders.BoardGame;
 import edu.ntnu.idatt2003.boardgame.componentHolders.Dice;
 import edu.ntnu.idatt2003.boardgame.componentHolders.PlayerHolder;
+import edu.ntnu.idatt2003.boardgame.components.Die;
 import edu.ntnu.idatt2003.boardgame.components.Player;
 import edu.ntnu.idatt2003.boardgame.components.Tile;
 import java.util.HashMap;
@@ -45,6 +46,7 @@ public class BoardGameApp extends Application {
   VBox displayInfoBox = new VBox();
   HBox rowBox;
   Button startRoundButton;
+  HBox dieBox = new HBox();
 
   public static void main(String[] args){
     launch(args);
@@ -78,6 +80,11 @@ public class BoardGameApp extends Application {
 
       //Set up board grid
       VBox boardGrid = createBoardGrid();
+      boardGrid.setAlignment(Pos.CENTER);
+      boardGrid.setMaxWidth(750);
+      boardGrid.setMinWidth(750);
+      boardGrid.setMaxHeight(675);
+      boardGrid.setMinHeight(675);
 
       //Add players to the board
       initializePlayers();
@@ -110,10 +117,16 @@ public class BoardGameApp extends Application {
     board = game.getBoard();
     VBox boardGrid = createBoardGrid();
     //Initialize dice and players.
-    game.createDice(1);
+    game.createDice(2);
     dice = game.getDice();
 
-    game.createPlayerHolder("src/main/resources/players.csv", null);
+    List<String> stringOfPlayers = new ArrayList<>();
+    stringOfPlayers.add("Tindra,green");
+    stringOfPlayers.add("Nicoline,blue");
+    stringOfPlayers.add("Markus,yellow");
+    stringOfPlayers.add("Julie,red");
+
+    game.createPlayerHolder("src/main/resources/players.csv", stringOfPlayers);
     playerHolder = game.getPlayerHolder();
   }
 
@@ -309,7 +322,8 @@ public class BoardGameApp extends Application {
     Scene scene = new Scene(mainLayout,1000,650);
     stage.setScene(scene);
     stage.setTitle("Board Game: Snakes and Ladders");
-    stage.setResizable(false);
+    //stage.setResizable(false);
+    stage.setMaximized(true);
     stage.show();
   }
 
@@ -321,6 +335,8 @@ public class BoardGameApp extends Application {
   private void handleStartRoundButton(ActionEvent actionEvent) {
     displayInfoBox.getChildren().clear();
     game.play();
+
+    displayDice();
 
     Player currentPlayer = playerHolder.getCurrentPlayer();
     int newTileId = currentPlayer.getCurrentTile().getTileId();
@@ -336,6 +352,20 @@ public class BoardGameApp extends Application {
 
     //Check for winner
     checkForWinner();
+  }
+
+  /**
+   * Display dice box
+   */
+  public void displayDice(){
+    dieBox.getChildren().clear();
+    for(Die d : game.getDice().getListOfDice()){
+      ImageView die = new ImageView(new Image("/images/dice"+d.getValue()+".png"));
+      die.setFitHeight(40);
+      die.setFitWidth(40);
+      dieBox.getChildren().add(die);
+    }
+    displayInfoBox.getChildren().add(dieBox);
   }
 
   /**
@@ -408,12 +438,12 @@ public class BoardGameApp extends Application {
    * @return
    */
   private ImageView createPlayerImage(String color) {
-    String piecePath = "/images/" + color.toLowerCase() + "_piece.png";
+    String piecePath = "/images/" + color.toLowerCase() + ".png";
 
     Image playerImage = new Image(Objects.requireNonNull(getClass().getResource(piecePath)).toExternalForm());
     ImageView playerImageView = new ImageView(playerImage);
-    playerImageView.setFitWidth(20); //
-    playerImageView.setFitHeight(20);
+    playerImageView.setFitWidth(25); //
+    playerImageView.setFitHeight(25);
     playerImageView.setPreserveRatio(true);
 
     return playerImageView;
@@ -494,7 +524,7 @@ public class BoardGameApp extends Application {
   private VBox createTileBox(Tile t, List<Integer> snakeDestination, List<Integer> ladderDestination){
     VBox tileBox = new VBox();
     tileBox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
-    tileBox.setMinSize(60,60);
+    tileBox.setMinSize(75,75);
     tileBox.setAlignment(Pos.CENTER);
     tileBox.getChildren().add(new Text(""+t.getTileId()));
 
@@ -545,8 +575,8 @@ public class BoardGameApp extends Application {
     // Lägg till bild för portaler
     Image portalImage = new Image(Objects.requireNonNull(getClass().getResource("/images/portal.png")).toExternalForm());
     ImageView portalImageView = new ImageView(portalImage);
-    portalImageView.setFitWidth(40);
-    portalImageView.setFitHeight(40);
+    portalImageView.setFitWidth(60);
+    portalImageView.setFitHeight(60);
     portalImageView.setPreserveRatio(true);
 
     tileBox.setAlignment(Pos.CENTER);
