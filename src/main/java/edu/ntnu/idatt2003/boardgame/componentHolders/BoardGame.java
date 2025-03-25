@@ -99,6 +99,9 @@ public class BoardGame {
        return winner;
     }
 
+    public void undoWinner(Player winner){
+        this.winner = null;
+    }
 }
 
 

@@ -42,6 +42,7 @@ public class BoardGameApp extends Application {
   BoardGame game = new BoardGame();
   Player currentPlayer;
   VBox displayInfoBox = new VBox();
+  VBox displayWinnerBox = new VBox();
   HBox rowBox;
   Button startRoundButton;
   HBox dieBox = new HBox();
@@ -71,6 +72,9 @@ public class BoardGameApp extends Application {
     stage.show();
   }
 
+  /**
+   * displays main menu
+   */
   private void showMainMenu(){
     VBox menuBox = new VBox();
     menuBox.setSpacing(15);
@@ -84,6 +88,9 @@ public class BoardGameApp extends Application {
     rootLayout.setCenter(menuBox);
   }
 
+  /**
+   * displays snakes and ladders game
+   */
   public void startSnakesAndLAdders(){
     try{
       //Initialize game components
@@ -106,8 +113,10 @@ public class BoardGameApp extends Application {
       VBox infoColumn = createInfoColumn();
       Button startRoundButton = createStartButton();
       Button mainMenuButton = createMainMenuButton();
+      Button newRoundButton = createNewRoundButton();
 
-      infoColumn.getChildren().addAll(startRoundButton, mainMenuButton);
+      infoColumn.getChildren().addAll(startRoundButton, newRoundButton);
+      rulesColumn.getChildren().add(mainMenuButton);
 
       //Set up layout
       BorderPane gameLayout = createMainLayout(boardGrid, titleWithImage, rulesColumn, infoColumn);
@@ -127,7 +136,7 @@ public class BoardGameApp extends Application {
    * @throws IOException
    */
   private void initializeGameSL() throws IOException{
-    game.createBoard(3, "src/main/resources/snakesAndLaddersBoard.json");
+    game.createBoard(1, "src/main/resources/snakesAndLaddersBoard.json");
     board = game.getBoard();
     VBox boardGrid = createBoardGrid();
     //Initialize dice and players.
@@ -170,13 +179,13 @@ public class BoardGameApp extends Application {
    * @return
    */
   private HBox createTitle(){
-    Font customFontTitle = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),50);
+    Font customFontTitle = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),90);
 
     //Snake image
     Image snakeImage = new Image(Objects.requireNonNull(getClass().getResource("/images/snake.png")).toExternalForm());
     ImageView snakeImageView = new ImageView(snakeImage);
-    snakeImageView.setFitHeight(40);
-    snakeImageView.setFitWidth(40);
+    snakeImageView.setFitHeight(90);
+    snakeImageView.setFitWidth(90);
     snakeImageView.setPreserveRatio(true);
 
     //Title
@@ -187,13 +196,13 @@ public class BoardGameApp extends Application {
     //Ladder image
     Image ladderImage = new Image(Objects.requireNonNull(getClass().getResource("/images/ladders.png")).toExternalForm());
     ImageView ladderImageView = new ImageView(ladderImage);
-    ladderImageView.setFitHeight(40);
-    ladderImageView.setFitWidth(40);
+    ladderImageView.setFitHeight(90);
+    ladderImageView.setFitWidth(90);
     ladderImageView.setPreserveRatio(true);
 
-    HBox titleWithImage = new HBox(10, snakeImageView, title, ladderImageView);
+    HBox titleWithImage = new HBox(20, snakeImageView, title, ladderImageView);
     titleWithImage.setAlignment(Pos.CENTER);
-    titleWithImage.setPadding(new Insets(20,0,0,0));
+    titleWithImage.setPadding(new Insets(50,0,0,0));
 
     return titleWithImage;
   }
@@ -206,12 +215,14 @@ public class BoardGameApp extends Application {
     Font customFontSubTitle = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),30);
 
     //Information on rules box to the left
-    VBox rulesColumn = new VBox(10);
-    rulesColumn.setPrefWidth(200);
+    VBox rulesColumn = new VBox(20);
+    rulesColumn.setPrefWidth(300);
     rulesColumn.setStyle(
         "-fx-background-color: #6f9c6f; "
             + "-fx-border-color: #6f9c6f;");
-    rulesColumn.setAlignment(Pos.CENTER);
+    rulesColumn.setAlignment(Pos.TOP_CENTER);
+
+    rulesColumn.setPadding(new Insets(100,0,100,0));
 
     Text rulesTitle = new Text("Game Rules");
     rulesTitle.setFont(customFontSubTitle);
@@ -222,6 +233,11 @@ public class BoardGameApp extends Application {
     Text rule3 = createRuleText("3. The first player at the finish is the winner.");
 
     rulesColumn.getChildren().addAll(rulesTitle, rule1, rule2, rule3);
+
+    Region spacer = new Region();
+    VBox.setVgrow(spacer, Priority.ALWAYS); // Låt spacern växa och trycka knappen nedåt
+    rulesColumn.getChildren().add(spacer);
+
     return rulesColumn;
   }
 
@@ -238,15 +254,21 @@ public class BoardGameApp extends Application {
     return rule;
   }
 
+  /**
+   *
+   * @return
+   */
   private VBox createInfoColumn(){
     Font customFontSubTitle = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),30);
 
     VBox infoColumn = new VBox(10);
-    infoColumn.setPrefWidth(200);
+    infoColumn.setPrefWidth(300);
     infoColumn.setStyle(
         "-fx-background-color: #6f9c6f; "
             + "-fx-border-color: #6f9c6f;");
-    infoColumn.setAlignment(Pos.CENTER);
+    infoColumn.setAlignment(Pos.TOP_CENTER);
+
+    infoColumn.setPadding(new Insets(100,0,150,0));
 
     Text infoTitle = new Text("Player Info");
     infoTitle.setFont(customFontSubTitle);
@@ -255,13 +277,30 @@ public class BoardGameApp extends Application {
     infoColumn.getChildren().add(infoTitle);
 
     for(Player p: playerHolder.getPlayers()){
-      Text playerName = new Text(p.getName() + ", " + p.getColor());
+      HBox playerInfoBox = new HBox(10);
+      playerInfoBox.setAlignment(Pos.CENTER);
+
+      ImageView playerImage = createPlayerImage(p.getColor());
+
+      Text playerName = new Text(" " + p.getName());
       playerName.setStyle("-fx-font-size: 14px; "
           + "-fx-fill: black;"
           + "-fx-font-family: Georgia");
-      infoColumn.getChildren().add(playerName);
+      playerInfoBox.getChildren().addAll(playerImage, playerName);
+      infoColumn.getChildren().add(playerInfoBox);
     }
+
+    //Space down to display box
+    Region spacerAboveDisplayBox = new Region();
+    VBox.setVgrow(spacerAboveDisplayBox, Priority.ALWAYS); // Flexibelt mellanrum som trycker displayInfoBox nedåt
+    infoColumn.getChildren().add(spacerAboveDisplayBox);
+
+    // Lägg till displayInfoBox som innehåller tärningar och meddelanden
+    displayInfoBox.setAlignment(Pos.CENTER); // Centrera displayBox-innehållet
     infoColumn.getChildren().add(displayInfoBox);
+    infoColumn.getChildren().add(displayWinnerBox);
+
+
     return infoColumn;
   }
 
@@ -289,6 +328,10 @@ public class BoardGameApp extends Application {
   }
 
 
+  /**
+   * creates main menu to go back to welcome page
+   * @return
+   */
   private Button createMainMenuButton(){
     Font customFontButton = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
 
@@ -303,11 +346,53 @@ public class BoardGameApp extends Application {
         "-fx-border-width: 2px;" +
         "-fx-border-radius: 20px" );
     mainMenuButton.setPrefSize(150, 50);
-    mainMenuButton.setOnAction(e->showMainMenu());
+    mainMenuButton.setOnAction(e->{restartGame();
+      showMainMenu();});
 
     VBox.setMargin(mainMenuButton, new Insets(20,0,0,0));
 
     return mainMenuButton;
+  }
+
+
+  /**
+   * Creates new round button to reload game
+   * @return
+   */
+  private Button createNewRoundButton(){
+    Font customFontButton = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
+
+    Button newRoundButton = new Button("New Round");
+    newRoundButton.setFont(customFontButton);
+    newRoundButton.setStyle("-fx-background-color: #416c42; " +  // Bakgrundsfärg
+        "-fx-text-fill: white; " +           // Textfärg
+        "-fx-background-radius: 20px; " +    // Rundade hörn
+        "-fx-border-color: #053005; " +      // Kantfärg
+        "-fx-border-width: 2px;" +
+        "-fx-border-radius: 20px" );
+    newRoundButton.setPrefSize(150, 50);
+
+    newRoundButton.setOnAction(e-> restartGame());
+
+    return newRoundButton;
+  }
+
+  /**
+   * Restarts game, undo winner and reload the side
+   */
+  private void restartGame(){
+    //reset winner
+    game.undoWinner(game.getWinner());
+
+    try{
+      initializeGameSL();
+      initializePlayers();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    startSnakesAndLAdders();
+    displayInfoBox.getChildren().clear();
   }
 
   /**
@@ -324,6 +409,9 @@ public class BoardGameApp extends Application {
     mainLayout.setLeft(rulesColumn);
     mainLayout.setCenter(boardGrid);
     mainLayout.setRight(infoColumn);
+
+    BorderPane.setMargin(rulesColumn, new Insets(0,20,0,20));
+    BorderPane.setMargin(infoColumn, new Insets(0,20,0,20));
 
     mainLayout.setStyle("-fx-background-color: #6f9c6f;");
     return mainLayout;
@@ -363,6 +451,9 @@ public class BoardGameApp extends Application {
    */
   public void displayDice(){
     dieBox.getChildren().clear();
+    dieBox.setAlignment(Pos.CENTER);
+    dieBox.setSpacing(10);
+
     for(Die d : game.getDice().getListOfDice()){
       ImageView die = new ImageView(new Image("/images/dice"+d.getValue()+".png"));
       die.setFitHeight(40);
@@ -431,7 +522,7 @@ public class BoardGameApp extends Application {
           + "-fx-font-family: Georgia;");
       text.setWrappingWidth(180);
 
-      displayInfoBox.getChildren().add(text);
+      displayWinnerBox.getChildren().add(text);
       startRoundButton.setDisable(true);
     }
   }
@@ -458,7 +549,7 @@ public class BoardGameApp extends Application {
    * @return
    */
   private VBox createBoardGrid(){
-    VBox vbox = new VBox();
+    VBox boardGrid = new VBox();
     int tileCounter = 10;
 
     //Fetch destinations
@@ -488,11 +579,11 @@ public class BoardGameApp extends Application {
       // Arr rowBox to vbox if it's the start of a new row
       if(tileCounter %10 ==0) {
         rowBox.setAlignment(Pos.CENTER_LEFT);
-        vbox.getChildren().add(rowBox);
+        boardGrid.getChildren().add(rowBox);
       }
       tileCounter++;
     }
-    return vbox;
+    return boardGrid;
   }
 
 
