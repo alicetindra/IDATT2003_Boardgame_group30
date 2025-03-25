@@ -35,18 +35,16 @@ import java.util.Objects;
 
 
 public class BoardGameApp extends Application {
-  private BorderPane rootLayout;
+  private StackPane rootLayout;
   Board board;
   PlayerHolder playerHolder;
   Dice dice;
   BoardGame game = new BoardGame();
   Player currentPlayer;
   VBox displayInfoBox = new VBox();
-  VBox displayWinnerBox = new VBox();
   HBox rowBox;
   Button startRoundButton;
   HBox dieBox = new HBox();
-  Pane mainPane = new Pane();
   int rowBoxesHeigth;
 
   public static void main(String[] args){
@@ -56,7 +54,7 @@ public class BoardGameApp extends Application {
   @Override
   public void start(Stage stage){
     //huvudlayout
-    rootLayout = new BorderPane();
+    rootLayout = new StackPane();
 
     //visa huvudmeny
     showMainMenu();
@@ -85,7 +83,9 @@ public class BoardGameApp extends Application {
 
     menuBox.getChildren().add(snakesAndLAddersButton);
 
-    rootLayout.setCenter(menuBox);
+    rootLayout.getChildren().clear();
+    rootLayout.getChildren().add(menuBox);
+    StackPane.setAlignment(menuBox, Pos.CENTER);
   }
 
   /**
@@ -113,16 +113,17 @@ public class BoardGameApp extends Application {
       VBox infoColumn = createInfoColumn();
       Button startRoundButton = createStartButton();
       Button mainMenuButton = createMainMenuButton();
-      Button newRoundButton = createNewRoundButton();
 
-      infoColumn.getChildren().addAll(startRoundButton, newRoundButton);
+      infoColumn.getChildren().add(startRoundButton);
       rulesColumn.getChildren().add(mainMenuButton);
 
       //Set up layout
       BorderPane gameLayout = createMainLayout(boardGrid, titleWithImage, rulesColumn, infoColumn);
 
       //Configure and show stage
-      rootLayout.setCenter(gameLayout);
+      rootLayout.getChildren().clear();
+      rootLayout.getChildren().add(gameLayout);
+      StackPane.setAlignment(gameLayout, Pos.CENTER);
 
 
     } catch(IOException e){
@@ -140,7 +141,7 @@ public class BoardGameApp extends Application {
     board = game.getBoard();
     VBox boardGrid = createBoardGrid();
     //Initialize dice and players.
-    game.createDice(2);
+    game.createDice(3);
     dice = game.getDice();
 
     List<String> stringOfPlayers = new ArrayList<>();
@@ -268,7 +269,7 @@ public class BoardGameApp extends Application {
             + "-fx-border-color: #6f9c6f;");
     infoColumn.setAlignment(Pos.TOP_CENTER);
 
-    infoColumn.setPadding(new Insets(100,0,150,0));
+    infoColumn.setPadding(new Insets(100,0,200,0));
 
     Text infoTitle = new Text("Player Info");
     infoTitle.setFont(customFontSubTitle);
@@ -298,7 +299,6 @@ public class BoardGameApp extends Application {
     // Lägg till displayInfoBox som innehåller tärningar och meddelanden
     displayInfoBox.setAlignment(Pos.CENTER); // Centrera displayBox-innehållet
     infoColumn.getChildren().add(displayInfoBox);
-    infoColumn.getChildren().add(displayWinnerBox);
 
 
     return infoColumn;
@@ -333,6 +333,7 @@ public class BoardGameApp extends Application {
    * @return
    */
   private Button createMainMenuButton(){
+
     Font customFontButton = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
 
     //back to main
@@ -354,42 +355,12 @@ public class BoardGameApp extends Application {
     return mainMenuButton;
   }
 
-
   /**
-   * Creates new round button to reload game
-   * @return
-   */
-  private Button createNewRoundButton(){
-    Font customFontButton = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
-
-    Button newRoundButton = new Button("New Round");
-    newRoundButton.setFont(customFontButton);
-    newRoundButton.setStyle("-fx-background-color: #416c42; " +  // Bakgrundsfärg
-        "-fx-text-fill: white; " +           // Textfärg
-        "-fx-background-radius: 20px; " +    // Rundade hörn
-        "-fx-border-color: #053005; " +      // Kantfärg
-        "-fx-border-width: 2px;" +
-        "-fx-border-radius: 20px" );
-    newRoundButton.setPrefSize(150, 50);
-
-    newRoundButton.setOnAction(e-> restartGame());
-
-    return newRoundButton;
-  }
-
-  /**
-   * Restarts game, undo winner and reload the side
+   * Restarts game, undo winner and reload the side, is used in displayWinnerMessage
    */
   private void restartGame(){
     //reset winner
     game.undoWinner(game.getWinner());
-
-    try{
-      initializeGameSL();
-      initializePlayers();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
 
     startSnakesAndLAdders();
     displayInfoBox.getChildren().clear();
@@ -515,16 +486,58 @@ public class BoardGameApp extends Application {
    */
   private void checkForWinner(){
     if(game.getWinner()!=null){
-      String winnerMessage = "Winner: " + game.getWinner().getName() + " has won!";
+      String winnerName = game.getWinner().getName();
 
-      Text text = new Text(winnerMessage);
-      text.setStyle("-fx-font-size: 14;"
-          + "-fx-font-family: Georgia;");
-      text.setWrappingWidth(180);
-
-      displayWinnerBox.getChildren().add(text);
+      displayWinnerMessage(winnerName);
       startRoundButton.setDisable(true);
     }
+  }
+
+  private void displayWinnerMessage(String winnerName){
+    //Skapa semi-transparent lager för meddelandet
+    VBox winnerOverlay = new VBox(10);
+    winnerOverlay.setAlignment(Pos.CENTER);
+    winnerOverlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7);"); //Semi-trasnperant svart bakgrun
+    winnerOverlay.setPadding(new Insets(50));
+
+    //Text för meddelandet
+    Font customFont = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),90);
+    Text winnerText = new Text(winnerName + " is the Winner!");
+    winnerText.setFont(customFont);
+    winnerText.setStyle("-fx-fill: #ffffff;");
+
+    //Main menu-knapp
+    Font customFontButton = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),20);
+    Button mainMenuButton = new Button("Main menu");
+    mainMenuButton.setFont(customFontButton);
+    mainMenuButton.setStyle(
+        "-fx-background-color: #416c42; " +  // Bakgrundsfärg
+            "-fx-text-fill: white; " +           // Textfärg
+            "-fx-background-radius: 20px; " +    // Rundade hörn
+            "-fx-border-color: #053005; " +      // Kantfärg
+            "-fx-border-width: 2px;" +
+            "-fx-border-radius: 20px" );
+    mainMenuButton.setPrefSize(150, 50);
+    mainMenuButton.setOnAction(e->{rootLayout.getChildren().remove(winnerOverlay);
+      restartGame();
+      showMainMenu();});
+
+    Button newRoundButton = new Button("New Round");
+    newRoundButton.setFont(customFontButton);
+    newRoundButton.setStyle(
+        "-fx-background-color: #416c42; " +  // Bakgrundsfärg
+            "-fx-text-fill: white; " +           // Textfärg
+            "-fx-background-radius: 20px; " +    // Rundade hörn
+            "-fx-border-color: #053005; " +      // Kantfärg
+            "-fx-border-width: 2px;" +
+            "-fx-border-radius: 20px" );
+    newRoundButton.setPrefSize(150, 50);
+    newRoundButton.setOnAction(e->{rootLayout.getChildren().remove(winnerOverlay);
+      restartGame();});
+
+    winnerOverlay.getChildren().addAll(winnerText, newRoundButton, mainMenuButton);
+    rootLayout.getChildren().add(winnerOverlay);
+
   }
 
   /**
