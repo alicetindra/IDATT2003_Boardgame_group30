@@ -18,10 +18,10 @@ public class WriteBoard {
 
     public JsonObject serializeTiles(int n) {
         JsonObject tileBook = new JsonObject();
-        if (n == 1) {
+        if (n == 90) {
             JsonArray ladderJsonArray = new JsonArray();
 
-            for (int i = 1; i <= 90; i++) {
+            for (int i = 1; i <= n; i++) {
                 //Tile map
                 JsonObject tileJson = new JsonObject();
                 tileJson.addProperty("id", i);
@@ -89,11 +89,11 @@ public class WriteBoard {
             tileBook.add("tiles", ladderJsonArray);
         }
 
-        else if (n == 2) {
+        else if (n == 50) {
 
                 JsonArray ladderJsonArray = new JsonArray();
 
-                for (int i = 1; i <= 50; i++) {
+                for (int i = 1; i <= n; i++) {
                     //Tile map
                     JsonObject tileJson = new JsonObject();
                     tileJson.addProperty("id", i);
@@ -105,28 +105,35 @@ public class WriteBoard {
 
                     //action map
                     //Ladders
-                    if (i == 1) {
+                    if (i == 14) {
                         JsonObject actionObj = new JsonObject();
                         actionObj.addProperty("type", "ladder");
-                        actionObj.addProperty("destination", 35);
+                        actionObj.addProperty("destination", 28);
                         tileJson.add("action", actionObj);
                     }
-                    if (i == 8) {
+                    if (i == 37) {
                         JsonObject actionObj = new JsonObject();
                         actionObj.addProperty("type", "ladder");
-                        actionObj.addProperty("destination", 30);
+                        actionObj.addProperty("destination", 42);
                         tileJson.add("action", actionObj);
 
                     }
                     //Snakes
-                    if (i == 20) {
+                    if (i == 22) {
                         JsonObject actionObj = new JsonObject();
                         actionObj.addProperty("type", "snake");
-                        actionObj.addProperty("destination", 6);
+                        actionObj.addProperty("destination", 2);
                         tileJson.add("action", actionObj);
                     }
 
-                    if (i == 9) {
+                    if (i == 49) {
+                        JsonObject actionObj = new JsonObject();
+                        actionObj.addProperty("type", "snake");
+                        actionObj.addProperty("destination", 30);
+                        tileJson.add("action", actionObj);
+                    }
+                    //Portals
+                    if (i == 46) {
                         JsonObject actionObj = new JsonObject();
                         actionObj.addProperty("type", "portal");
                         actionObj.addProperty("destination", 0);
@@ -140,11 +147,11 @@ public class WriteBoard {
 
         }
 
-        else if (n == 3) {
+        else if (n == 110) {
 
                 JsonArray ladderJsonArray = new JsonArray();
 
-                for (int i = 1; i <= 150; i++) {
+                for (int i = 1; i <= n; i++) {
                     //Tile map
                     JsonObject tileJson = new JsonObject();
                     tileJson.addProperty("id", i);
@@ -156,28 +163,73 @@ public class WriteBoard {
 
                     //action map
                     //Ladders
-                    if (i == 1) {
-                        JsonObject actionObj = new JsonObject();
-                        actionObj.addProperty("type", "ladder");
-                        actionObj.addProperty("destination", 35);
-                        tileJson.add("action", actionObj);
-                    }
                     if (i == 8) {
                         JsonObject actionObj = new JsonObject();
                         actionObj.addProperty("type", "ladder");
-                        actionObj.addProperty("destination", 30);
+                        actionObj.addProperty("destination", 27);
+                        tileJson.add("action", actionObj);
+                    }
+                    if (i == 38) {
+                        JsonObject actionObj = new JsonObject();
+                        actionObj.addProperty("type", "ladder");
+                        actionObj.addProperty("destination", 63);
+                        tileJson.add("action", actionObj);
+
+                    }
+                    if (i == 48) {
+                        JsonObject actionObj = new JsonObject();
+                        actionObj.addProperty("type", "ladder");
+                        actionObj.addProperty("destination", 93);
+                        tileJson.add("action", actionObj);
+
+                    }
+                    if (i == 82) {
+                        JsonObject actionObj = new JsonObject();
+                        actionObj.addProperty("type", "ladder");
+                        actionObj.addProperty("destination", 101);
                         tileJson.add("action", actionObj);
 
                     }
                     //Snakes
-                    if (i == 20) {
+                    if (i == 24) {
                         JsonObject actionObj = new JsonObject();
                         actionObj.addProperty("type", "snake");
-                        actionObj.addProperty("destination", 6);
+                        actionObj.addProperty("destination", 5);
                         tileJson.add("action", actionObj);
                     }
 
-                    if (i == 9) {
+                    if (i == 52) {
+                        JsonObject actionObj = new JsonObject();
+                        actionObj.addProperty("type", "snake");
+                        actionObj.addProperty("destination", 20);
+                        tileJson.add("action", actionObj);
+                    }
+                    if (i == 62) {
+                        JsonObject actionObj = new JsonObject();
+                        actionObj.addProperty("type", "snake");
+                        actionObj.addProperty("destination", 41);
+                        tileJson.add("action", actionObj);
+                    }
+                    if (i == 98) {
+                        JsonObject actionObj = new JsonObject();
+                        actionObj.addProperty("type", "snake");
+                        actionObj.addProperty("destination", 76);
+                        tileJson.add("action", actionObj);
+                    }
+                    //Portals
+                    if (i == 19) {
+                        JsonObject actionObj = new JsonObject();
+                        actionObj.addProperty("type", "portal");
+                        actionObj.addProperty("destination", 0);
+                        tileJson.add("action", actionObj);
+                    }
+                    if (i == 45) {
+                        JsonObject actionObj = new JsonObject();
+                        actionObj.addProperty("type", "portal");
+                        actionObj.addProperty("destination", 0);
+                        tileJson.add("action", actionObj);
+                    }
+                    if (i == 74) {
                         JsonObject actionObj = new JsonObject();
                         actionObj.addProperty("type", "portal");
                         actionObj.addProperty("destination", 0);
@@ -188,9 +240,7 @@ public class WriteBoard {
                 }
                  tileBook.add("tiles", ladderJsonArray);
 
-
         }
-
 
         return tileBook;
     }

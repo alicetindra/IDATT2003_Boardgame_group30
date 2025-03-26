@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.boardgame;
 
+import com.sun.javafx.scene.control.IntegerField;
 import edu.ntnu.idatt2003.boardgame.actions.LadderAction;
 import edu.ntnu.idatt2003.boardgame.actions.PortalAction;
 import edu.ntnu.idatt2003.boardgame.actions.SnakeAction;
@@ -18,13 +19,15 @@ import javafx.animation.ParallelTransition;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -40,6 +43,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.UnaryOperator;
+
 import javafx.util.Duration;
 
 
@@ -55,6 +60,12 @@ public class BoardGameApp extends Application {
   Button startRoundButton;
   HBox dieBox = new HBox();
   int rowBoxesHeigth;
+  //Storing input from user
+  public ComboBox<Integer> comboBox = new ComboBox<>();
+  public ComboBox<String> comboBoxColor = new ComboBox<>();
+  TextField playerNameField = new TextField();
+  TextField integerField = new TextField();
+  List<String> stringOfPlayers;
 
   public static void main(String[] args){
     launch(args);
@@ -83,9 +94,46 @@ public class BoardGameApp extends Application {
    * displays main menu
    */
   private void showMainMenu(){
+    //Emptying the list every time the user goes to the main screen
+    stringOfPlayers = new ArrayList<>();
     VBox menuBox = new VBox();
     menuBox.setSpacing(15);
     menuBox.setAlignment(Pos.CENTER);
+
+    // The "roll down" menu for board
+    ObservableList<Integer> options = FXCollections.observableArrayList();
+    options.addAll(50,90,110);
+    comboBox.setItems(options);
+    //Setting the default value to 90 tiles
+    comboBox.getSelectionModel().select(1);
+
+    //User can select nr of dice from 1 to 6
+    UnaryOperator<TextFormatter.Change> filter = change -> {
+      String newText = change.getControlNewText();
+      if (newText.matches("[1-6]?")) {
+        return change;
+      }
+      return null;
+    };
+    integerField.setTextFormatter(new TextFormatter<>(filter));
+    integerField.setMaxWidth(60);
+    integerField.setPromptText("2");
+
+
+    //User can create players
+    Text header = new Text("Add a player");
+    playerNameField.setMaxWidth(150);
+    playerNameField.setPromptText("Player Name");
+
+    ObservableList<String> colors = FXCollections.observableArrayList();
+    colors.addAll("green","red","blue","yellow","pink","black");
+    comboBoxColor.setItems(colors);
+    comboBoxColor.getSelectionModel().select(0);
+
+    Button addPlayerButton = new Button("Add Player");
+    addPlayerButton.setOnAction(this::addPlayer);
+
+    menuBox.getChildren().addAll(header,playerNameField,comboBoxColor,addPlayerButton,comboBox, integerField);
 
     Button snakesAndLAddersButton = new Button("Snakes and Ladders");
     snakesAndLAddersButton.setOnAction(e-> startSnakesAndLAdders());
@@ -96,6 +144,7 @@ public class BoardGameApp extends Application {
     rootLayout.getChildren().add(menuBox);
     StackPane.setAlignment(menuBox, Pos.CENTER);
   }
+
 
   /**
    * displays snakes and ladders game
@@ -139,25 +188,27 @@ public class BoardGameApp extends Application {
       e.printStackTrace();
     }
   }
-
+  private void addPlayer(ActionEvent e){
+    if(playerNameField.getText().isEmpty()||comboBoxColor.getSelectionModel().getSelectedItem().isEmpty()){
+      throw new IllegalArgumentException("Name and color cannot be empty");
+    }
+    stringOfPlayers.add(playerNameField.getText()+","+comboBoxColor.getSelectionModel().getSelectedItem());
+    playerNameField.clear();
+    comboBoxColor.getItems().remove(comboBoxColor.getSelectionModel().getSelectedItem());
+  }
 
   /**
    * Initialize the game board, dice, and player holder
    * @throws IOException
    */
   private void initializeGameSL() throws IOException{
-    game.createBoard(1, "src/main/resources/snakesAndLaddersBoard.json");
+    game.createBoard(comboBox.getValue(), "src/main/resources/snakesAndLaddersBoard.json");
     board = game.getBoard();
     VBox boardGrid = createBoardGrid();
-    //Initialize dice and players.
-    game.createDice(3);
-    dice = game.getDice();
 
-    List<String> stringOfPlayers = new ArrayList<>();
-    stringOfPlayers.add("Tindra,green");
-    stringOfPlayers.add("Nicoline,blue");
-    stringOfPlayers.add("Markus,yellow");
-    stringOfPlayers.add("Julie,red");
+    //Initialize dice and players.
+    game.createDice(Integer.parseInt(integerField.getText()));
+    dice = game.getDice();
 
     game.createPlayerHolder("src/main/resources/players.csv", stringOfPlayers);
     playerHolder = game.getPlayerHolder();
