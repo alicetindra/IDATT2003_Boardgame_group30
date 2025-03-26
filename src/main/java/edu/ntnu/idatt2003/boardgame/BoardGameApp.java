@@ -66,6 +66,8 @@ public class BoardGameApp extends Application {
   TextField playerNameField = new TextField();
   TextField integerField = new TextField();
   List<String> stringOfPlayers;
+  ToggleGroup toggleGroup;
+  String chosenGame;
 
   public static void main(String[] args){
     launch(args);
@@ -100,6 +102,29 @@ public class BoardGameApp extends Application {
     menuBox.setSpacing(15);
     menuBox.setAlignment(Pos.CENTER);
 
+    toggleGroup = new ToggleGroup();
+
+
+    RadioButton radioSnakesLadders = new RadioButton("Snakes and ladders");
+    RadioButton radioCandy = new RadioButton("CandyLand");
+    radioSnakesLadders.setToggleGroup(toggleGroup);
+    radioCandy.setToggleGroup(toggleGroup);
+
+    menuBox.getChildren().addAll(radioSnakesLadders, radioCandy);
+
+    //User can create players
+    Text header = new Text("Add a player");
+    playerNameField.setMaxWidth(150);
+    playerNameField.setPromptText("Player Name");
+
+    ObservableList<String> colors = FXCollections.observableArrayList();
+    colors.addAll("green","red","blue","yellow","pink","black");
+    comboBoxColor.setItems(colors);
+    comboBoxColor.getSelectionModel().select(0);
+
+    Button addPlayerButton = new Button("Add Player");
+    addPlayerButton.setOnAction(this::addPlayer);
+
     // The "roll down" menu for board
     ObservableList<Integer> options = FXCollections.observableArrayList();
     options.addAll(50,90,110);
@@ -120,29 +145,35 @@ public class BoardGameApp extends Application {
     integerField.setPromptText("2");
 
 
-    //User can create players
-    Text header = new Text("Add a player");
-    playerNameField.setMaxWidth(150);
-    playerNameField.setPromptText("Player Name");
+    
+    //Showing manu based on choice of game
+    toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+      if (newValue == radioSnakesLadders) {
+        menuBox.getChildren().clear();
+        chosenGame = radioSnakesLadders.getText();
+        
+        Button snakesAndLAddersButton = new Button("Snakes and Ladders");
+        snakesAndLAddersButton.setOnAction(e-> startSnakesAndLAdders());
+        menuBox.getChildren().addAll(header, playerNameField, comboBoxColor, addPlayerButton, comboBox, integerField, snakesAndLAddersButton);
+        
+      } else {
+        menuBox.getChildren().clear();
+        chosenGame = radioCandy.getText();
 
-    ObservableList<String> colors = FXCollections.observableArrayList();
-    colors.addAll("green","red","blue","yellow","pink","black");
-    comboBoxColor.setItems(colors);
-    comboBoxColor.getSelectionModel().select(0);
-
-    Button addPlayerButton = new Button("Add Player");
-    addPlayerButton.setOnAction(this::addPlayer);
-
-    menuBox.getChildren().addAll(header,playerNameField,comboBoxColor,addPlayerButton,comboBox, integerField);
-
-    Button snakesAndLAddersButton = new Button("Snakes and Ladders");
-    snakesAndLAddersButton.setOnAction(e-> startSnakesAndLAdders());
-
-    menuBox.getChildren().add(snakesAndLAddersButton);
+        Button candyLandButton = new Button("Candy land");
+        candyLandButton.setOnAction(e-> startCandyLand());
+        menuBox.getChildren().addAll(header, playerNameField, comboBoxColor, addPlayerButton, comboBox, integerField,candyLandButton);
+      }
+    });
+    
 
     rootLayout.getChildren().clear();
     rootLayout.getChildren().add(menuBox);
     StackPane.setAlignment(menuBox, Pos.CENTER);
+  }
+
+  private void startCandyLand() {
+    //Candy land could be our other game??
   }
 
 
@@ -202,7 +233,7 @@ public class BoardGameApp extends Application {
    * @throws IOException
    */
   private void initializeGameSL() throws IOException{
-    game.createBoard(comboBox.getValue(), "src/main/resources/snakesAndLaddersBoard.json");
+    game.createBoard(chosenGame,comboBox.getValue(), "src/main/resources/hardcodedBoards.json");
     board = game.getBoard();
     VBox boardGrid = createBoardGrid();
 

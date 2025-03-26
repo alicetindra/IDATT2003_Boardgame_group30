@@ -16,8 +16,10 @@ public class WriteBoard {
         }
     }
 
-    public JsonObject serializeTiles(int n) {
+    public JsonObject serializeTiles(String chosenGame,int n) {
         JsonObject tileBook = new JsonObject();
+
+        if(chosenGame.toLowerCase().contains("ladders")) {
         if (n == 90) {
             JsonArray ladderJsonArray = new JsonArray();
 
@@ -240,6 +242,28 @@ public class WriteBoard {
                 }
                  tileBook.add("tiles", ladderJsonArray);
 
+        }
+        }
+
+        //CandyLand map will come soon
+        else if(chosenGame.toLowerCase().contains("candy")) {
+            JsonArray candyJsonArray = new JsonArray();
+
+            for (int i = 1; i <= n; i++) {
+                //Tile map
+                JsonObject tileJson = new JsonObject();
+                tileJson.addProperty("id", i);
+
+                //adding the next tile
+                if (i < n) {
+                    tileJson.addProperty("next", i + 1);
+                }
+
+                //action map comes here...
+
+                candyJsonArray.add(tileJson);
+            }
+            tileBook.add("tiles", candyJsonArray);
         }
 
         return tileBook;

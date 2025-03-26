@@ -21,11 +21,10 @@ public class BoardGame {
 
     }
 
-    //Board, det verkar osm vi kan ta bort de 3 första raderna, vi behöver bara writeboard om vi ska ändra antalet tiles.
-    public void createBoard(int n, String filename) {
+    public void createBoard(String chosenGame,int n, String filename) {
         WriteBoard writeBoard = new WriteBoard();
 
-        JsonObject tileJson = writeBoard.serializeTiles(n);
+        JsonObject tileJson = writeBoard.serializeTiles(chosenGame,n);
         writeBoard.writeJsonToFile(tileJson, filename);
 
         board = ReadBoard.readTilesFromFile(filename);
