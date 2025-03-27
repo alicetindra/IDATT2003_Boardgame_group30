@@ -3,9 +3,11 @@ package edu.ntnu.idatt2003.boardgame.componentHolders;
 
 import com.google.gson.JsonObject;
 import edu.ntnu.idatt2003.boardgame.components.Player;
-import edu.ntnu.idatt2003.boardgame.readers.ReadBoard;
+import edu.ntnu.idatt2003.boardgame.readers.BoardFileReader;
+import edu.ntnu.idatt2003.boardgame.readers.BoardFileReaderGson;
 import edu.ntnu.idatt2003.boardgame.readers.ReadPlayers;
-import edu.ntnu.idatt2003.boardgame.writers.WriteBoard;
+import edu.ntnu.idatt2003.boardgame.writers.BoardFactory;
+import edu.ntnu.idatt2003.boardgame.writers.BoardFileWriterGson;
 import edu.ntnu.idatt2003.boardgame.writers.WritePlayers;
 
 import java.io.IOException;
@@ -22,12 +24,12 @@ public class BoardGame {
     }
 
     public void createBoard(String chosenGame,int n, String filename) {
-        WriteBoard writeBoard = new WriteBoard();
+        BoardFileWriterGson boardFileWriterGson = new BoardFileWriterGson();
+        JsonObject tileJson = BoardFactory.serializeTiles(chosenGame,n);
+        boardFileWriterGson.writeJsonToFile(tileJson, filename);
+        BoardFileReaderGson boardFileReaderGson = new BoardFileReaderGson();
 
-        JsonObject tileJson = writeBoard.serializeTiles(chosenGame,n);
-        writeBoard.writeJsonToFile(tileJson, filename);
-
-        board = ReadBoard.readTilesFromFile(filename);
+        board = boardFileReaderGson.readTilesFromFile(filename);
     }
 
     public Board getBoard() {

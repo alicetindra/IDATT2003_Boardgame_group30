@@ -8,8 +8,10 @@ import edu.ntnu.idatt2003.boardgame.actions.TileAction;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class ReadBoard {
-    public static Board readTilesFromFile(String filePath) {
+public class BoardFileReaderGson implements BoardFileReader {
+
+    @Override
+    public Board readTilesFromFile(String filePath) {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(TileAction.class, new TileActionReader())
                 .create();
