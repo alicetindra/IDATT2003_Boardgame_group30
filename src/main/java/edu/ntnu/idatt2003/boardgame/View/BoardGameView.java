@@ -75,6 +75,8 @@ public class BoardGameView {
 
     private final VBox infoColumn = new VBox(10);
 
+    private final VBox winnerOverlay = new VBox(10);
+
     //Panes
     private final GridPane grid = new GridPane();
 
@@ -273,13 +275,6 @@ public class BoardGameView {
     }
 
 
-    private Text createRuleText(String content) {
-        Text rule = new Text(content);
-        rule.setWrappingWidth(180);
-        rule.getStyleClass().add("infoText");
-        return rule;
-    }
-
     public VBox getRulesColumn(){
         return rulesColumn;
     }
@@ -439,5 +434,35 @@ public class BoardGameView {
         userinfoBox.setAlignment(Pos.CENTER);
         userinfoBox.setId("userInfoBox");
         layout.setCenter(userinfoBox);
+    }
+
+    public void makeWinnerBox(String winnerName, String winnerColor){
+        winnerOverlay.getChildren().clear();
+        ImageView winnerImage = createWinnerImage(winnerColor);
+
+        Font customFont = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),90);
+        Text winnerText = new Text(winnerName + " is the Winner!");
+        winnerText.setFont(customFont);
+        winnerText.setStyle("-fx-fill: #ffffff;-fx-font-size: 60;");
+
+        HBox messageBox = new HBox(20);
+        messageBox.setAlignment(Pos.CENTER);
+        messageBox.getChildren().addAll(winnerImage, winnerText, mainMenuButton);
+
+        winnerOverlay.getChildren().addAll(messageBox);
+    }
+    public VBox getWinnerBox(){
+        return winnerOverlay;
+    }
+    private ImageView createWinnerImage(String color){
+        String winnerImagePath = "/images/" + color.toLowerCase() + "_winner.png";
+
+        Image winnerImage = new Image(Objects.requireNonNull(getClass().getResource(winnerImagePath)).toExternalForm());
+        ImageView winnerImageView = new ImageView(winnerImage);
+        winnerImageView.setFitWidth(200); //
+        winnerImageView.setFitHeight(200);
+        winnerImageView.setPreserveRatio(true);
+
+        return winnerImageView;
     }
 }

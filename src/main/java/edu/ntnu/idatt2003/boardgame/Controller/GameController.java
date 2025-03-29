@@ -11,6 +11,7 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class GameController {
     BoardGameView view;
@@ -148,9 +149,19 @@ public class GameController {
             String winnerName = boardGame.getWinner().getName();
             String winnerColor = boardGame.getWinner().getColor();
 
+            view.makeWinnerBox(winnerName, winnerColor);
             view.getStartRoundButton().setDisable(true);
-            view.getDisplayInfoBox().getChildren().clear();
-            view.getDisplayInfoBox().getChildren().add(new Text(winnerColor+" won!"));
+            displayWinnerMessage();
         }
+
     }
+
+    private void displayWinnerMessage(){
+        view.getLayout().getChildren().clear();
+        view.getLayout().getChildren().add(view.getWinnerBox());
+    }
+
+
+
+
 }
