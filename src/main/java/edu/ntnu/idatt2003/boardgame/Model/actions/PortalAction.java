@@ -7,7 +7,6 @@ import java.util.Random;
 
 public class PortalAction implements TileAction {
     private int destinationTileId;
-    private Board board;
 
     public PortalAction() {
     }
@@ -17,7 +16,7 @@ public class PortalAction implements TileAction {
         Random random = new Random();
 
         while (destinationTileId == player.getCurrentTile().getId() || destinationTileId ==0){
-            destinationTileId = random.nextInt(board.getTiles().size());
+            destinationTileId = random.nextInt(player.getBoardGame().getBoard().getTiles().size()-1);
         }
 
         player.placeOnTile(player.getBoardGame().getBoard(), destinationTileId);

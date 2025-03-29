@@ -6,7 +6,6 @@
 }
 
 
-
 .tileBox, .ladderBox, .snakeBox, .portalBox, .winBox{
     -fx-max-height: 75px;
     -fx-min-height: 75px;
@@ -63,7 +62,6 @@
     -fx-border-color: #6f9c6f;
 }
 
-.subTitle{
+.subTitle, .title{
     -fx-fill: #19599f;
 }
-

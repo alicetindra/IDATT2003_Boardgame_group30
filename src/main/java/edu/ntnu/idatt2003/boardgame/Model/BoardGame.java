@@ -30,7 +30,6 @@ public class BoardGame {
 
     public void initializeDice(int numberOfDice){
         this.dice = new Dice(numberOfDice);
-        System.out.println("Initialized dice with " + numberOfDice + " dice.");
     }
 
 
@@ -39,36 +38,29 @@ public class BoardGame {
         WritePlayers.writePlayersToFile(filename, playerString);
         playerHolder = new PlayerHolder();
         playerHolder.setPlayers(ReadPlayers.readPlayersFromFile(filename));
-        this.playerHolder = playerHolder;
     }
 
     public PlayerHolder getPlayerHolder() {
         return playerHolder;
     }
 
-    //Play
     public void play() {
-        //The next player in line is set to current player
+
         playerHolder = getPlayerHolder();
         playerHolder.setCurrentPlayer(playerHolder.getPlayers().get(playerHolder.getNextPlayerIndex()));
+        System.out.println(playerHolder.getCurrentPlayer().getColor());
 
-        //Current player rolls the dice
+
         int totalEyes = dice.roll();
 
-        System.out.println(playerHolder.getCurrentPlayer().getName());
-        System.out.println(playerHolder.getCurrentPlayer().getCurrentTile().getId());
-
-        //Set current players new current tile
         int destTileId = playerHolder.getCurrentPlayer().getCurrentTile().getId() + totalEyes;
 
-        //Handle special cases for destination tile
         if(destTileId <= getBoard().getTiles().size()-1 && board.getTiles().get(destTileId-1).getAction() != null) {
             board.getTiles().get(destTileId-1).getAction().perform(playerHolder.getCurrentPlayer());
         }
         else if (destTileId == board.getTiles().size()) {
             playerHolder.getCurrentPlayer().placeOnTile(board, destTileId);
             declareWinner(playerHolder.getCurrentPlayer());
-            System.out.println("Player " + playerHolder.getCurrentPlayer().getColor() + " has won!");
         }
         else if (destTileId > getBoard().getTiles().size()-1) {
             destTileId = (2 * getBoard().getTiles().size()) - (destTileId);
@@ -97,9 +89,6 @@ public class BoardGame {
     }
 
     public Board getBoard() {
-        if (board.getTiles() == null || board.getTiles().isEmpty()) {
-            System.out.println("Error: Board tiles not initialized!");
-        }
         return board;
     }
 
