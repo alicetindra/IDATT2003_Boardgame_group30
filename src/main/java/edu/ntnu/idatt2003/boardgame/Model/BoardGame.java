@@ -17,7 +17,6 @@ public class BoardGame {
     private Player winner = null;
 
     public BoardGame() {
-        this.playerHolder = new PlayerHolder();
     }
 
     public void initializeBoard(String chosenGame, int size, String filename){
@@ -27,13 +26,6 @@ public class BoardGame {
 
         BoardFileReaderGson reader = new BoardFileReaderGson();
         this.board = reader.readTilesFromFile(filename);
-
-        if (board != null && board.getTiles() != null && !board.getTiles().isEmpty()) {
-            System.out.println("Board for " + chosenGame + " initialized with " + size + " tiles.");
-        } else {
-            System.out.println("Failed to initialize board for " + chosenGame + ".");
-        }
-
     }
 
     public void initializeDice(int numberOfDice){
@@ -43,50 +35,32 @@ public class BoardGame {
 
 
     //Players
-    public void loadOrCreatePlayersFromFile(String filename, List<String> playerString) {
-        //Load players form file
-        List<Player> players = ReadPlayers.readPlayersFromFile(filename);
-
-        if(players.isEmpty() && playerString != null){
-            players = new ArrayList<>();
-
-            for(String playerData : playerString){
-                String[] parts = playerData.split(",");
-                if(parts.length == 2){
-                    Player newPlayer = new Player(parts[0].trim(), parts[1].trim());
-                    players.add(newPlayer);
-                }
-            }
-            //save new player to file
-            try{
-                WritePlayers.writePlayersToFile(filename, playerString);
-                System.out.println("New players saved to " + filename);
-            } catch (IOException e) {
-                System.out.println("Error saving players to file: " + filename);
-            }
-        }
-        initializePlayers(players);
+    public void createPlayerHolder(String filename, List<String> playerString) throws IOException {
+        WritePlayers.writePlayersToFile(filename, playerString);
+        playerHolder = new PlayerHolder();
+        playerHolder.setPlayers(ReadPlayers.readPlayersFromFile(filename));
+        this.playerHolder = playerHolder;
     }
 
-    public void initializePlayers(List<Player> players) {
-        this.playerHolder.setPlayers(players);
+    public PlayerHolder getPlayerHolder() {
+        return playerHolder;
     }
-
-
 
     //Play
-    public void playTurn() {
+    public void play() {
+        //The next player in line is set to current player
         playerHolder = getPlayerHolder();
         playerHolder.setCurrentPlayer(playerHolder.getPlayers().get(playerHolder.getNextPlayerIndex()));
-
 
         //Current player rolls the dice
         int totalEyes = dice.roll();
 
+        System.out.println(playerHolder.getCurrentPlayer().getName());
+        System.out.println(playerHolder.getCurrentPlayer().getCurrentTile().getId());
+
         //Set current players new current tile
         int destTileId = playerHolder.getCurrentPlayer().getCurrentTile().getId() + totalEyes;
 
-        System.out.println("Destination tile id: " + destTileId);
         //Handle special cases for destination tile
         if(destTileId <= getBoard().getTiles().size()-1 && board.getTiles().get(destTileId-1).getAction() != null) {
             board.getTiles().get(destTileId-1).getAction().perform(playerHolder.getCurrentPlayer());
@@ -106,6 +80,7 @@ public class BoardGame {
         else{
             playerHolder.getCurrentPlayer().placeOnTile(board, destTileId);
         }
+
     }
 
     public void declareWinner(Player winner) {
@@ -119,10 +94,6 @@ public class BoardGame {
 
     public void undoWinner(Player winner){
         this.winner = null;
-    }
-
-    public PlayerHolder getPlayerHolder() {
-        return playerHolder;
     }
 
     public Board getBoard() {

@@ -8,6 +8,8 @@ import edu.ntnu.idatt2003.boardgame.Model.PlayerHolder;
 import edu.ntnu.idatt2003.boardgame.Model.Tile;
 import edu.ntnu.idatt2003.boardgame.View.BoardView;
 import edu.ntnu.idatt2003.boardgame.View.MainMenuView;
+
+import java.io.IOException;
 import java.util.Objects;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
@@ -56,26 +58,21 @@ public class BoardController {
     try{
       boardGame.initializeBoard("Snakes and ladders", selectedSize, "src/main/resources/hardcodedBoards.json");
       board = boardGame.getBoard();
-      System.out.println("Board tiles " + board.getTiles().size());
 
       BoardView boardView = new BoardView(this);
       GridPane boardGrid = boardView.createGridBoard(selectedSize, board);
 
-
-      System.out.println("players from box " + controller.getStringOfPlayers().size());
-
       playerHolder = setPlayerHolder();
-      System.out.println("amount of players"+playerHolder.getPlayers().size());
+      System.out.println(playerHolder== boardGame.getPlayerHolder());
+      System.out.println(boardGame.getPlayerHolder().getPlayers().size());
 
       for(Player p: playerHolder.getPlayers()){
         p.setBoardGame(boardGame);
-        for(Tile t : board.getTiles()){
-          if(t.getId() == 1) {
-            t.getTileBox().getChildren().add(boardView.getPlayerImage(p));
-          }
-        }
+        p.placeOnTile(p.getBoardGame().getBoard(),1);
+        Tile t = boardGame.getBoard().getTiles().get(0);
+        t.getTileBox().getChildren().add(boardView.getPlayerImage(p));
+        System.out.println(p.getCurrentTile().getId());
       }
-      placeOnStart();
       playerHolder.setCurrentPlayer(playerHolder.getPlayers().getLast());
       currentPlayer = playerHolder.getCurrentPlayer();
 
@@ -106,23 +103,18 @@ public class BoardController {
     }
     // Add logic for starting the game
   }
-  public PlayerHolder setPlayerHolder() {
-    boardGame.loadOrCreatePlayersFromFile("src/main/resources/players.csv", controller.getStringOfPlayers());
+  public PlayerHolder setPlayerHolder() throws IOException {
+    boardGame.createPlayerHolder("src/main/resources/players.csv", controller.getStringOfPlayers());
     playerHolder = boardGame.getPlayerHolder();
     return playerHolder;
   }
 
-  public void placeOnStart(){
-    for(Player p: playerHolder.getPlayers()){
-      p.placeOnTile(p.getBoardGame().getBoard(),1);
-    }
-  }
 
 
   private void handleStartRoundButton(ActionEvent event) {
     boardView.getDisplayInfoBox().getChildren().clear();
     boardGame.initializeDice(view.getIntegerValue());
-    boardGame.playTurn();
+    boardGame.play();
 
     displayDice();
 

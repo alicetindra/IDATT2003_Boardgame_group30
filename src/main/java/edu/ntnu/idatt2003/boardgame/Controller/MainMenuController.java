@@ -21,13 +21,12 @@ import javafx.scene.layout.VBox;
 public class MainMenuController {
   private final MainMenuView view;
   private final StackPane rootLayout;
-  private final List<String> stringOfPlayers;
+  private final List<String> stringOfPlayers = new ArrayList<>();
     private final BoardController boardController;
 
 
   public MainMenuController(StackPane rootLayout) {
     this.rootLayout = rootLayout;
-    this.stringOfPlayers = new ArrayList<>();
       BoardGame boardGame = new BoardGame();
     view = new MainMenuView();
 
@@ -110,9 +109,6 @@ public class MainMenuController {
   private void startSnakesAndLadders() {
 
   }
-
-
-
 
 
   private void startCandyLand() {
