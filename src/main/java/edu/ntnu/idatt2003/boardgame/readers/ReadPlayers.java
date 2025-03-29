@@ -1,7 +1,7 @@
 package edu.ntnu.idatt2003.boardgame.readers;
 
-import edu.ntnu.idatt2003.boardgame.components.Player;
 
+import edu.ntnu.idatt2003.boardgame.Model.Player;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -34,4 +34,3 @@ public class ReadPlayers {
         return players;
     }
 }
-
