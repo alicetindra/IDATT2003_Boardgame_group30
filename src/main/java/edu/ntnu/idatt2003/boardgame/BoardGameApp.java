@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.boardgame;
 
+import edu.ntnu.idatt2003.boardgame.Controller.Controll;
 import edu.ntnu.idatt2003.boardgame.Controller.MainMenuController;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -15,7 +16,6 @@ public class BoardGameApp extends Application {
   @Override
   public void start(Stage stage){
     rootLayout = new StackPane();
-    new MainMenuController(rootLayout);
 
     rootLayout.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/design.css")).toExternalForm());
 

@@ -14,7 +14,6 @@ public class Player {
     public Player(String name, String color) {
         this.name = name;
         this.color = color;
-        setImageView();
     }
 
     public String getName(){
@@ -33,9 +32,8 @@ public class Player {
         this.currentTile = board.getTiles().get(id-1);
     }
 
-    public void setImageView(){
-        Image image = new Image(getClass().getResourceAsStream("/images/"+this.getColor()+".png"));
-        this.imageView = new ImageView(image);
+    public void setImageView(ImageView imageView){
+        this.imageView = imageView;
     }
     public ImageView getImageView(){
         return imageView;

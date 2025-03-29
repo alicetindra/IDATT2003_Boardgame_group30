@@ -1,7 +1,10 @@
 package edu.ntnu.idatt2003.boardgame.Controller;
 
 import edu.ntnu.idatt2003.boardgame.Model.BoardGame;
+import edu.ntnu.idatt2003.boardgame.Model.Player;
 import edu.ntnu.idatt2003.boardgame.Model.PlayerHolder;
+import edu.ntnu.idatt2003.boardgame.Model.Tile;
+import edu.ntnu.idatt2003.boardgame.View.BoardGameView;
 import edu.ntnu.idatt2003.boardgame.View.BoardView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,13 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Controll {
-    private BoardView view;
+    private BoardGameView view;
     private List<String> listOfPlayers = new ArrayList<>();
     private BoardGame game = new BoardGame();
     private PlayerHolder playerHolder;
 
 
-    public Controll(BoardView view) {
+    public Controll(BoardGameView view) {
         this.view = view;
         view.initialize();
         attachEventHandlers();
@@ -56,7 +59,7 @@ public class Controll {
     private void updatePositions() {
         Player currentPlayer = playerHolder.getCurrentPlayer();
         removePlayerImageFromOldTile(currentPlayer);
-        addPlayerImageToNewTile(currentPlayer,currentPlayer.getCurrentTile().getTileId());
+        addPlayerImageToNewTile(currentPlayer,currentPlayer.getCurrentTile().getId());
 
     }
 
@@ -76,7 +79,7 @@ public class Controll {
 
     private void addPlayerImageToNewTile(Player player, int newTileId){
         for(Tile t : game.getBoard().getTiles()){
-            if(t.getTileId() == newTileId){
+            if(t.getId() == newTileId){
                 t.getTileBox().getChildren().add(player.getImageView());
             }
         }
@@ -84,7 +87,7 @@ public class Controll {
 
     private void placeOnStart() {
         for(Player p: playerHolder.getPlayers()) {
-            p.setCurrentTile(game.getBoard(),1);
+            p.placeOnTile(game.getBoard(),1);
         }
     }
 
@@ -96,11 +99,11 @@ public class Controll {
     private void handleChooseGame() {
         String gameName = view.getGameName();
         System.out.println(Integer.parseInt(view.getBoardSizeBox().getSelectionModel().getSelectedItem().toString()));
-        game.createBoard(gameName,Integer.parseInt(view.getBoardSizeBox().getSelectionModel().getSelectedItem().toString()),"src/main/resources/hardcodedBoards.json");
+        game.initializeBoard(gameName,Integer.parseInt(view.getBoardSizeBox().getSelectionModel().getSelectedItem().toString()),"src/main/resources/hardcodedBoards.json");
     }
 
     private void handleAddDice(int n) {
-        game.createDice(n);
+        game.initializeDice(n);
     }
 
     private void handleAddPlayers() throws IOException {
