@@ -16,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 
@@ -64,7 +65,7 @@ public class BoardGameView {
     //Boxes
     private final HBox dieBox = new HBox();
 
-    private final VBox rulesColumn = new VBox(20);
+    private VBox rulesColumn = new VBox(20);
 
     private final VBox displayInfoBox = new VBox();
 
@@ -87,7 +88,6 @@ public class BoardGameView {
         setBoardSizeBox();
         setPlayerColorBox();
         createStartButton();
-        createMainMenuButton();
     }
 
     public BorderPane getLayout(){
@@ -247,25 +247,31 @@ public class BoardGameView {
         return destinations;
     }
 
-    public void createRulesColumn(){
-        Font customFontSubTitle = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),30);
+    public void createRulesColumn() {
+        if (rulesColumn == null) {
+            rulesColumn = new VBox();
+            rulesColumn.setId("rulesColumn");
+        }
+        Font customFontSubTitle = Font.loadFont(
+                Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(), 30);
 
-        //Information on rules box to the left
+        rulesColumn.getChildren().clear();
 
-        rulesColumn.setPrefWidth(300);
-        rulesColumn.setId("rulesColumn");
-        rulesColumn.setPadding(new Insets(100,0,100,0));
+        Text title = new Text("Game Rules");
+        title.setFont(customFontSubTitle);
+        title.getStyleClass().add("title");
+        rulesColumn.getChildren().add(title);
 
-        Text rulesTitle = new Text("Game Rules");
-        rulesTitle.setFont(customFontSubTitle);
-        rulesTitle.getStyleClass().add("subTitle");
 
-        Text rule1 = createRuleText("1. Roll the dice to move when it's your turn.");
-        Text rule2 = createRuleText("2. Land on dark green to climb, dark red to slide, dark blue to teleport.");
-        Text rule3 = createRuleText("3. The first player at the finish is the winner.");
+        Text ruleText = new Text("1. Roll the dice to move when it's your turn.\n2. Land on dark green to climb, dark red to slide, \ndark blue to teleport.\n3. The first player at the finish is the winner.");
+        ruleText.getStyleClass().add("infoText");
+        rulesColumn.getChildren().add(ruleText);
 
-        rulesColumn.getChildren().addAll(rulesTitle, rule1, rule2, rule3);
+        if (layout.getRight() != rulesColumn) {
+            layout.setRight(rulesColumn);
+        }
     }
+
 
     private Text createRuleText(String content) {
         Text rule = new Text(content);
@@ -279,12 +285,13 @@ public class BoardGameView {
     }
 
     public void createInfoColumn(PlayerHolder playerHolder) throws IOException {
-        Font customFontSubTitle = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),30);
+        Font customFontSubTitle = Font.loadFont(
+                Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(), 30);
 
+        infoColumn.getChildren().clear();  // Clear previous content to avoid duplicates
         infoColumn.setId("infoColumn");
         infoColumn.setAlignment(Pos.TOP_CENTER);
-
-        infoColumn.setPadding(new Insets(100,0,200,0));
+        infoColumn.setPadding(new Insets(100, 0, 200, 0));
 
         Text infoTitle = new Text("Player Info");
         infoTitle.setFont(customFontSubTitle);
@@ -292,7 +299,7 @@ public class BoardGameView {
 
         infoColumn.getChildren().add(infoTitle);
 
-        for(Player p: playerHolder.getPlayers()){
+        for (Player p : playerHolder.getPlayers()) {
             HBox playerInfoBox = new HBox(10);
             playerInfoBox.setAlignment(Pos.CENTER);
 
@@ -307,7 +314,11 @@ public class BoardGameView {
 
         infoColumn.getChildren().addAll(displayInfoBox);
 
+        if (layout.getRight() != infoColumn) {
+            layout.setRight(infoColumn);
+        }
     }
+
 
     public VBox getInfoColumn(){
         return infoColumn;
@@ -338,7 +349,6 @@ public class BoardGameView {
         Font customFontButton = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
 
         //back to main
-        Button mainMenuButton = new Button("Main Menu");
         mainMenuButton.setFont(customFontButton);
         mainMenuButton.setId("main-menu-button");
 

@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.boardgame.Controller;
 
+import edu.ntnu.idatt2003.boardgame.BoardGameApp;
 import edu.ntnu.idatt2003.boardgame.Model.*;
 import edu.ntnu.idatt2003.boardgame.View.BoardGameView;
 import javafx.event.ActionEvent;
@@ -38,15 +39,11 @@ public class GameController {
 
         view.getStartRoundButton().setOnAction(this::handleStartRound);
 
-        view.getMainMenuButton().setOnAction(e->{restartGame();});
+        view.getMainMenuButton().setOnAction(e -> restartGame());
 
 
     }
-    private void restartGame(){
-        boardGame.undoWinner(boardGame.getWinner());
 
-        view.initialize();
-    }
 
     private void handleMakeGame(ActionEvent actionEvent) throws IOException {
         view.getLayout().getChildren().clear();
@@ -82,6 +79,22 @@ public class GameController {
         }
     }
 
+    private void restartGame() {
+        boardGame.undoWinner(boardGame.getWinner());
+        view.getStartRoundButton().setDisable(false);
+        view.getInfoColumn().getChildren().clear();
+        view.getLayout().getChildren().clear();
+
+        listOfPlayers.clear();
+        boardGame = new BoardGame();
+        board = null;
+
+        view.getLayout().getChildren().clear();
+
+        view.createMainMenu();
+
+        attachEventHandlers();
+    }
     private void handleStartRound(ActionEvent actionEvent) {
         view.getDisplayInfoBox().getChildren().clear();
 
