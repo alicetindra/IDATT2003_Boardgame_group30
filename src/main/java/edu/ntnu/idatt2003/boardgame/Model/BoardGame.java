@@ -48,7 +48,6 @@ public class BoardGame {
 
         playerHolder = getPlayerHolder();
         playerHolder.setCurrentPlayer(playerHolder.getPlayers().get(playerHolder.getNextPlayerIndex()));
-        System.out.println(playerHolder.getCurrentPlayer().getColor());
 
 
         int totalEyes = dice.roll();
@@ -77,7 +76,6 @@ public class BoardGame {
 
     public void declareWinner(Player winner) {
         this.winner = winner;
-        System.out.println("Congratulations! " + winner.getName() + " has won!");
     }
 
     public Player getWinner(){

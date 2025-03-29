@@ -25,7 +25,7 @@ public class GameController {
 
     private void attachEventHandlers() {
         view.getAddPlayerButton().setOnAction(e -> {
-            listOfPlayers.add(view.getPlayerName().getText()+","+view.getPlayerColorBox().getSelectionModel().getSelectedItem());
+            listOfPlayers.add(view.getPlayerName().getText()+","+view.getPlayerColorMenu().getSelectionModel().getSelectedItem());
         });
 
         view.getMakeGameButton().setOnAction(actionEvent -> {
@@ -38,7 +38,14 @@ public class GameController {
 
         view.getStartRoundButton().setOnAction(this::handleStartRound);
 
+        view.getMainMenuButton().setOnAction(e->{restartGame();});
 
+
+    }
+    private void restartGame(){
+        boardGame.undoWinner(boardGame.getWinner());
+
+        view.initialize();
     }
 
     private void handleMakeGame(ActionEvent actionEvent) throws IOException {
@@ -53,7 +60,7 @@ public class GameController {
             p.setImageView(imageView);
             p.setBoardGame(boardGame);
         }
-        boardGame.initializeBoard(view.getGameName(),view.getBoardSizeBox().getValue(),"src/main/resources/hardcodedBoards.json");
+        boardGame.initializeBoard(view.getGameName(),view.getBoardSizeMenu().getValue(),"src/main/resources/hardcodedBoards.json");
         board = boardGame.getBoard();
 
         boardGame.initializeDice(Integer.parseInt(view.getDiceField().getText()));
@@ -130,7 +137,7 @@ public class GameController {
 
             view.getStartRoundButton().setDisable(true);
             view.getDisplayInfoBox().getChildren().clear();
-            view.getDisplayInfoBox().getChildren().add(new Text(winnerName+winnerColor+" has won!"));
+            view.getDisplayInfoBox().getChildren().add(new Text(winnerColor+" won!"));
         }
     }
 }

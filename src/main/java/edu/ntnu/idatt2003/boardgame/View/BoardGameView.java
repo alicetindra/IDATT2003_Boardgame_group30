@@ -44,11 +44,11 @@ public class BoardGameView {
     // Textfields
     private final TextField diceField = new TextField();
 
-    private final TextField playerName = new TextField("Player name");
+    private final TextField playerName = new TextField();
 
 
     //ComboBoxes
-    private final ComboBox<Integer> boardSizeBox = new ComboBox<>();
+    private final ComboBox<Integer> boardSizeMenu = new ComboBox<>();
 
     UnaryOperator<TextFormatter.Change> filter = change -> {
         String newText = change.getControlNewText();
@@ -58,17 +58,17 @@ public class BoardGameView {
         return null;
     };
 
-    public ComboBox<String> playerColorBox = new ComboBox<>();
+    public ComboBox<String> playerColorMenu = new ComboBox<>();
 
 
     //Boxes
-    private final VBox dieBox = new VBox();
+    private final HBox dieBox = new HBox();
 
     private final VBox rulesColumn = new VBox(20);
 
     private final VBox displayInfoBox = new VBox();
 
-    private final VBox userinfoBox = new VBox();
+    private final VBox userinfoBox = new VBox(20);
 
     private HBox titleBox;
 
@@ -77,16 +77,13 @@ public class BoardGameView {
     //Panes
     private final GridPane grid = new GridPane();
 
-    private final BorderPane layout = new BorderPane();
+    private BorderPane layout;
 
 
     //Methods
     public void initialize(){
-        SLButton.setToggleGroup(toggleGroup);
-        CLButton.setToggleGroup(toggleGroup);
-        diceField.setTextFormatter(new TextFormatter<>(filter));
-        userinfoBox.getChildren().addAll(SLButton, CLButton, boardSizeBox,diceField, playerName, playerColorBox, addPlayerButton, makeGameButton);
-        layout.setCenter(userinfoBox);
+        layout = new BorderPane();
+        createMainMenu();
         setBoardSizeBox();
         setPlayerColorBox();
         createStartButton();
@@ -100,25 +97,25 @@ public class BoardGameView {
     public void setBoardSizeBox(){
         ObservableList<Integer> options = FXCollections.observableArrayList();
         options.addAll(50,90,110);
-        boardSizeBox.setItems(options);
-        //Setting the default value to 90 tiles
-        boardSizeBox.getSelectionModel().select(1);
+        boardSizeMenu.setItems(options);
+        boardSizeMenu.getSelectionModel().select(1);
+        boardSizeMenu.getStyleClass().add("pullDownMenu");
     }
 
-    public ComboBox<Integer> getBoardSizeBox() {
-        return boardSizeBox;
+    public ComboBox<Integer> getBoardSizeMenu() {
+        return boardSizeMenu;
     }
 
     public void setPlayerColorBox(){
         ObservableList<String> colors = FXCollections.observableArrayList();
         colors.addAll("blue","green","red","yellow","pink","black");
-        playerColorBox.setItems(colors);
-        //Setting the default value to the first color in the list
-        playerColorBox.getSelectionModel().select(0);
+        playerColorMenu.setItems(colors);
+        playerColorMenu.getSelectionModel().select(0);
+        playerColorMenu.getStyleClass().add("pullDownMenu");
     }
 
-    public ComboBox<String> getPlayerColorBox() {
-        return playerColorBox;
+    public ComboBox<String> getPlayerColorMenu() {
+        return playerColorMenu;
     }
 
     public String getGameName(){
@@ -132,6 +129,7 @@ public class BoardGameView {
     }
 
     public Button getAddPlayerButton() {
+        addPlayerButton.setId("addPlayerButton");
         return addPlayerButton;
     }
 
@@ -140,6 +138,7 @@ public class BoardGameView {
     }
 
     public Button getMakeGameButton() {
+        makeGameButton.setId("makeGameButton");
         return makeGameButton;
     }
 
@@ -198,12 +197,12 @@ public class BoardGameView {
 
         for(Integer i:snakeDestination){
             if(tileId == i){
-                tileBox.getStyleClass().add("snake");
+                tileBox.getStyleClass().add("snakeDestBox");
             }
         }
         for(Integer i:ladderDestination){
             if(tileId == i){
-                tileBox.getStyleClass().add("ladder");
+                tileBox.getStyleClass().add("ladderDestBox");
             }
         }
 
@@ -218,6 +217,10 @@ public class BoardGameView {
         }
         else if(tileAction instanceof PortalAction){
             tileBox.getStyleClass().add("portalBox");
+            ImageView portalImage = new ImageView(new Image("images/portal.png"));
+            portalImage.setFitHeight(65);
+            portalImage.setFitWidth(65);
+            tileBox.getChildren().add(portalImage);
         }
         else{
             tileBox.getStyleClass().add("tileBox");
@@ -300,6 +303,7 @@ public class BoardGameView {
         }
 
         displayInfoBox.setAlignment(Pos.CENTER);
+        displayInfoBox.getStyleClass().add("infoBox");
 
         infoColumn.getChildren().addAll(displayInfoBox);
 
@@ -334,6 +338,7 @@ public class BoardGameView {
         Font customFontButton = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
 
         //back to main
+        Button mainMenuButton = new Button("Main Menu");
         mainMenuButton.setFont(customFontButton);
         mainMenuButton.setId("main-menu-button");
 
@@ -349,7 +354,7 @@ public class BoardGameView {
         return displayInfoBox;
     }
 
-    public VBox getDieBox() {
+    public HBox getDieBox() {
         return dieBox;
     }
 
@@ -381,5 +386,48 @@ public class BoardGameView {
 
     public HBox getTitleBox(){
         return titleBox;
+    }
+
+    public void createMainMenu(){
+        SLButton.setToggleGroup(toggleGroup);
+        CLButton.setToggleGroup(toggleGroup);
+        SLButton.setSelected(true);
+        HBox radioButtonBox = new HBox(20);
+        radioButtonBox.getChildren().addAll(SLButton, CLButton);
+        radioButtonBox.setAlignment(Pos.CENTER);
+
+        diceField.setTextFormatter(new TextFormatter<>(filter));
+        diceField.setPromptText("2");
+
+        Text diceText = new Text("Nr of dice (1-6)");
+        Text boardText = new Text("Board size");
+        Text nameText = new Text("Player name");
+        Text colorText = new Text("Player color");
+
+        VBox boardBox = new VBox(10);
+        boardBox.getChildren().addAll(boardText, boardSizeMenu);
+
+        VBox diceBox = new VBox(10);
+        diceBox.getChildren().addAll(diceText, diceField);
+
+        HBox boardDiceBox = new HBox(30);
+        boardDiceBox.setAlignment(Pos.CENTER);
+        boardDiceBox.getChildren().addAll(boardBox, diceBox);
+
+        VBox playerBox = new VBox(10);
+        playerBox.getChildren().addAll(nameText, playerName);
+
+        VBox colorBox = new VBox(10);
+        colorBox.getChildren().addAll(colorText, playerColorMenu);
+
+        HBox nameColorBox = new HBox(30);
+        nameColorBox.setAlignment(Pos.CENTER);
+        nameColorBox.getChildren().addAll(playerBox, colorBox);
+
+        userinfoBox.getChildren().clear();
+        userinfoBox.getChildren().addAll(radioButtonBox, boardDiceBox,nameColorBox, addPlayerButton, new Text(),makeGameButton);
+        userinfoBox.setAlignment(Pos.CENTER);
+        userinfoBox.setId("userInfoBox");
+        layout.setCenter(userinfoBox);
     }
 }

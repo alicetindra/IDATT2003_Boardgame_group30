@@ -4,6 +4,37 @@
 #mainLayout{
     -fx-background-color: #6f9c6f;
 }
+#userInfoBox{
+    -fx-background-color: #dfdfdf;
+    -fx-font-size: 16px;
+    -fx-font-family: Georgia;
+}
+.pullDownMenu{
+    -fx-max-height: 30px;
+    -fx-max-width: 90px;
+    -fx-background-color: white;
+}
+
+.text-field{
+    -fx-max-height: 30px;
+    -fx-max-width: 90px;
+}
+
+#makeGameButton{
+    -fx-background-color: white;
+    -fx-border-color: #000000;
+    -fx-max-height: 35px;
+    -fx-max-width: 120px;
+}
+#addPlayerButton{
+    -fx-background-color: white;
+    -fx-border-color: #000000;
+    -fx-max-height: 20px;
+    -fx-max-width: 110px;
+}
+.infoBox{
+    -fx-font-size: 16px;
+}
 
 
 .tileBox, .ladderBox, .snakeBox, .portalBox, .winBox{
@@ -65,3 +96,4 @@
 .subTitle, .title{
     -fx-fill: #19599f;
 }
+
