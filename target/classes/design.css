@@ -1,0 +1,69 @@
+#header{
+    -fx-font-size: 20px;
+}
+#mainLayout{
+    -fx-background-color: #6f9c6f;
+}
+
+
+
+.tileBox, .ladderBox, .snakeBox, .portalBox, .winBox{
+    -fx-max-height: 75px;
+    -fx-min-height: 75px;
+    -fx-max-width: 75px;
+    -fx-min-width: 75px;
+    -fx-border-color: black;
+}
+.tileBox{
+    -fx-background-color: #E0E0E0;
+}
+.ladderBox{
+    -fx-background-color: #8aca84;
+}
+.snakeBox{
+    -fx-background-color: #e85b5b;
+}
+.portalBox{
+    -fx-background-color: #77b7d8;
+}
+.winBox{
+    -fx-background-color: #ffdc24;
+}
+.snakeDestBox{
+    -fx-background-color: #FBC4C4;
+}
+.ladderDestBox{
+    -fx-background-color: #D3F9D8;
+}
+
+
+#start-round-button, #main-menu-button{
+    -fx-background-color: #416c42;
+    -fx-text-fill: white;
+    -fx-background-radius: 20px;
+    -fx-border-color: #053005;
+    -fx-border-width: 2px;
+    -fx-border-radius: 20px;
+    -fx-max-width: 150px;
+    -fx-max-height: 150px;
+}
+
+#rulesColumn{
+    -fx-background-color: #6f9c6f;
+    -fx-border-color: #6f9c6f;
+}
+.infoText{
+    -fx-font-size: 16px;
+    -fx-fill: black;
+    -fx-font-family: Georgia;
+}
+#infoColumn{
+    -fx-max-width: 300px;
+    -fx-background-color: #6f9c6f;
+    -fx-border-color: #6f9c6f;
+}
+
+.subTitle{
+    -fx-fill: #19599f;
+}
+

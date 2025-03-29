@@ -19,21 +19,19 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class MainMenuController {
-  private MainMenuView view;
-  private StackPane rootLayout;
-  private List<String> stringOfPlayers;
-  private BoardGame boardGame;
-  private BoardController boardController;
+  private final MainMenuView view;
+  private final StackPane rootLayout;
+  private final List<String> stringOfPlayers;
+    private final BoardController boardController;
 
 
   public MainMenuController(StackPane rootLayout) {
     this.rootLayout = rootLayout;
     this.stringOfPlayers = new ArrayList<>();
-    this.boardGame = new BoardGame();
+      BoardGame boardGame = new BoardGame();
     view = new MainMenuView();
 
     this.boardController = new BoardController(boardGame, this);
-
 
     setupButtonActions();
     setupToggleBoxBehavior();
@@ -94,7 +92,7 @@ public class MainMenuController {
       throw new IllegalArgumentException("Name and color cannot be empty");
     }
 
-    stringOfPlayers.add(playerName + ", " + selectedColor);
+    stringOfPlayers.add(playerName + "," + selectedColor);
 
     view.getPlayerNameField().clear();
     view.getComboBoxColor().getItems().remove(selectedColor);

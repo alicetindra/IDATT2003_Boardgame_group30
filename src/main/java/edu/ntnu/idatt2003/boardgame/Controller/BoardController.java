@@ -52,10 +52,7 @@ public class BoardController {
 
 
   public void handleSnakesAndLadders(){
-    System.out.println("Starting Snakes and ladders...");
     int selectedSize = view.getComboBoxBoard().getValue();
-    System.out.println("Selected " + selectedSize + " tiles");
-
     try{
       boardGame.initializeBoard("Snakes and ladders", selectedSize, "src/main/resources/hardcodedBoards.json");
       board = boardGame.getBoard();
@@ -72,16 +69,13 @@ public class BoardController {
 
       for(Player p: playerHolder.getPlayers()){
         p.setBoardGame(boardGame);
-        p.placeOnTile(board, 1);
-
-        //Add image for all players on tile 1
         for(Tile t : board.getTiles()){
           if(t.getId() == 1) {
-            // Lägg till bilden i tileBox
-            t.getTileBox().getChildren().add(boardView.createPlayerImage(p.getColor()));
+            t.getTileBox().getChildren().add(boardView.getPlayerImage(p));
           }
         }
       }
+      placeOnStart();
       playerHolder.setCurrentPlayer(playerHolder.getPlayers().getLast());
       currentPlayer = playerHolder.getCurrentPlayer();
 
@@ -118,6 +112,11 @@ public class BoardController {
     return playerHolder;
   }
 
+  public void placeOnStart(){
+    for(Player p: playerHolder.getPlayers()){
+      p.placeOnTile(p.getBoardGame().getBoard(),1);
+    }
+  }
 
 
   private void handleStartRoundButton(ActionEvent event) {
@@ -183,7 +182,7 @@ public class BoardController {
   private void addPlayerImageToNewTile(Player player, int newTileId){
     for(Tile t : board.getTiles()){
       if(t.getId() == newTileId){
-        t.getTileBox().getChildren().add(boardView.createPlayerImage(player.getColor()));
+        t.getTileBox().getChildren().add(boardView.getPlayerImage(player));
       }
     }
   }

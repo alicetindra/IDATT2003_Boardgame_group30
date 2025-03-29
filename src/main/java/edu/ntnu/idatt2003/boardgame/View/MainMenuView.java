@@ -10,15 +10,15 @@ import javafx.scene.text.Text;
 import java.util.function.UnaryOperator;
 
 public class MainMenuView {
-  private VBox menuBox;
-  private ToggleGroup toggleGroup;
-  private TextField playerNameField = new TextField();
-  private ComboBox<String> comboBoxColor = new ComboBox<>();
-  private ComboBox<Integer> comboBoxBoard = new ComboBox<>();
-  private TextField integerField = new TextField();
-  private Button snakesAndLaddersButton = new Button("Snakes and Ladders");
-  private Button candyLandButton = new Button("Candy Land");
-  private Button addPlayerButton = new Button("Add Player");
+  private final VBox menuBox;
+  private final ToggleGroup toggleGroup;
+  private final TextField playerNameField = new TextField();
+  private final ComboBox<String> comboBoxColor = new ComboBox<>();
+  private final ComboBox<Integer> comboBoxBoard = new ComboBox<>();
+  private final TextField integerField = new TextField();
+  private final Button snakesAndLaddersButton = new Button("Snakes and Ladders");
+  private final Button candyLandButton = new Button("Candy Land");
+  private final Button addPlayerButton = new Button("Add Player");
 
   public MainMenuView() {
     menuBox = new VBox();
@@ -35,8 +35,6 @@ public class MainMenuView {
 
     setupMenuInteractions(radioSnakesLadders, radioCandy);
   }
-
-
 
   private void setupMenuInteractions(RadioButton radioSnakesLadders, RadioButton radioCandy) {
     toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
@@ -58,7 +56,9 @@ public class MainMenuView {
   }
 
   public Text getHeader() {
-    return new Text("Add a Player");
+    Text header = new Text("Add a Player");
+    header.setId("header");
+    return header;
   }
 
   public TextField getPlayerNameField() {
@@ -81,10 +81,6 @@ public class MainMenuView {
     return comboBoxBoard;
   }
 
-  /**
-   * dice field
-   * @return
-   */
   public TextField getIntegerField() {
     UnaryOperator<TextFormatter.Change> filter = change -> {
       String newText = change.getControlNewText();

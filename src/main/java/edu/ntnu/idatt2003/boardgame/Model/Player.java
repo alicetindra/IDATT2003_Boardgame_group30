@@ -1,15 +1,20 @@
 package edu.ntnu.idatt2003.boardgame.Model;
 
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 public class Player {
     private String name;
     private String color;
     private Tile currentTile;
     private BoardGame boardGame;
+    private ImageView imageView;
 
     public Player(String name, String color) {
         this.name = name;
         this.color = color;
+        setImageView();
     }
 
     public String getName(){
@@ -28,29 +33,12 @@ public class Player {
         this.currentTile = board.getTiles().get(id-1);
     }
 
-    public void move(int steps, Board board){
-        if(currentTile == null){
-            throw new IllegalStateException("Player must be placed on tile before moving");
-        }
-
-        int currentTileId = this.currentTile.getId();
-        int destinationTileId = currentTileId + steps;
-
-        // Handle cases where the destination tile exceeds the board size
-        if (destinationTileId > board.getTiles().size()) {
-            // Bounce back if exceeding the last tile
-            destinationTileId = (2 * board.getTiles().size()) - destinationTileId;
-        }
-
-        //Set players new position
-
-        placeOnTile(board, destinationTileId);
-
-        Tile destinationTile = board.getTiles().get(destinationTileId-1);
-        //Perform action
-        if(destinationTile.getAction() != null){
-            destinationTile.getAction().perform(this);
-        }
+    public void setImageView(){
+        Image image = new Image(getClass().getResourceAsStream("/images/"+this.getColor()+".png"));
+        this.imageView = new ImageView(image);
+    }
+    public ImageView getImageView(){
+        return imageView;
     }
 
     public void setBoardGame(BoardGame boardGame){

@@ -6,6 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 
 public class BoardGameApp extends Application {
   private StackPane rootLayout;
@@ -13,8 +15,9 @@ public class BoardGameApp extends Application {
   @Override
   public void start(Stage stage){
     rootLayout = new StackPane();
+    new MainMenuController(rootLayout);
 
-    MainMenuController mainMenuController = new MainMenuController(rootLayout);
+    rootLayout.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/design.css")).toExternalForm());
 
     Scene menuScene = new Scene(rootLayout, 1000, 650);
     stage.setScene(menuScene);

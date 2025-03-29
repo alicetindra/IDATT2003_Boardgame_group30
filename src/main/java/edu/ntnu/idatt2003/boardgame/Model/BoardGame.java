@@ -70,27 +70,18 @@ public class BoardGame {
 
     public void initializePlayers(List<Player> players) {
         this.playerHolder.setPlayers(players);
-
-        if (!players.isEmpty()) {
-            playerHolder.setCurrentPlayer(players.getFirst()); // Sätt första spelaren som startspelare
-            System.out.println("Players initialized.");
-        } else {
-            System.out.println("No players found or created.");
-        }
     }
 
 
 
     //Play
     public void playTurn() {
-        //The next player in line is set to current player
         playerHolder = getPlayerHolder();
         playerHolder.setCurrentPlayer(playerHolder.getPlayers().get(playerHolder.getNextPlayerIndex()));
 
-        System.out.println("current player: " + playerHolder.getCurrentPlayer().getName());
+
         //Current player rolls the dice
         int totalEyes = dice.roll();
-        System.out.println("Total eyes: " + totalEyes);
 
         //Set current players new current tile
         int destTileId = playerHolder.getCurrentPlayer().getCurrentTile().getId() + totalEyes;

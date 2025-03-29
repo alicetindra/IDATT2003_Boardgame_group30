@@ -1,7 +1,6 @@
 package edu.ntnu.idatt2003.boardgame.View;
 
 import edu.ntnu.idatt2003.boardgame.Controller.BoardController;
-import edu.ntnu.idatt2003.boardgame.Controller.MainMenuController;
 import edu.ntnu.idatt2003.boardgame.Model.Board;
 import edu.ntnu.idatt2003.boardgame.Model.Dice;
 import edu.ntnu.idatt2003.boardgame.Model.Player;
@@ -42,14 +41,6 @@ public class BoardView {
     this.controller = controller;
   }
 
-  /**
-   * Creates the main layout for the game.
-   * @param boardGrid
-   * @param titleWithImage
-   * @param rulesColumn
-   * @param infoColumn
-   * @return
-   */
   public BorderPane createMainLayout(GridPane boardGrid, HBox titleWithImage, VBox rulesColumn, VBox infoColumn){
     BorderPane mainLayout = new BorderPane();
     mainLayout.setTop(titleWithImage);
@@ -60,7 +51,7 @@ public class BoardView {
     BorderPane.setMargin(rulesColumn, new Insets(0,20,0,20));
     BorderPane.setMargin(infoColumn, new Insets(0,20,0,20));
 
-    mainLayout.setStyle("-fx-background-color: #6f9c6f;");
+    mainLayout.setId("mainLayout");
     return mainLayout;
   }
 
@@ -107,24 +98,29 @@ public class BoardView {
 
     tileBox.getChildren().add(new Text("" + tile.getId()));
 
-    if(snakeDestination.contains(tile.getId())){
-      styleSnakeDestination(tileBox);
-    }else if(ladderDestination.contains(tile.getId())){
-      styleLadderDestination(tileBox);
-    }else if (tile.getAction() instanceof PortalAction){
-      stylePortalTile(tileBox);
-    }else if(tile.getAction() != null){
-      styleDefaultTille(tileBox, tile);
-    }else{
-      tileBox.setStyle("-fx-background-color: #E0E0E0; -fx-border-color: #000000");
+    for(Integer i : snakeDestination){
+      if(tile.getId() == i){
+        tileBox.getStyleClass().add("snakeDestBox");
+      }
     }
+    for(Integer i : ladderDestination){
+      if(tile.getId() == i){
+        tileBox.getStyleClass().add("ladderDestBox");
+      }
+    }
+
+      switch (tile.getAction()) {
+          case LadderAction ladderAction -> tileBox.getStyleClass().add("ladderBox");
+          case SnakeAction snakeAction -> tileBox.getStyleClass().add("snakeBox");
+          case PortalAction portalAction -> tileBox.getStyleClass().add("portalBox");
+          //case WinAction winAction -> tileBox.getStyleClass().add("winBox");
+          case null, default -> tileBox.getStyleClass().add("tileBox");
+      }
+
 
     return tileBox;
   }
 
-  /**
-   * Collect the destinations for snakes and ladders
-   */
   private Map<String, List<Integer>> collectDestinations(Board board){
     List<Integer> snakeDestination = new ArrayList<>();
     List<Integer> ladderDestination = new ArrayList<>();
@@ -147,66 +143,7 @@ public class BoardView {
     return destinations;
   }
 
-  /**
-   * Style snake destination box
-   * @param tileBox
-   */
-  private void styleSnakeDestination(VBox tileBox){
-    tileBox.setStyle(
-        "-fx-background-color: #FBC4C4; "
-            + "-fx-border-color: #000000");
-  }
 
-  /**
-   * Style Ladder destination tile
-   * @param tileBox
-   */
-  private void styleLadderDestination(VBox tileBox){
-    tileBox.setStyle(
-        "-fx-background-color: #D3F9D8; "
-            + "-fx-border-color: #000000");
-  }
-
-  /**
-   * Style portal tile with picture
-   * @param tileBox
-   */
-  private void stylePortalTile(VBox tileBox){
-    tileBox.setStyle("-fx-background-color: #77b7d8; -fx-border-color: #000000");
-    // Lägg till bild för portaler
-    Image portalImage = new Image(
-        Objects.requireNonNull(getClass().getResource("/images/portal.png")).toExternalForm());
-    ImageView portalImageView = new ImageView(portalImage);
-    portalImageView.setFitWidth(60);
-    portalImageView.setFitHeight(60);
-    portalImageView.setPreserveRatio(true);
-
-    tileBox.setAlignment(Pos.CENTER);
-    tileBox.getChildren().add(portalImageView);
-  }
-
-  /**
-   *
-   * @param tileBox
-   * @param tile
-   */
-  private void styleDefaultTille(VBox tileBox, Tile tile){
-    switch (tile.getAction()) {
-      case SnakeAction snakeAction -> tileBox.setStyle("-fx-background-color: #e85b5b;"
-          + " -fx-border-color: #000000");
-      case LadderAction ladderAction -> tileBox.setStyle("-fx-background-color: #8aca84; "
-          + "-fx-border-color: #000000");
-      case null, default ->
-          tileBox.setStyle("-fx-background-color: #E0E0E0; -fx-border-color: #000000");
-    }
-
-
-  }
-
-  /**
-   * Creates the title bar with images and text for the game.
-   * @return
-   */
   public HBox createTitle(){
     Font customFontTitle = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),90);
 
@@ -236,26 +173,19 @@ public class BoardView {
     return titleWithImage;
   }
 
-  /**
-   * Creates the rules column for the game.
-   * @return
-   */
+
   public VBox createRulesColumn(){
     Font customFontSubTitle = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),30);
 
     //Information on rules box to the left
     VBox rulesColumn = new VBox(20);
     rulesColumn.setPrefWidth(300);
-    rulesColumn.setStyle(
-        "-fx-background-color: #6f9c6f; "
-            + "-fx-border-color: #6f9c6f;");
-    rulesColumn.setAlignment(Pos.TOP_CENTER);
-
+    rulesColumn.setId("rulesColumn");
     rulesColumn.setPadding(new Insets(100,0,100,0));
 
     Text rulesTitle = new Text("Game Rules");
     rulesTitle.setFont(customFontSubTitle);
-    rulesTitle.setStyle("-fx-fill: #19599f");
+    rulesTitle.getStyleClass().add("subTitle");
 
     Text rule1 = createRuleText("1. Roll the dice to move when it's your turn.");
     Text rule2 = createRuleText("2. Land on dark green to climb, dark red to slide, dark blue to teleport.");
@@ -264,22 +194,16 @@ public class BoardView {
     rulesColumn.getChildren().addAll(rulesTitle, rule1, rule2, rule3);
 
     Region spacer = new Region();
-    VBox.setVgrow(spacer, Priority.ALWAYS); // Låt spacern växa och trycka knappen nedåt
+    VBox.setVgrow(spacer, Priority.ALWAYS);
     rulesColumn.getChildren().add(spacer);
 
     return rulesColumn;
   }
 
-  /**
-   * Creates a styled rule text.
-   *
-   * @param content The text content of the rule.
-   * @return A styled Text node.
-   */
   private Text createRuleText(String content) {
     Text rule = new Text(content);
     rule.setWrappingWidth(180);
-    rule.setStyle("-fx-font-size: 14px; -fx-fill: black; -fx-font-family: Georgia;");
+    rule.getStyleClass().add("infoText");
     return rule;
   }
 
@@ -287,24 +211,21 @@ public class BoardView {
     Font customFontSubTitle = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),30);
 
     VBox infoColumn = new VBox(10);
-    infoColumn.setPrefWidth(300);
-    infoColumn.setStyle(
-        "-fx-background-color: #6f9c6f; "
-            + "-fx-border-color: #6f9c6f;");
+    infoColumn.setId("infoColumn");
     infoColumn.setAlignment(Pos.TOP_CENTER);
 
     infoColumn.setPadding(new Insets(100,0,200,0));
 
     Text infoTitle = new Text("Player Info");
     infoTitle.setFont(customFontSubTitle);
-    infoTitle.setStyle("-fx-fill: #19599f");
+    infoTitle.getStyleClass().add("subTitle");
 
     infoColumn.getChildren().add(infoTitle);
 
     PlayerHolder playerHolder = controller.setPlayerHolder();
     if (playerHolder == null || playerHolder.getPlayers() == null || playerHolder.getPlayers().isEmpty()) {
       System.out.println("No players to display in the info column!");
-      return infoColumn; // Return an empty column if no players
+      return infoColumn;
     }
 
 
@@ -312,13 +233,9 @@ public class BoardView {
       HBox playerInfoBox = new HBox(10);
       playerInfoBox.setAlignment(Pos.CENTER);
 
-      ImageView playerImage = createPlayerImage(p.getColor());
-
       Text playerName = new Text(" " + p.getName());
-      playerName.setStyle("-fx-font-size: 14px; "
-          + "-fx-fill: black;"
-          + "-fx-font-family: Georgia");
-      playerInfoBox.getChildren().addAll(playerImage, playerName);
+      playerName.getStyleClass().add("infoText");
+      playerInfoBox.getChildren().addAll(getPlayerImage(p), playerName);
       infoColumn.getChildren().add(playerInfoBox);
     }
 
@@ -342,15 +259,7 @@ public class BoardView {
 
     startRoundButton = new Button("Roll Dice");
     startRoundButton.setFont(customFontButton);
-    startRoundButton.setStyle(
-        "-fx-background-color: #416c42; " +  // Bakgrundsfärg
-            "-fx-text-fill: white; " +           // Textfärg
-            "-fx-background-radius: 20px; " +    // Rundade hörn
-            "-fx-border-color: #053005; " +      // Kantfärg
-            "-fx-border-width: 2px;" +
-            "-fx-border-radius: 20px" );
-    startRoundButton.setPrefSize(150, 50);
-
+    startRoundButton.setId("start-round-button");
 
     VBox.setMargin(startRoundButton, new Insets(20,0,0,0));
     return startRoundButton;
@@ -366,14 +275,7 @@ public class BoardView {
     //back to main
     Button mainMenuButton = new Button("Main menu");
     mainMenuButton.setFont(customFontButton);
-    mainMenuButton.setStyle(
-        "-fx-background-color: #416c42; " +  // Bakgrundsfärg
-            "-fx-text-fill: white; " +           // Textfärg
-            "-fx-background-radius: 20px; " +    // Rundade hörn
-            "-fx-border-color: #053005; " +      // Kantfärg
-            "-fx-border-width: 2px;" +
-            "-fx-border-radius: 20px" );
-    mainMenuButton.setPrefSize(150, 50);
+    mainMenuButton.setId("main-menu-button");
 
     VBox.setMargin(mainMenuButton, new Insets(20,0,0,0));
 
@@ -381,31 +283,18 @@ public class BoardView {
   }
 
 
-
-  /**
-   * Creation of imageview for the players images that move along the board
-   * @param color
-   * @return
-   */
-  public ImageView createPlayerImage(String color) {
-    String piecePath = "/images/" + color.toLowerCase() + ".png";
-
-    Image playerImage = new Image(Objects.requireNonNull(getClass().getResource(piecePath)).toExternalForm());
-    ImageView playerImageView = new ImageView(playerImage);
-    playerImageView.setFitWidth(25); //
-    playerImageView.setFitHeight(25);
-    playerImageView.setPreserveRatio(true);
-
-    return playerImageView;
+  public ImageView getPlayerImage(Player p) {
+    ImageView playerImage = p.getImageView();
+    playerImage.setFitHeight(30);
+    playerImage.setPreserveRatio(true);
+    return playerImage;
   }
-
 
   public void updateInfoBox(Player player, int newTileId){
     String message = player.getColor() + " threw a " + dice.roll() + " and landed on tile " + newTileId;
 
     Text text = new Text(message);
-    text.setStyle("-fx-font-size: 14;"
-        + "-fx-font-family: Georgia;");
+    text.getStyleClass().add("infoText");
     text.setWrappingWidth(180);
 
     displayInfoBox.getChildren().add(text);
