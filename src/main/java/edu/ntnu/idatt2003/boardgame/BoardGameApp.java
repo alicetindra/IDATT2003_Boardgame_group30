@@ -2,6 +2,7 @@ package edu.ntnu.idatt2003.boardgame;
 
 import edu.ntnu.idatt2003.boardgame.Controller.Controll;
 import edu.ntnu.idatt2003.boardgame.Controller.MainMenuController;
+import edu.ntnu.idatt2003.boardgame.View.BoardGameView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -14,16 +15,15 @@ public class BoardGameApp extends Application {
   private StackPane rootLayout;
 
   @Override
-  public void start(Stage stage){
-    rootLayout = new StackPane();
+  public void start(Stage primaryStage){
+    BoardGameView view = new BoardGameView();
+    new Controll(view);
 
-    rootLayout.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/design.css")).toExternalForm());
-
-    Scene menuScene = new Scene(rootLayout, 1000, 650);
-    stage.setScene(menuScene);
-    stage.setTitle("Board Game");
-    stage.setMaximized(true);
-    stage.show();
+    Scene scene = new Scene(view.getLayout());
+    primaryStage.setMaximized(true);
+    primaryStage.setScene(scene);
+    primaryStage.setTitle("Board game");
+    primaryStage.show();
 
   }
 
