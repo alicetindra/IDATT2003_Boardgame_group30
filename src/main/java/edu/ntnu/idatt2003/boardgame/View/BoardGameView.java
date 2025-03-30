@@ -1,10 +1,7 @@
 package edu.ntnu.idatt2003.boardgame.View;
 
 import edu.ntnu.idatt2003.boardgame.Model.*;
-import edu.ntnu.idatt2003.boardgame.Model.actions.LadderAction;
-import edu.ntnu.idatt2003.boardgame.Model.actions.PortalAction;
-import edu.ntnu.idatt2003.boardgame.Model.actions.SnakeAction;
-import edu.ntnu.idatt2003.boardgame.Model.actions.TileAction;
+import edu.ntnu.idatt2003.boardgame.Model.actions.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -16,11 +13,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 
-import java.io.IOException;
 import java.util.*;
 import java.util.function.UnaryOperator;
 
@@ -30,9 +25,11 @@ public class BoardGameView {
 
     private final Button makeGameButton = new Button("Start game");
 
-    private final Button startRoundButton = new Button("Start");
+    private final Button startRoundButton = new Button("Roll dice");
 
     private final Button mainMenuButton = new Button("Main menu");
+
+    private final Button restartGame = new Button("Restart");
 
     //Radio buttons
     private final ToggleGroup toggleGroup = new ToggleGroup();
@@ -42,7 +39,7 @@ public class BoardGameView {
     private final RadioButton CLButton = new RadioButton("CandyLand");
 
 
-    // Textfields
+    //TextFields
     private final TextField diceField = new TextField();
 
     private final TextField playerName = new TextField();
@@ -65,7 +62,7 @@ public class BoardGameView {
     //Boxes
     private final HBox dieBox = new HBox();
 
-    private VBox rulesColumn = new VBox(20);
+    private VBox rulesColumn = new VBox(30);
 
     private final VBox displayInfoBox = new VBox();
 
@@ -77,10 +74,15 @@ public class BoardGameView {
 
     private final VBox winnerOverlay = new VBox(10);
 
+
     //Panes
     private final GridPane grid = new GridPane();
 
     private BorderPane layout;
+
+
+    //Font
+    Font customFont = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
 
 
     //Methods
@@ -133,6 +135,12 @@ public class BoardGameView {
     public Button getAddPlayerButton() {
         addPlayerButton.setId("addPlayerButton");
         return addPlayerButton;
+    }
+
+    public Button getRestartGameButton() {
+        restartGame.setFont(customFont);
+        restartGame.setId("restartGameButton");
+        return restartGame;
     }
 
     public TextField getPlayerName() {
@@ -252,20 +260,17 @@ public class BoardGameView {
     public void createRulesColumn() {
         if (rulesColumn == null) {
             rulesColumn = new VBox();
-            rulesColumn.setId("rulesColumn");
         }
-        Font customFontSubTitle = Font.loadFont(
-                Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(), 30);
+        rulesColumn.setId("rulesColumn");
 
         rulesColumn.getChildren().clear();
-
         Text title = new Text("Game Rules");
-        title.setFont(customFontSubTitle);
-        title.getStyleClass().add("title");
+        title.setFont(customFont);
+        title.getStyleClass().add("subTitle");
         rulesColumn.getChildren().add(title);
 
 
-        Text ruleText = new Text("1. Roll the dice to move when it's your turn.\n2. Land on dark green to climb, dark red to slide, \ndark blue to teleport.\n3. The first player at the finish is the winner.");
+        Text ruleText = new Text("1. Roll the dice to move when it's your turn.\n\n2. Land on dark green to climb, dark red to slide, \ndark blue to teleport.\n\n3. The first player at the finish is the winner.\n\n\n\n");
         ruleText.getStyleClass().add("infoText");
         rulesColumn.getChildren().add(ruleText);
 
@@ -279,17 +284,14 @@ public class BoardGameView {
         return rulesColumn;
     }
 
-    public void createInfoColumn(PlayerHolder playerHolder) throws IOException {
-        Font customFontSubTitle = Font.loadFont(
-                Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(), 30);
-
-        infoColumn.getChildren().clear();  // Clear previous content to avoid duplicates
+    public void createInfoColumn(PlayerHolder playerHolder){
+        infoColumn.getChildren().clear();
         infoColumn.setId("infoColumn");
         infoColumn.setAlignment(Pos.TOP_CENTER);
         infoColumn.setPadding(new Insets(100, 0, 200, 0));
 
         Text infoTitle = new Text("Player Info");
-        infoTitle.setFont(customFontSubTitle);
+        infoTitle.setFont(customFont);
         infoTitle.getStyleClass().add("subTitle");
 
         infoColumn.getChildren().add(infoTitle);
@@ -300,7 +302,12 @@ public class BoardGameView {
 
             Text playerName = new Text(" " + p.getName());
             playerName.getStyleClass().add("infoText");
-            playerInfoBox.getChildren().addAll(getPlayerImage(p), playerName);
+            Image playerIcon = p.getImageView().getImage();
+            ImageView playerImage = new ImageView(playerIcon);
+            playerImage.setFitHeight(30);
+            playerImage.setPreserveRatio(true);
+            playerInfoBox.getChildren().addAll(playerImage, playerName);
+
             infoColumn.getChildren().add(playerInfoBox);
         }
 
@@ -327,10 +334,8 @@ public class BoardGameView {
     }
 
     public void createStartButton(){
-        Font customFontButton = Font.loadFont(
-                Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
 
-        startRoundButton.setFont(customFontButton);
+        startRoundButton.setFont(customFont);
         startRoundButton.setId("start-round-button");
 
         VBox.setMargin(startRoundButton, new Insets(20,0,0,0));
@@ -341,10 +346,7 @@ public class BoardGameView {
     }
 
     public void createMainMenuButton(){
-        Font customFontButton = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
-
-        //back to main
-        mainMenuButton.setFont(customFontButton);
+        mainMenuButton.setFont(customFont);
         mainMenuButton.setId("main-menu-button");
 
         VBox.setMargin(mainMenuButton, new Insets(20,0,0,0));
@@ -364,8 +366,6 @@ public class BoardGameView {
     }
 
     public void createTitleBox() {
-        Font customFontTitle = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),90);
-
         //Snake image
         ImageView snakeImageView = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/snake.png")).toExternalForm()));
         snakeImageView.setFitHeight(90);
@@ -374,7 +374,7 @@ public class BoardGameView {
 
         //Title
         Text title = new Text("Snakes and Ladders");
-        title.setFont(customFontTitle);
+        title.setFont(customFont);
         title.getStyleClass().add("title");
 
         //Ladder image
@@ -438,29 +438,33 @@ public class BoardGameView {
 
     public void makeWinnerBox(String winnerName, String winnerColor){
         winnerOverlay.getChildren().clear();
+
         ImageView winnerImage = createWinnerImage(winnerColor);
 
-        Font customFont = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),90);
         Text winnerText = new Text(winnerName + " is the Winner!");
         winnerText.setFont(customFont);
-        winnerText.setStyle("-fx-fill: #ffffff;-fx-font-size: 60;");
+        winnerText.setId("winnerText");
 
         HBox messageBox = new HBox(20);
-        messageBox.setAlignment(Pos.CENTER);
-        messageBox.getChildren().addAll(winnerImage, winnerText, mainMenuButton);
+        messageBox.setId("winnerOverlay");
+        messageBox.setAlignment(Pos.CENTER_RIGHT);
+        messageBox.getChildren().addAll(winnerImage, winnerText);
 
         winnerOverlay.getChildren().addAll(messageBox);
+        winnerOverlay.setMouseTransparent(true);
+
     }
+
     public VBox getWinnerBox(){
         return winnerOverlay;
     }
+
     private ImageView createWinnerImage(String color){
         String winnerImagePath = "/images/" + color.toLowerCase() + "_winner.png";
 
         Image winnerImage = new Image(Objects.requireNonNull(getClass().getResource(winnerImagePath)).toExternalForm());
         ImageView winnerImageView = new ImageView(winnerImage);
-        winnerImageView.setFitWidth(200); //
-        winnerImageView.setFitHeight(200);
+        winnerImageView.setFitHeight(250);
         winnerImageView.setPreserveRatio(true);
 
         return winnerImageView;

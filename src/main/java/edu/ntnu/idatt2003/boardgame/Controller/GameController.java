@@ -1,17 +1,14 @@
 package edu.ntnu.idatt2003.boardgame.Controller;
 
-import edu.ntnu.idatt2003.boardgame.BoardGameApp;
 import edu.ntnu.idatt2003.boardgame.Model.*;
 import edu.ntnu.idatt2003.boardgame.View.BoardGameView;
-import javafx.event.ActionEvent;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class GameController {
     BoardGameView view;
@@ -26,27 +23,59 @@ public class GameController {
     }
 
     private void attachEventHandlers() {
-        view.getAddPlayerButton().setOnAction(e -> {
-            listOfPlayers.add(view.getPlayerName().getText()+","+view.getPlayerColorMenu().getSelectionModel().getSelectedItem());
-        });
+        view.getAddPlayerButton().setOnAction(e -> handleAddPlayer());
 
-        view.getMakeGameButton().setOnAction(actionEvent -> {
+        view.getMakeGameButton().setOnAction(e -> {
+            if(listOfPlayers.isEmpty() || view.getDiceField() == null || view.getBoardSizeMenu().getSelectionModel().isEmpty()) {
+                    getAlert("To start the game, you need the type of game, players, dice and board size!");
+                    throw new IllegalArgumentException("Players, board size, game and/or dice is not added");
+            }
             try {
-                handleMakeGame(actionEvent);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                handleMakeGame();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
             }
         });
 
-        view.getStartRoundButton().setOnAction(this::handleStartRound);
+        view.getStartRoundButton().setOnAction(e ->handleStartRound());
 
-        view.getMainMenuButton().setOnAction(e -> restartGame());
+        view.getMainMenuButton().setOnAction(e -> resetMainMenu());
+
+        view.getRestartGameButton().setOnAction(e-> {
+            try {
+                handleRestartGame();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
 
     }
 
+    private void handleRestartGame() throws IOException {
+        view.getLayout().getChildren().remove(view.getWinnerBox());
+        view.getRestartGameButton().setDisable(true);
+        boardGame.undoWinner(boardGame.getWinner());
+        view.getStartRoundButton().setDisable(false);
+        handleMakeGame();
 
-    private void handleMakeGame(ActionEvent actionEvent) throws IOException {
+    }
+
+    private void handleAddPlayer() {
+        String selectedColor = view.getPlayerColorMenu().getSelectionModel().getSelectedItem();
+        String writtenName = view.getPlayerName().getText();
+        if(selectedColor == null || writtenName.isEmpty()) {
+            getAlert("Please select a name and color for the player");
+            throw new RuntimeException("Color or name is not selected");
+        }
+
+        listOfPlayers.add(writtenName+","+selectedColor);
+
+        view.getPlayerName().clear();
+        view.getPlayerColorMenu().getItems().remove(selectedColor);
+    }
+
+    private void handleMakeGame() throws IOException {
         view.getLayout().getChildren().clear();
         try {
             boardGame.createPlayerHolder("src/main/resources/players.csv",listOfPlayers);
@@ -61,6 +90,7 @@ public class GameController {
         boardGame.initializeBoard(view.getGameName(),view.getBoardSizeMenu().getValue(),"src/main/resources/hardcodedBoards.json");
         board = boardGame.getBoard();
 
+
         boardGame.initializeDice(Integer.parseInt(view.getDiceField().getText()));
 
         view.createGridBoard(board);
@@ -68,25 +98,32 @@ public class GameController {
         view.createRulesColumn();
         view.createStartButton();
         view.createMainMenuButton();
+
         view.createInfoColumn(boardGame.getPlayerHolder());
 
         view.getInfoColumn().getChildren().add(view.getStartRoundButton());
+        view.getRulesColumn().getChildren().add(view.getRestartGameButton());
         view.getRulesColumn().getChildren().add(view.getMainMenuButton());
 
         view.createMainLayout(view.getGrid(),view.getTitleBox(),view.getRulesColumn(),view.getInfoColumn());
 
         for(Player p : boardGame.getPlayerHolder().getPlayers()){
             p.placeOnTile(board,1);
+            addPlayerImageToNewTile(p, 1);
         }
     }
 
-    private void restartGame() {
+    private void resetMainMenu() {
         boardGame.undoWinner(boardGame.getWinner());
         view.getStartRoundButton().setDisable(false);
         view.getInfoColumn().getChildren().clear();
         view.getLayout().getChildren().clear();
+        view.getDieBox().getChildren().clear();
 
+        view.getDiceField().clear();
         listOfPlayers.clear();
+        view.setPlayerColorBox();
+
         boardGame = new BoardGame();
         board = null;
 
@@ -96,8 +133,13 @@ public class GameController {
 
         attachEventHandlers();
     }
-    private void handleStartRound(ActionEvent actionEvent) {
+
+    private void handleStartRound() {
         view.getDisplayInfoBox().getChildren().clear();
+
+        if(view.getRestartGameButton().isDisabled()){
+            view.getRestartGameButton().setDisable(false);
+        }
 
         boardGame.play();
 
@@ -105,8 +147,6 @@ public class GameController {
 
         Player currentPlayer = boardGame.getPlayerHolder().getCurrentPlayer();
         int newTileId = currentPlayer.getCurrentTile().getId();
-
-        removePlayerImageFromOldTile(currentPlayer);
 
         addPlayerImageToNewTile(currentPlayer, newTileId);
 
@@ -122,18 +162,6 @@ public class GameController {
             view.getDieBox().getChildren().add(die);
         }
         view.getDisplayInfoBox().getChildren().add(view.getDieBox());
-    }
-
-    private void removePlayerImageFromOldTile(Player player){
-        for(Tile t : board.getTiles()){
-            t.getTileBox().getChildren().removeIf(node ->
-                    node instanceof ImageView && matchesPlayerImage((ImageView) node, player.getColor()));
-        }
-    }
-
-    private boolean matchesPlayerImage(ImageView imageView, String playerColor){
-        String imagePath = imageView.getImage().getUrl();
-        return imagePath != null && imagePath.contains(playerColor.toLowerCase());
     }
 
     private void addPlayerImageToNewTile(Player player, int newTileId){
@@ -157,11 +185,15 @@ public class GameController {
     }
 
     private void displayWinnerMessage(){
-        view.getLayout().getChildren().clear();
-        view.getLayout().getChildren().add(view.getWinnerBox());
+        view.getLayout().getChildren().addAll(view.getWinnerBox());
     }
 
-
-
+    private void getAlert(String errorMessage){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(errorMessage);
+        alert.showAndWait();
+    }
 
 }
