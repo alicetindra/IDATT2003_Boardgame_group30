@@ -54,12 +54,8 @@ public class BoardGame {
 
         int destTileId = playerHolder.getCurrentPlayer().getCurrentTile().getId() + totalEyes;
 
-        if(destTileId <= getBoard().getTiles().size()-1 && board.getTiles().get(destTileId-1).getAction() != null) {
+        if(destTileId <= getBoard().getTiles().size() && board.getTiles().get(destTileId-1).getAction() != null) {
             board.getTiles().get(destTileId-1).getAction().perform(playerHolder.getCurrentPlayer());
-        }
-        else if (destTileId == board.getTiles().size()) {
-            playerHolder.getCurrentPlayer().placeOnTile(board, destTileId);
-            declareWinner(playerHolder.getCurrentPlayer());
         }
         else if (destTileId > getBoard().getTiles().size()-1) {
             destTileId = (2 * getBoard().getTiles().size()) - (destTileId);

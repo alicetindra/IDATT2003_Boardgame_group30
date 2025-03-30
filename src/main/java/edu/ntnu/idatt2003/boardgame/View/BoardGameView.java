@@ -232,6 +232,9 @@ public class BoardGameView {
             portalImage.setFitWidth(65);
             tileBox.getChildren().add(portalImage);
         }
+        else if(tileAction instanceof WinAction){
+            tileBox.getStyleClass().add("winBox");
+        }
         else{
             tileBox.getStyleClass().add("tileBox");
         }

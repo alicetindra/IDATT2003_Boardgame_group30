@@ -80,6 +80,12 @@ public class BoardFactory {
             actionObj.addProperty("destination", 0);
             tileJson.add("action", actionObj);
           }
+          if (i == 90) {
+            JsonObject actionObj = new JsonObject();
+            actionObj.addProperty("type", "win");
+            actionObj.addProperty("destination", 90);
+            tileJson.add("action", actionObj);
+          }
 
           ladderJsonArray.add(tileJson);
         }
@@ -134,6 +140,12 @@ public class BoardFactory {
             JsonObject actionObj = new JsonObject();
             actionObj.addProperty("type", "portal");
             actionObj.addProperty("destination", 0);
+            tileJson.add("action", actionObj);
+          }
+          if (i == 50) {
+            JsonObject actionObj = new JsonObject();
+            actionObj.addProperty("type", "win");
+            actionObj.addProperty("destination", 50);
             tileJson.add("action", actionObj);
           }
 
@@ -230,6 +242,12 @@ public class BoardFactory {
             JsonObject actionObj = new JsonObject();
             actionObj.addProperty("type", "portal");
             actionObj.addProperty("destination", 0);
+            tileJson.add("action", actionObj);
+          }
+          if (i == 110) {
+            JsonObject actionObj = new JsonObject();
+            actionObj.addProperty("type", "win");
+            actionObj.addProperty("destination", 110);
             tileJson.add("action", actionObj);
           }
 

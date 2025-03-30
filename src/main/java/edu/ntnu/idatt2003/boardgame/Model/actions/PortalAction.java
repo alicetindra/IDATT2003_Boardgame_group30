@@ -1,8 +1,6 @@
 package edu.ntnu.idatt2003.boardgame.Model.actions;
 
-import edu.ntnu.idatt2003.boardgame.Model.Board;
 import edu.ntnu.idatt2003.boardgame.Model.Player;
-import edu.ntnu.idatt2003.boardgame.Model.Tile;
 import java.util.Random;
 
 public class PortalAction implements TileAction {
