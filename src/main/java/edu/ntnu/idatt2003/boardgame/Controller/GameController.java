@@ -22,6 +22,9 @@ public class GameController {
         attachEventHandlers();
     }
 
+    /**
+     * Attaching actions to the buttons made in BoardGameView.java
+     */
     private void attachEventHandlers() {
         view.getAddPlayerButton().setOnAction(e -> handleAddPlayer());
 
@@ -41,27 +44,31 @@ public class GameController {
 
         view.getMainMenuButton().setOnAction(e -> resetMainMenu());
 
-        view.getRestartGameButton().setOnAction(e-> {
-            try {
-                handleRestartGame();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-
+        view.getRestartGameButton().setOnAction(e ->handleRestartGame());
 
     }
 
-    private void handleRestartGame() throws IOException {
+    /**
+     * Removes the WinnerBox and the winner of the previous game, disables the restart button, calls handleMakeGame();
+     */
+    private void handleRestartGame() {
         view.getLayout().getChildren().remove(view.getWinnerBox());
-        view.getRestartGameButton().setDisable(true);
         boardGame.undoWinner(boardGame.getWinner());
         view.getStartRoundButton().setDisable(false);
-        handleMakeGame();
-
+        try {
+            handleMakeGame();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private void handleAddPlayer() {
+    /**
+     * Gets player-name and player-color inputs from the user and adds them to listOfPlayers.
+     * Clears the TextField and removes the color from the color-menu.
+     * Gives the user an errormessage if the color and/or name field is empty.
+     * @throws RuntimeException
+     */
+    private void handleAddPlayer() throws RuntimeException {
         String selectedColor = view.getPlayerColorMenu().getSelectionModel().getSelectedItem();
         String writtenName = view.getPlayerName().getText();
         if(selectedColor == null || writtenName.isEmpty()) {
@@ -75,6 +82,10 @@ public class GameController {
         view.getPlayerColorMenu().getItems().remove(selectedColor);
     }
 
+    /**
+     *
+     * @throws IOException
+     */
     private void handleMakeGame() throws IOException {
         view.getLayout().getChildren().clear();
         try {

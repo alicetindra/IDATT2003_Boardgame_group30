@@ -199,10 +199,6 @@ public class BoardGameView {
     }
 
     public void decorateTileBox(VBox tileBox, TileAction tileAction, int tileId,List<Integer> snakeDestination, List<Integer> ladderDestination) {
-        tileBox.setMinWidth(50);
-        tileBox.setMinHeight(50);
-        tileBox.setMaxHeight(50);
-        tileBox.setMaxWidth(50);
         tileBox.getChildren().add(new Text(tileId+""));
 
         for(Integer i:snakeDestination){
@@ -273,7 +269,7 @@ public class BoardGameView {
         rulesColumn.getChildren().add(title);
 
 
-        Text ruleText = new Text("1. Roll the dice to move when it's your turn.\n\n2. Land on dark green to climb, dark red to slide, \ndark blue to teleport.\n\n3. The first player at the finish is the winner.\n\n\n\n");
+        Text ruleText = new Text("1. Roll the dice to move when it's your turn.\n\n2. Land on dark green to climb, dark red\n   to slide, dark blue to teleport.\n\n3. The first player at the finish is the winner.\n\n\n\n");
         ruleText.getStyleClass().add("infoText");
         rulesColumn.getChildren().add(ruleText);
 
