@@ -2,10 +2,16 @@ package edu.ntnu.idatt2003.boardgame.View;
 
 import edu.ntnu.idatt2003.boardgame.Model.*;
 import edu.ntnu.idatt2003.boardgame.Model.actions.*;
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.ParallelTransition;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.control.*;
 
 import javafx.scene.image.Image;
@@ -13,12 +19,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 
 import java.util.*;
 import java.util.function.UnaryOperator;
+import javafx.util.Duration;
 
 public class BoardGameView {
     //Buttons
@@ -492,7 +501,7 @@ public class BoardGameView {
         messageBox.getChildren().addAll(winnerImage, winnerText);
 
         winnerOverlay.getChildren().addAll(messageBox, quitMessage);
-        //winnerOverlay.setMouseTransparent(true);
+        winnerOverlay.setMouseTransparent(true);
 
         // Add a key press handler to remove the winnerOverlay when Enter is pressed
         winnerOverlay.setOnKeyPressed(e -> {
@@ -504,7 +513,6 @@ public class BoardGameView {
         });
         // Request focus for the winnerOverlay so it can receive key events
         winnerOverlay.requestFocus();
-
 
     }
 
@@ -522,4 +530,47 @@ public class BoardGameView {
 
         return winnerImageView;
     }
+
+
+    //confetti
+    public void playConfettiEffect() {
+        // Skapa en grupp för konfetti
+        Group confettiGroup = new Group();
+
+        // Lägg till konfetti i rootLayout
+        rootLayout.getChildren().add(confettiGroup);
+
+        // Generera konfetti-bitar
+        for (int i = 0; i < 100; i++) {
+            // Skapa en liten rektangel som representerar en konfettibit
+            Rectangle confetti = new Rectangle(5, 15); // Smala "bitar"
+            confetti.setFill(Color.color(Math.random(), Math.random(), Math.random())); // Random färg
+            confetti.setX(Math.random() * 1000); // Slumpmässig position x
+            confetti.setY(-50); // Starta ovanför skärmen
+
+            confettiGroup.getChildren().add(confetti);
+
+            // Skapa animation för varje konfettibit
+            TranslateTransition transition = new TranslateTransition();
+            transition.setNode(confetti); // Anslut animationen till konfettin
+            transition.setDuration(Duration.seconds(3 + Math.random() * 2)); // Varje bit faller i 3-5 sekunder
+            transition.setByY(1500); // Faller ner 800 pixlar
+
+            // Skapa fade-out animation
+            FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), confetti);
+            fadeTransition.setFromValue(1.0); // Full synlighet
+            fadeTransition.setToValue(0.0); // Gradvis försvinn
+
+            // Kör båda animationerna samtidigt och avsluta innan de "ligger" i en linje
+            ParallelTransition parallelTransition = new ParallelTransition(transition, fadeTransition);
+            parallelTransition.setCycleCount(1);
+            parallelTransition.play();
+
+        }
+        // Ta bort konfettin efter animationen är klar
+        new Timeline(
+            new KeyFrame(Duration.seconds(5), e -> rootLayout.getChildren().remove(confettiGroup))
+        ).play();
+    }
+
 }

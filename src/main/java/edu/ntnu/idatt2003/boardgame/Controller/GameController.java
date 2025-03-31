@@ -213,6 +213,7 @@ public class GameController {
             view.makeWinnerBox(winnerName, winnerColor);
             view.getStartRoundButton().setDisable(true);
             displayWinnerMessage();
+            view.playConfettiEffect();
         }
 
     }
