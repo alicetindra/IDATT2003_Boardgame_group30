@@ -375,6 +375,15 @@ public class BoardGameView {
         return displayInfoBox;
     }
 
+    public void updateInfoBox(String message){
+        Text text = new Text(message);
+        text.setStyle("-fx-font-size: 14;"
+            + "-fx-font-family: Georgia;");
+        text.setWrappingWidth(200);
+
+        displayInfoBox.getChildren().add(text);
+    }
+
     public HBox getDieBox() {
         return dieBox;
     }

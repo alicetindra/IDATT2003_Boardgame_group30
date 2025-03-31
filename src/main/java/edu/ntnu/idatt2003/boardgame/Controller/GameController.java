@@ -163,6 +163,7 @@ public class GameController {
         boardGame.play();
 
         displayDice();
+        displayInfoBox();
 
         Player currentPlayer = boardGame.getPlayerHolder().getCurrentPlayer();
         int newTileId = currentPlayer.getCurrentTile().getId();
@@ -181,6 +182,12 @@ public class GameController {
             view.getDieBox().getChildren().add(die);
         }
         view.getDisplayInfoBox().getChildren().add(view.getDieBox());
+    }
+
+    public void displayInfoBox(){
+        String message = boardGame.getPlayerHolder().getCurrentPlayer().getColor() + " threw a " + boardGame.getDice().getTotalSumOfEyes() + " landed on tile " + boardGame.getPlayerHolder().getCurrentPlayer().getCurrentTile().getId();
+
+        view.updateInfoBox(message);
     }
 
     private void addPlayerImageToNewTile(Player player, int newTileId){
