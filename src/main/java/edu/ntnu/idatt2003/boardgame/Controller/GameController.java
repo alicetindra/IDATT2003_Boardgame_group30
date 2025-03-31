@@ -2,6 +2,7 @@ package edu.ntnu.idatt2003.boardgame.Controller;
 
 import edu.ntnu.idatt2003.boardgame.Model.*;
 import edu.ntnu.idatt2003.boardgame.View.BoardGameView;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -9,6 +10,7 @@ import javafx.scene.image.ImageView;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.layout.GridPane;
 
 public class GameController {
     BoardGameView view;
@@ -53,6 +55,7 @@ public class GameController {
      */
     private void handleRestartGame() {
         view.getLayout().getChildren().remove(view.getWinnerBox());
+        view.getDisplayInfoBox().getChildren().clear();
         boardGame.undoWinner(boardGame.getWinner());
         view.getStartRoundButton().setDisable(false);
         try {
@@ -104,7 +107,11 @@ public class GameController {
 
         boardGame.initializeDice(Integer.parseInt(view.getDiceField().getText()));
 
+        //Create BoardGrid
         view.createGridBoard(board);
+        GridPane boardGrid = view.getGrid();
+        boardGrid.setAlignment(Pos.CENTER);
+
         view.createTitleBox();
         view.createRulesColumn();
         view.createStartButton();
@@ -116,7 +123,7 @@ public class GameController {
         view.getRulesColumn().getChildren().add(view.getRestartGameButton());
         view.getRulesColumn().getChildren().add(view.getMainMenuButton());
 
-        view.createMainLayout(view.getGrid(),view.getTitleBox(),view.getRulesColumn(),view.getInfoColumn());
+        view.createMainLayout(boardGrid,view.getTitleBox(),view.getRulesColumn(),view.getInfoColumn());
 
         for(Player p : boardGame.getPlayerHolder().getPlayers()){
             p.placeOnTile(board,1);
@@ -127,6 +134,7 @@ public class GameController {
     private void resetMainMenu() {
         boardGame.undoWinner(boardGame.getWinner());
         view.getStartRoundButton().setDisable(false);
+        view.getGrid().getChildren().clear();
         view.getInfoColumn().getChildren().clear();
         view.getLayout().getChildren().clear();
         view.getDieBox().getChildren().clear();

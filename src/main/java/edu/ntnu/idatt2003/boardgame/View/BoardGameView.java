@@ -70,7 +70,7 @@ public class BoardGameView {
 
     private HBox titleBox;
 
-    private final VBox infoColumn = new VBox(10);
+    private final VBox infoColumn = new VBox(30);
 
     private final VBox winnerOverlay = new VBox(10);
 
@@ -226,6 +226,7 @@ public class BoardGameView {
             ImageView portalImage = new ImageView(new Image("images/portal.png"));
             portalImage.setFitHeight(65);
             portalImage.setFitWidth(65);
+            tileBox.setAlignment(Pos.CENTER);
             tileBox.getChildren().add(portalImage);
         }
         else if(tileAction instanceof WinAction){
@@ -258,9 +259,13 @@ public class BoardGameView {
 
     public void createRulesColumn() {
         if (rulesColumn == null) {
-            rulesColumn = new VBox();
+            rulesColumn = new VBox(30);
         }
+        rulesColumn.setPrefWidth(300);
         rulesColumn.setId("rulesColumn");
+        rulesColumn.setAlignment(Pos.TOP_CENTER);
+
+        rulesColumn.setPadding(new Insets(100,0,100,0));
 
         rulesColumn.getChildren().clear();
         Text title = new Text("Game Rules");
@@ -269,9 +274,14 @@ public class BoardGameView {
         rulesColumn.getChildren().add(title);
 
 
-        Text ruleText = new Text("1. Roll the dice to move when it's your turn.\n\n2. Land on dark green to climb, dark red\n   to slide, dark blue to teleport.\n\n3. The first player at the finish is the winner.\n\n\n\n");
+        Text ruleText = new Text("1. Roll the dice to move when it's your turn.\n\n2. Land on dark green to climb, dark red to slide, dark blue to teleport.\n\n3. The first player at the finish is the winner.");
+        ruleText.setWrappingWidth(200);
         ruleText.getStyleClass().add("infoText");
         rulesColumn.getChildren().add(ruleText);
+
+        Region spacer = new Region();
+        VBox.setVgrow(spacer, Priority.ALWAYS);
+        rulesColumn.getChildren().add(spacer);
 
         if (layout.getRight() != rulesColumn) {
             layout.setRight(rulesColumn);
@@ -285,6 +295,7 @@ public class BoardGameView {
 
     public void createInfoColumn(PlayerHolder playerHolder){
         infoColumn.getChildren().clear();
+        infoColumn.setPrefWidth(300);
         infoColumn.setId("infoColumn");
         infoColumn.setAlignment(Pos.TOP_CENTER);
         infoColumn.setPadding(new Insets(100, 0, 200, 0));
@@ -309,6 +320,10 @@ public class BoardGameView {
 
             infoColumn.getChildren().add(playerInfoBox);
         }
+
+        Region SpacerAboveDisplayBox = new Region();
+        VBox.setVgrow(SpacerAboveDisplayBox, Priority.ALWAYS);
+        infoColumn.getChildren().add(SpacerAboveDisplayBox);
 
         displayInfoBox.setAlignment(Pos.CENTER);
         displayInfoBox.getStyleClass().add("infoBox");

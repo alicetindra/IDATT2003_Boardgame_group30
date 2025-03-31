@@ -82,7 +82,7 @@
 
 #rulesColumn{
     -fx-background-color: #6f9c6f;
-    -fx-padding: 90px 0 0 0;
+    -fx-border-color: #6f9c6f;
 }
 .infoText{
     -fx-font-size: 18px;
@@ -90,7 +90,6 @@
     -fx-font-family: Georgia;
 }
 #infoColumn{
-    -fx-max-width: 300px;
     -fx-background-color: #6f9c6f;
 }
 
