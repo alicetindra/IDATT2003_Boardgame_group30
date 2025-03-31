@@ -49,25 +49,9 @@ public class BoardGame {
         playerHolder = getPlayerHolder();
         playerHolder.setCurrentPlayer(playerHolder.getPlayers().get(playerHolder.getNextPlayerIndex()));
 
-
         int totalEyes = dice.roll();
 
-        int destTileId = playerHolder.getCurrentPlayer().getCurrentTile().getId() + totalEyes;
-
-        if(destTileId <= getBoard().getTiles().size() && board.getTiles().get(destTileId-1).getAction() != null) {
-            board.getTiles().get(destTileId-1).getAction().perform(playerHolder.getCurrentPlayer());
-        }
-        else if (destTileId > getBoard().getTiles().size()-1) {
-            destTileId = (2 * getBoard().getTiles().size()) - (destTileId);
-            playerHolder.getCurrentPlayer().placeOnTile(board, destTileId);
-            if(board.getTiles().get(destTileId-1).getAction() != null){
-                board.getTiles().get(destTileId-1).getAction().perform(playerHolder.getCurrentPlayer());
-            }
-        }
-        else{
-            playerHolder.getCurrentPlayer().placeOnTile(board, destTileId);
-        }
-
+        playerHolder.getCurrentPlayer().move(totalEyes);
     }
 
     public void declareWinner(Player winner) {

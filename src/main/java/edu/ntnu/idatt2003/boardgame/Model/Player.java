@@ -32,6 +32,25 @@ public class Player {
         this.currentTile = board.getTiles().get(id-1);
     }
 
+
+    public void move(int steps){
+        int destTile = this.currentTile.getId() + steps;
+        Board board = this.boardGame.getBoard();
+
+        if(destTile <= board.getTiles().size() && board.getTiles().get(destTile - 1).getAction() != null){
+            board.getTiles().get(destTile -1).getAction().perform(this);
+        } else if(destTile > board.getTiles().size()){
+            destTile = (2*board.getTiles().size() - destTile);
+            this.placeOnTile(board, destTile);
+            if(board.getTiles().get(destTile - 1).getAction() != null){
+                board.getTiles().get(destTile - 1).getAction().perform(this);
+            }
+        }else{
+            this.placeOnTile(board, destTile);
+        }
+
+    }
+
     public void setImageView(ImageView imageView){
         this.imageView = imageView;
     }
