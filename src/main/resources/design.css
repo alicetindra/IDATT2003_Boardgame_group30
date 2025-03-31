@@ -103,12 +103,7 @@
 .title{
     -fx-font-size: 80px;
 }
-#winnerOverlay{
-    -fx-max-height: 600px;
-    -fx-max-width: 1200px;
-    -fx-min-height: 600px;
-    -fx-min-width: 1200px;
-}
+
 #winnerText{
     -fx-font-size: 90px;
     -fx-fill: white;

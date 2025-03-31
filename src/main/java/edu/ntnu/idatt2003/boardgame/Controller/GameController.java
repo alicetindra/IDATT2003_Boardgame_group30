@@ -10,7 +10,9 @@ import javafx.scene.image.ImageView;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 
 public class GameController {
     BoardGameView view;
@@ -123,7 +125,12 @@ public class GameController {
         view.getRulesColumn().getChildren().add(view.getRestartGameButton());
         view.getRulesColumn().getChildren().add(view.getMainMenuButton());
 
-        view.createMainLayout(boardGrid,view.getTitleBox(),view.getRulesColumn(),view.getInfoColumn());
+        //add to StackPane layout
+        BorderPane gameLayout = view.createMainLayout(boardGrid,view.getTitleBox(),view.getRulesColumn(),view.getInfoColumn());
+
+        view.getRootLayout().getChildren().clear();
+        view.getRootLayout().getChildren().add(gameLayout);
+        StackPane.setAlignment(gameLayout, Pos.CENTER);
 
         for(Player p : boardGame.getPlayerHolder().getPlayers()){
             p.placeOnTile(board,1);
@@ -211,7 +218,7 @@ public class GameController {
     }
 
     private void displayWinnerMessage(){
-        view.getLayout().getChildren().addAll(view.getWinnerBox());
+        view.getRootLayout().getChildren().addAll(view.getWinnerBox());
     }
 
     private void getAlert(String errorMessage){

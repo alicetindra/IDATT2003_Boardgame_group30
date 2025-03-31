@@ -80,6 +80,8 @@ public class BoardGameView {
 
     private BorderPane layout;
 
+    private StackPane rootLayout;
+
 
     //Font
     Font customFont = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
@@ -87,6 +89,8 @@ public class BoardGameView {
 
     //Methods
     public void initialize(){
+        rootLayout = new StackPane();
+
         layout = new BorderPane();
         createMainMenu();
         setBoardSizeBox();
@@ -96,6 +100,10 @@ public class BoardGameView {
 
     public BorderPane getLayout(){
         return layout;
+    }
+
+    public StackPane getRootLayout(){
+        return rootLayout;
     }
 
     public void setBoardSizeBox(){
@@ -152,7 +160,7 @@ public class BoardGameView {
         return makeGameButton;
     }
 
-    public void createMainLayout(GridPane boardGrid, HBox titleWithImage, VBox rulesColumn, VBox infoColumn){
+    public BorderPane createMainLayout(GridPane boardGrid, HBox titleWithImage, VBox rulesColumn, VBox infoColumn){
         layout.setTop(titleWithImage);
         layout.setLeft(rulesColumn);
         layout.setCenter(boardGrid);
@@ -162,6 +170,7 @@ public class BoardGameView {
         BorderPane.setMargin(infoColumn, new Insets(0,20,0,20));
 
         layout.setId("mainLayout");
+        return layout;
     }
 
     public void createGridBoard(Board board){
@@ -456,11 +465,17 @@ public class BoardGameView {
         userinfoBox.getChildren().addAll(radioButtonBox, boardDiceBox,nameColorBox, addPlayerButton, new Text(),makeGameButton);
         userinfoBox.setAlignment(Pos.CENTER);
         userinfoBox.setId("userInfoBox");
-        layout.setCenter(userinfoBox);
+        //layout.setCenter(userinfoBox);
+        rootLayout.getChildren().clear();
+        rootLayout.getChildren().add(userinfoBox);
+        StackPane.setAlignment(userinfoBox, Pos.CENTER);
     }
 
     public void makeWinnerBox(String winnerName, String winnerColor){
         winnerOverlay.getChildren().clear();
+        winnerOverlay.setAlignment(Pos.CENTER);
+        winnerOverlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7);");
+        winnerOverlay.setPadding(new Insets(50));
 
         ImageView winnerImage = createWinnerImage(winnerColor);
 
@@ -469,11 +484,10 @@ public class BoardGameView {
         winnerText.setId("winnerText");
 
         HBox messageBox = new HBox(20);
-        messageBox.setId("winnerOverlay");
-        messageBox.setAlignment(Pos.CENTER_RIGHT);
+        messageBox.setAlignment(Pos.CENTER);
         messageBox.getChildren().addAll(winnerImage, winnerText);
 
-        winnerOverlay.getChildren().addAll(messageBox);
+        winnerOverlay.getChildren().add(messageBox);
         winnerOverlay.setMouseTransparent(true);
 
     }

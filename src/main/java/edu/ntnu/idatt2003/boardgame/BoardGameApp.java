@@ -17,11 +17,11 @@ public class BoardGameApp extends Application {
     new GameController(view);
 
 
-    Scene scene = new Scene(view.getLayout());
+    Scene scene = new Scene(view.getRootLayout());
     scene.getStylesheets().add(getClass().getResource("/design.css").toExternalForm());
-    primaryStage.setMaximized(true);
     primaryStage.setScene(scene);
     primaryStage.setTitle("Board game");
+    primaryStage.setMaximized(true);
     primaryStage.show();
 
   }
