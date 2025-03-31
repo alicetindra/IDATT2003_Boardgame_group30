@@ -192,7 +192,7 @@ public class GameController {
     }
 
     public void displayInfoBox(){
-        String message = boardGame.getPlayerHolder().getCurrentPlayer().getColor() + " threw a " + boardGame.getDice().getTotalSumOfEyes() + " landed on tile " + boardGame.getPlayerHolder().getCurrentPlayer().getCurrentTile().getId();
+        String message = "Player: "+ boardGame.getPlayerHolder().getCurrentPlayer().getColor() + "\nThrew a: " + boardGame.getDice().getTotalSumOfEyes() + "\nLanded on tile: " + boardGame.getPlayerHolder().getCurrentPlayer().getCurrentTile().getId();
 
         view.updateInfoBox(message);
     }

@@ -109,6 +109,13 @@
     -fx-fill: white;
     -fx-effect: dropshadow(one-pass-box, #000000, 10, 1, 4, 3);
 }
+
+#quitMessage{
+    -fx-font-size: 18px;
+    -fx-fill: white;
+    -fx-font-family: Georgia
+}
+
 #errorMessageBox{
     -fx-font-size: 20px;
 }

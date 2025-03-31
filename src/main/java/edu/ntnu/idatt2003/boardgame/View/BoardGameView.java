@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 
 import javafx.scene.text.Font;
@@ -483,12 +484,27 @@ public class BoardGameView {
         winnerText.setFont(customFont);
         winnerText.setId("winnerText");
 
+        Text quitMessage = new Text("Press enter to continue");
+        quitMessage.setId("quitMessage");
+
         HBox messageBox = new HBox(20);
         messageBox.setAlignment(Pos.CENTER);
         messageBox.getChildren().addAll(winnerImage, winnerText);
 
-        winnerOverlay.getChildren().add(messageBox);
-        winnerOverlay.setMouseTransparent(true);
+        winnerOverlay.getChildren().addAll(messageBox, quitMessage);
+        //winnerOverlay.setMouseTransparent(true);
+
+        // Add a key press handler to remove the winnerOverlay when Enter is pressed
+        winnerOverlay.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                // Remove the winner box from the scene
+                getRootLayout().getChildren().remove(winnerOverlay);
+                System.out.println("Winner overlay dismissed with Enter key!");
+            }
+        });
+        // Request focus for the winnerOverlay so it can receive key events
+        winnerOverlay.requestFocus();
+
 
     }
 
