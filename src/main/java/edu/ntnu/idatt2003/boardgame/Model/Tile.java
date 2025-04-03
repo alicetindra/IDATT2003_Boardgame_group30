@@ -10,6 +10,9 @@ public class Tile {
     private transient VBox tileBox;
 
     public Tile(int tileId){
+        if(tileId < 0){
+            throw new IllegalArgumentException("Tile id cannot be negative");
+        }
         this.id = tileId;
     }
 
@@ -30,6 +33,9 @@ public class Tile {
     }
 
     public void setAction(TileAction action) {
+        if(action == null){
+            throw new NullPointerException("action cannot be null");
+        }
         this.action = action;
     }
 
