@@ -493,7 +493,7 @@ public class BoardGameView {
         winnerText.setFont(customFont);
         winnerText.setId("winnerText");
 
-        Text quitMessage = new Text("Press enter to continue");
+        Text quitMessage = new Text("Press space to continue");
         quitMessage.setId("quitMessage");
 
         HBox messageBox = new HBox(20);
