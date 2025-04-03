@@ -12,6 +12,12 @@ public class Player {
     private ImageView imageView;
 
     public Player(String name, String color) {
+        if(name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be null nor empty");
+        }
+        else if(color == null || color.trim().isEmpty()) {
+            throw new IllegalArgumentException("Color cannot be null nor empty");
+        }
         this.name = name;
         this.color = color;
     }
@@ -34,6 +40,9 @@ public class Player {
 
 
     public void move(int steps){
+        if(steps<0){
+            throw new IllegalArgumentException("Steps cannot be negative");
+        }
         int destTile = this.currentTile.getId() + steps;
         Board board = this.boardGame.getBoard();
 
@@ -52,8 +61,12 @@ public class Player {
     }
 
     public void setImageView(ImageView imageView){
+        if(imageView.getImage() == null){
+            throw new IllegalArgumentException("Image cannot be null");
+        }
         this.imageView = imageView;
     }
+
     public ImageView getImageView(){
         return imageView;
     }
