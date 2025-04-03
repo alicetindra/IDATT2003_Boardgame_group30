@@ -1,10 +1,8 @@
 package edu.ntnu.idatt2003.boardgame.readers;
 
 import com.google.gson.*;
-import edu.ntnu.idatt2003.boardgame.actions.PortalAction;
-import edu.ntnu.idatt2003.boardgame.actions.SnakeAction;
-import edu.ntnu.idatt2003.boardgame.actions.TileAction;
-import edu.ntnu.idatt2003.boardgame.actions.LadderAction;
+
+import edu.ntnu.idatt2003.boardgame.Model.actions.*;
 
 import java.lang.reflect.Type;
 
@@ -21,8 +19,10 @@ public class TileActionReader implements JsonDeserializer<TileAction> {
         return switch (type.toLowerCase()) {
             case "ladder" -> new LadderAction(destination,type);
             case "snake" -> new SnakeAction(destination,type);
-            case "portal" -> new PortalAction(destination,type);
+            case "portal" -> new PortalAction();
+            case "win" -> new WinAction(destination,type);
             default -> throw new JsonParseException("Unknown action type: " + type);
         };
     }
 }
+

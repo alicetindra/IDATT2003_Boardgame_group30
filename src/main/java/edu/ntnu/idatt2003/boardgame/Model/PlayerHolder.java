@@ -1,6 +1,5 @@
-package edu.ntnu.idatt2003.boardgame.componentHolders;
+package edu.ntnu.idatt2003.boardgame.Model;
 
-import edu.ntnu.idatt2003.boardgame.components.Player;
 
 import java.util.List;
 

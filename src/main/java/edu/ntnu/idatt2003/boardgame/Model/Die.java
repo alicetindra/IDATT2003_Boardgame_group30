@@ -1,7 +1,8 @@
-package edu.ntnu.idatt2003.boardgame.components;
+package edu.ntnu.idatt2003.boardgame.Model;
 import java.util.Random;
 
 public class Die {
+
   private int lastRolledValue;
 
 

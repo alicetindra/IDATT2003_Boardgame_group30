@@ -1,6 +1,4 @@
-package edu.ntnu.idatt2003.boardgame.componentHolders;
-
-import edu.ntnu.idatt2003.boardgame.components.Die;
+package edu.ntnu.idatt2003.boardgame.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,12 +7,6 @@ public class Dice {
   private List<Die> dice;
 
   public Dice(int numberOfDice) {
-    if(numberOfDice <= 0) {
-      throw new IllegalArgumentException("Number of dice cannot be negative or zero");
-    }
-    if(numberOfDice > 100) {
-      throw new IllegalArgumentException("I'm pretty sure you don't need that many dice...");
-    }
     dice = new ArrayList<>();
     for (int i = 0; i < numberOfDice; i++) {
       this.dice.add(new Die());

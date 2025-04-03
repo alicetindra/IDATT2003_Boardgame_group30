@@ -1,0 +1,122 @@
+#header{
+    -fx-font-size: 20px;
+}
+#mainLayout{
+    -fx-background-color: #6f9c6f;
+}
+#userInfoBox{
+    -fx-background-color: #dfdfdf;
+    -fx-font-size: 18px;
+    -fx-font-family: Georgia;
+}
+.pullDownMenu{
+    -fx-max-height: 30px;
+    -fx-max-width: 90px;
+    -fx-background-color: white;
+}
+
+.text-field{
+    -fx-max-height: 30px;
+    -fx-max-width: 90px;
+}
+
+#makeGameButton{
+    -fx-background-color: white;
+    -fx-border-color: #000000;
+    -fx-max-height: 35px;
+    -fx-max-width: 120px;
+}
+#addPlayerButton{
+    -fx-background-color: white;
+    -fx-border-color: #000000;
+    -fx-max-height: 20px;
+    -fx-max-width: 110px;
+}
+.infoBox{
+    -fx-font-size: 18px;
+    -fx-max-height: 100px;
+    -fx-min-height: 100px;
+}
+
+
+.tileBox, .ladderBox, .snakeBox, .portalBox, .winBox{
+    -fx-max-height: 75px;
+    -fx-min-height: 75px;
+    -fx-max-width: 75px;
+    -fx-min-width: 75px;
+    -fx-border-color: black;
+}
+.tileBox{
+    -fx-background-color: #E0E0E0;
+}
+.ladderBox{
+    -fx-background-color: #8aca84;
+}
+.snakeBox{
+    -fx-background-color: #e85b5b;
+}
+.portalBox{
+    -fx-background-color: #77b7d8;
+}
+.winBox{
+    -fx-background-color: #fff900;
+}
+.snakeDestBox{
+    -fx-background-color: #FBC4C4;
+}
+.ladderDestBox{
+    -fx-background-color: #D3F9D8;
+}
+
+
+#start-round-button, #main-menu-button, #restartGameButton{
+    -fx-background-color: #416c42;
+    -fx-text-fill: white;
+    -fx-background-radius: 20px;
+    -fx-border-color: #053005;
+    -fx-border-width: 2px;
+    -fx-border-radius: 20px;
+    -fx-max-width: 150px;
+    -fx-max-height: 150px;
+}
+
+#rulesColumn{
+    -fx-background-color: #6f9c6f;
+    -fx-border-color: #6f9c6f;
+}
+.infoText{
+    -fx-font-size: 18px;
+    -fx-fill: black;
+    -fx-font-family: Georgia;
+}
+#infoColumn{
+    -fx-background-color: #6f9c6f;
+}
+
+.subTitle, .title{
+    -fx-fill: #19599f;
+}
+
+.subTitle{
+    -fx-font-size: 30px;
+}
+.title{
+    -fx-font-size: 80px;
+}
+
+#winnerText{
+    -fx-font-size: 90px;
+    -fx-fill: white;
+    -fx-effect: dropshadow(one-pass-box, #000000, 10, 1, 4, 3);
+}
+
+#quitMessage{
+    -fx-font-size: 18px;
+    -fx-fill: white;
+    -fx-font-family: Georgia
+}
+
+#errorMessageBox{
+    -fx-font-size: 20px;
+}
+
