@@ -407,15 +407,7 @@ public class BoardGameView {
         return dieBox;
     }
 
-    public void updateDieBox(List<Die> dice){
-        dieBox.getChildren().clear();
-        for(Die die : dice){
-            ImageView dieImage = new ImageView(new Image("/images/dice" + die.getValue() + ".png"));
-            dieImage.setFitHeight(40);
-            dieImage.setFitWidth(40);
-            dieBox.getChildren().add(dieImage);
-        }
-    }
+
 
     public void createTitleBox() {
         //Snake image
@@ -503,7 +495,7 @@ public class BoardGameView {
         winnerText.setFont(customFont);
         winnerText.setId("winnerText");
 
-        Text quitMessage = new Text("Press space to continue");
+        Text quitMessage = new Text("Press enter to continue");
         quitMessage.setId("quitMessage");
 
         HBox messageBox = new HBox(20);
