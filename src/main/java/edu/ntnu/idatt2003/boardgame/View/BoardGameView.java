@@ -28,33 +28,23 @@ import javafx.scene.text.Text;
 import java.util.*;
 import java.util.function.UnaryOperator;
 import javafx.util.Duration;
+import java.util.logging.Logger;
 
 public class BoardGameView {
+    private static final Logger log = Logger.getLogger(BoardGameView.class.getName());
     //Buttons
     private final Button addPlayerButton = new Button("Add Player");
-
     private final Button makeGameButton = new Button("Start game");
-
     private final Button startRoundButton = new Button("Roll dice");
-
     private final Button mainMenuButton = new Button("Main menu");
-
     private final Button restartGame = new Button("Restart");
-
     //Radio buttons
     private final ToggleGroup toggleGroup = new ToggleGroup();
-
     private final RadioButton SLButton = new RadioButton("Snakes and ladders");
-
     private final RadioButton CLButton = new RadioButton("CandyLand");
-
-
     //TextFields
     private final TextField diceField = new TextField();
-
     private final TextField playerName = new TextField();
-
-
     //ComboBoxes
     private final ComboBox<Integer> boardSizeMenu = new ComboBox<>();
 
@@ -68,34 +58,22 @@ public class BoardGameView {
 
     public ComboBox<String> playerColorMenu = new ComboBox<>();
 
-
     //Boxes
     private final HBox dieBox = new HBox();
-
     private VBox rulesColumn = new VBox(30);
-
     private final VBox displayInfoBox = new VBox();
-
     private final VBox userinfoBox = new VBox(20);
-
     private HBox titleBox;
-
     private final VBox infoColumn = new VBox(30);
-
     private final VBox winnerOverlay = new VBox(10);
-
 
     //Panes
     private final GridPane grid = new GridPane();
-
     private BorderPane layout;
-
     private StackPane rootLayout;
-
 
     //Font
     Font customFont = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
-
 
     //Methods
     public void initialize(){
@@ -510,7 +488,7 @@ public class BoardGameView {
             if (e.getCode() == KeyCode.ENTER) {
                 // Remove the winner box from the scene
                 getRootLayout().getChildren().remove(winnerOverlay);
-                System.out.println("Winner overlay dismissed with Enter key!");
+                log.info("Winner overlay dismissed with Enter key!");
             }
         });
         // Request focus for the winnerOverlay so it can receive key events
