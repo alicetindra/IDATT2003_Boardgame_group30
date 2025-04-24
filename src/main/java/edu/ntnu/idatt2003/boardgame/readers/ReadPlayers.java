@@ -7,8 +7,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ReadPlayers {
+
+    private static final Logger log = Logger.getLogger(ReadPlayers.class.getName());
 
     public static List<Player> readPlayersFromFile(String fileName) {
         List<Player> players = new ArrayList<>();
@@ -28,8 +31,9 @@ public class ReadPlayers {
                     players.add(player);
                 }
             }
+            log.info("Successfully read " + players.size() + " players");
         } catch (IOException e) {
-            System.out.println("Error reading file: " + fileName);
+            log.severe("Error reading file: " + fileName + " - " + e.getMessage());
         }
         return players;
     }

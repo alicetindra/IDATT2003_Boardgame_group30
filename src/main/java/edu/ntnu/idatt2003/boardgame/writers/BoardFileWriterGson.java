@@ -4,18 +4,21 @@ import com.google.gson.JsonObject;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 
 public class BoardFileWriterGson implements BoardFileWriter{
+
+  private static final Logger LOGGER = Logger.getLogger(BoardFileWriterGson.class.getName());
 
   @Override
   public void writeJsonToFile(JsonObject jsonObject, String filePath) {
     try (FileWriter fileWriter = new FileWriter(filePath)) {
       fileWriter.write(jsonObject.toString());
       fileWriter.flush();
-      System.out.println("Board data successfully written to " + filePath);
+      LOGGER.info("Board data successfully written to " + filePath);
     } catch (IOException e) {
-      System.out.println("Error writing to file: " + filePath);
+      LOGGER.severe("Error writing to file: " + filePath + " - " + e.getMessage());
     }
   }
 }
