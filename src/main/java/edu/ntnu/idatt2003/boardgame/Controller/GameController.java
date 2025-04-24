@@ -33,10 +33,15 @@ public class GameController implements BoardGameObserver {
     public void update(String event, BoardGame boardGame){
         switch (event) {
             case "playerMoved" -> {
-                Player currentPLayer = boardGame.getPlayerHolder().getCurrentPlayer();
-                view.updateInfoBox("Player " +currentPLayer.getName() + " Moved to tile " + currentPLayer.getCurrentTile().getId());
-                view.updateDieBox(boardGame.getDice().getListOfDice());
-                checkForWinner();
+                view.getDisplayInfoBox().getChildren().clear();
+                displayDice();
+                displayInfoBox();
+
+                Player currentPlayer = boardGame.getPlayerHolder().getCurrentPlayer();
+                int newTileId = currentPlayer.getCurrentTile().getId();
+
+                addPlayerImageToNewTile(currentPlayer, newTileId);
+
             }
             case "winnerDeclared" -> {
                 Player winner = boardGame.getWinner();
@@ -182,23 +187,11 @@ public class GameController implements BoardGameObserver {
     }
 
     private void handleStartRound() {
-        view.getDisplayInfoBox().getChildren().clear();
-
         if(view.getRestartGameButton().isDisabled()){
             view.getRestartGameButton().setDisable(false);
         }
-
         boardGame.play();
 
-        displayDice();
-        displayInfoBox();
-
-        Player currentPlayer = boardGame.getPlayerHolder().getCurrentPlayer();
-        int newTileId = currentPlayer.getCurrentTile().getId();
-
-        addPlayerImageToNewTile(currentPlayer, newTileId);
-
-        checkForWinner();
     }
 
 
@@ -225,23 +218,6 @@ public class GameController implements BoardGameObserver {
                 t.getTileBox().getChildren().add(view.getPlayerImage(player));
             }
         }
-    }
-
-    private void checkForWinner(){
-        if(boardGame.getWinner()!=null){
-            String winnerName = boardGame.getWinner().getName();
-            String winnerColor = boardGame.getWinner().getColor();
-
-            view.makeWinnerBox(winnerName, winnerColor);
-            view.getStartRoundButton().setDisable(true);
-            displayWinnerMessage();
-            view.playConfettiEffect();
-        }
-
-    }
-
-    private void displayWinnerMessage(){
-        view.getRootLayout().getChildren().addAll(view.getWinnerBox());
     }
 
     private void getAlert(String errorMessage){
