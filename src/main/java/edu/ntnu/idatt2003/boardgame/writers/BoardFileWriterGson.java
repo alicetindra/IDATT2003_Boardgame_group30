@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import java.io.FileWriter;
 import java.io.IOException;
 
+
 public class BoardFileWriterGson implements BoardFileWriter{
 
   @Override
