@@ -1,6 +1,7 @@
 package edu.ntnu.idatt2003.boardgame.Controller;
 
 import edu.ntnu.idatt2003.boardgame.Model.*;
+import edu.ntnu.idatt2003.boardgame.Observer.BoardGameObserver;
 import edu.ntnu.idatt2003.boardgame.View.BoardGameView;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -14,18 +15,38 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
-public class GameController {
-    BoardGameView view;
-    List<String> listOfPlayers = new ArrayList<>();
-    BoardGame boardGame = new BoardGame();
-    Board board;
+public class GameController implements BoardGameObserver {
+    private BoardGameView view;
+    private List<String> listOfPlayers = new ArrayList<>();
+    private BoardGame boardGame;
+    private Board board;
 
     public GameController(BoardGameView view) {
         this.view = view;
+        this.boardGame = new BoardGame();
+        this.boardGame.addObserver(this);
         view.initialize();
         attachEventHandlers();
     }
 
+    @Override
+    public void update(String event, BoardGame boardGame){
+        switch (event) {
+            case "playerMoved" -> {
+                Player currentPLayer = boardGame.getPlayerHolder().getCurrentPlayer();
+                view.updateInfoBox("Player " +currentPLayer.getName() + " Moved to tile " + currentPLayer.getCurrentTile().getId());
+                view.updateDieBox(boardGame.getDice().getListOfDice());
+                checkForWinner();
+            }
+            case "winnerDeclared" -> {
+                Player winner = boardGame.getWinner();
+                view.makeWinnerBox(winner.getName(), winner.getColor());
+                view.getStartRoundButton().setDisable(true);
+                view.getRootLayout().getChildren().addAll(view.getWinnerBox());
+                view.playConfettiEffect();
+            }
+        }
+    }
     /**
      * Attaching actions to the buttons made in BoardGameView.java
      */
@@ -179,6 +200,7 @@ public class GameController {
 
         checkForWinner();
     }
+
 
     public void displayDice(){
         view.getDieBox().getChildren().clear();

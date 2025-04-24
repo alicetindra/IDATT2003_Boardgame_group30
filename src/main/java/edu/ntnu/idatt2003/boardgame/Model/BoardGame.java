@@ -1,6 +1,7 @@
 package edu.ntnu.idatt2003.boardgame.Model;
 
 import com.google.gson.JsonObject;
+import edu.ntnu.idatt2003.boardgame.Observer.BoardGameObserver;
 import edu.ntnu.idatt2003.boardgame.readers.BoardFileReaderGson;
 import edu.ntnu.idatt2003.boardgame.readers.ReadPlayers;
 import edu.ntnu.idatt2003.boardgame.writers.BoardFactory;
@@ -11,12 +12,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BoardGame {
+    private List<BoardGameObserver> observers = new ArrayList<>();
     private Board board;
     private Dice dice;
     private PlayerHolder playerHolder;
     private Player winner = null;
 
     public BoardGame() {
+    }
+
+    public void addObserver(BoardGameObserver observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(BoardGameObserver observer) {
+        observers.remove(observer);
+    }
+
+    public void notifyObservers(String event) {
+        for (BoardGameObserver observer : observers) {
+            observer.update(event, this);
+        }
     }
 
     public void initializeBoard(String chosenGame, int size, String filename){
@@ -52,10 +68,13 @@ public class BoardGame {
         int totalEyes = dice.roll();
 
         playerHolder.getCurrentPlayer().move(totalEyes);
+
+        notifyObservers("playerMoved");
     }
 
     public void declareWinner(Player winner) {
         this.winner = winner;
+        notifyObservers("winnerDeclared");
     }
 
     public Player getWinner(){

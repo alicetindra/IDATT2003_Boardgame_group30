@@ -407,6 +407,16 @@ public class BoardGameView {
         return dieBox;
     }
 
+    public void updateDieBox(List<Die> dice){
+        dieBox.getChildren().clear();
+        for(Die die : dice){
+            ImageView dieImage = new ImageView(new Image("/images/dice" + die.getValue() + ".png"));
+            dieImage.setFitHeight(40);
+            dieImage.setFitWidth(40);
+            dieBox.getChildren().add(dieImage);
+        }
+    }
+
     public void createTitleBox() {
         //Snake image
         ImageView snakeImageView = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/snake.png")).toExternalForm()));
