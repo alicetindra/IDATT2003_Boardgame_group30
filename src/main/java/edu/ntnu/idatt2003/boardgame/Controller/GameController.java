@@ -8,18 +8,22 @@ import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 public class GameController implements BoardGameObserver {
     private BoardGameView view;
     private List<String> listOfPlayers = new ArrayList<>();
     private BoardGame boardGame;
     private Board board;
+    private Stage primaryStage;
 
     public GameController(BoardGameView view) {
         this.view = view;
@@ -92,6 +96,20 @@ public class GameController implements BoardGameObserver {
             throw new RuntimeException(e);
         }
     }
+    private void loadBoard() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Custom Board JSON File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON files", "*.json"));
+        File file = fileChooser.showOpenDialog(primaryStage);
+
+        if (file != null) {
+            boardGame.loadCustomBoard(file.getPath());
+        } else {
+            System.out.println("User cancelled file selection.");
+        }
+    }
+
+
 
     /**
      * Gets player-name and player-color inputs from the user and adds them to listOfPlayers.
@@ -129,7 +147,14 @@ public class GameController implements BoardGameObserver {
             p.setImageView(imageView);
             p.setBoardGame(boardGame);
         }
-        boardGame.initializeBoard(view.getGameName(),view.getBoardSizeMenu().getValue(),"src/main/resources/hardcodedBoards.json");
+        //When starting the game, it ignores the initializeBoard method and all inputs regarding the board. It just sends the board directly in. This is a temporary solution in need of correcting
+        if (view.getCustomRadioButton().isSelected()) {
+            loadBoard();
+        } else {
+            boardGame.initializeBoard(view.getGameName(), view.getBoardSizeMenu().getValue(), "src/main/resources/hardcodedBoards.json");
+        }
+
+
         board = boardGame.getBoard();
 
 
@@ -228,4 +253,7 @@ public class GameController implements BoardGameObserver {
         alert.showAndWait();
     }
 
+    public void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+    }
 }

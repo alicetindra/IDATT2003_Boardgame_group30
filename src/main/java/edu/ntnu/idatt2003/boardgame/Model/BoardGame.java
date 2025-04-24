@@ -44,6 +44,13 @@ public class BoardGame {
         this.board = reader.readTilesFromFile(filename);
     }
 
+    //Skips over chosen game, size and filename. Just loads the board it gets
+    public void loadCustomBoard(String filePath) {
+        BoardFileReaderGson reader = new BoardFileReaderGson();
+        this.board = reader.readTilesFromFile(filePath);
+    }
+
+
     public void initializeDice(int numberOfDice){
         this.dice = new Dice(numberOfDice);
     }

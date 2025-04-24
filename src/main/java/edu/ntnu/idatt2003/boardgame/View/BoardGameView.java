@@ -38,10 +38,12 @@ public class BoardGameView {
     private final Button startRoundButton = new Button("Roll dice");
     private final Button mainMenuButton = new Button("Main menu");
     private final Button restartGame = new Button("Restart");
+    private final Button loadCustomBoardButton = new Button("Load Custom Board");
     //Radio buttons
     private final ToggleGroup toggleGroup = new ToggleGroup();
     private final RadioButton SLButton = new RadioButton("Snakes and ladders");
     private final RadioButton CLButton = new RadioButton("CandyLand");
+    private final RadioButton customButton = new RadioButton("Custom game");
     //TextFields
     private final TextField diceField = new TextField();
     private final TextField playerName = new TextField();
@@ -94,6 +96,10 @@ public class BoardGameView {
         return rootLayout;
     }
 
+    public RadioButton getCustomRadioButton(){
+        return customButton;
+    }
+
     public void setBoardSizeBox(){
         ObservableList<Integer> options = FXCollections.observableArrayList();
         options.addAll(50,90,110);
@@ -131,6 +137,10 @@ public class BoardGameView {
     public Button getAddPlayerButton() {
         addPlayerButton.setId("addPlayerButton");
         return addPlayerButton;
+    }
+    public Button getLoadCustomBoardButton() {
+        loadCustomBoardButton.setId("loadCustomBoardButton");
+        return loadCustomBoardButton;
     }
 
     public Button getRestartGameButton() {
@@ -418,9 +428,10 @@ public class BoardGameView {
     public void createMainMenu(){
         SLButton.setToggleGroup(toggleGroup);
         CLButton.setToggleGroup(toggleGroup);
+        customButton.setToggleGroup(toggleGroup);
         SLButton.setSelected(true);
         HBox radioButtonBox = new HBox(20);
-        radioButtonBox.getChildren().addAll(SLButton, CLButton);
+        radioButtonBox.getChildren().addAll(SLButton, CLButton, customButton);
         radioButtonBox.setAlignment(Pos.CENTER);
 
         diceField.setTextFormatter(new TextFormatter<>(filter));

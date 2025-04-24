@@ -23,8 +23,8 @@ public class BoardGameApp extends Application {
     primaryStage.setTitle("Board game");
     primaryStage.setMaximized(true);
     primaryStage.show();
-
   }
+
 
   public static void main(String[] args) {
     launch(args);
