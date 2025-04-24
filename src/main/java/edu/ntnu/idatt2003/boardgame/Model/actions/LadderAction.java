@@ -1,9 +1,10 @@
 package edu.ntnu.idatt2003.boardgame.Model.actions;
 
 import edu.ntnu.idatt2003.boardgame.Model.Player;
-import edu.ntnu.idatt2003.boardgame.Model.Tile;
+import java.util.logging.Logger;
 
 public class LadderAction implements TileAction {
+    private static final Logger log = Logger.getLogger(LadderAction.class.getName());
     private int destinationTileId;
     private String description;
 
@@ -19,6 +20,6 @@ public class LadderAction implements TileAction {
     @Override
     public void perform(Player player) {
         player.placeOnTile(player.getBoardGame().getBoard(), destinationTileId);
-        System.out.println("Ladder action performed. Moved to Tile " + destinationTileId );
+        log.info("Ladder action performed. Moved to Tile " + destinationTileId );
     }
 }
