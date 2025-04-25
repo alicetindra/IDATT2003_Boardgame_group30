@@ -39,6 +39,8 @@ public class BoardGameView {
     private final Button mainMenuButton = new Button("Main menu");
     private final Button restartGame = new Button("Restart");
     private final Button loadCustomBoardButton = new Button("Load Custom Board");
+    private final Button plusOneButton = new Button("+");
+    private final Button minusOneButton = new Button("-");
     //Radio buttons
     private final ToggleGroup toggleGroup = new ToggleGroup();
     private final RadioButton SLButton = new RadioButton("Snakes and ladders");
@@ -50,13 +52,6 @@ public class BoardGameView {
     //ComboBoxes
     private final ComboBox<Integer> boardSizeMenu = new ComboBox<>();
 
-    UnaryOperator<TextFormatter.Change> filter = change -> {
-        String newText = change.getControlNewText();
-        if (newText.matches("[1-6]?")) {
-            return change;
-        }
-        return null;
-    };
 
     public ComboBox<String> playerColorMenu = new ComboBox<>();
 
@@ -68,6 +63,7 @@ public class BoardGameView {
     private HBox titleBox;
     private final VBox infoColumn = new VBox(30);
     private final VBox winnerOverlay = new VBox(10);
+    private final HBox diceImagesBox = new HBox(10);
 
     //Panes
     private final GridPane grid = new GridPane();
@@ -141,6 +137,17 @@ public class BoardGameView {
     public Button getLoadCustomBoardButton() {
         loadCustomBoardButton.setId("loadCustomBoardButton");
         return loadCustomBoardButton;
+    }
+    public RadioButton getSLButton() {
+        return SLButton;
+    }
+    public Button getPlusOneButton() {
+        plusOneButton.setId("plusOneButton");
+        return plusOneButton;
+    }
+    public Button getMinusOneButton() {
+        plusOneButton.setId("minusOneButton");
+        return minusOneButton;
     }
 
     public Button getRestartGameButton() {
@@ -430,25 +437,44 @@ public class BoardGameView {
         CLButton.setToggleGroup(toggleGroup);
         customButton.setToggleGroup(toggleGroup);
         SLButton.setSelected(true);
+
         HBox radioButtonBox = new HBox(20);
+        radioButtonBox.setId("radioButtonBox");
         radioButtonBox.getChildren().addAll(SLButton, CLButton, customButton);
         radioButtonBox.setAlignment(Pos.CENTER);
 
-        diceField.setTextFormatter(new TextFormatter<>(filter));
-        diceField.setPromptText("2");
+        userinfoBox.getChildren().clear();
+        userinfoBox.getChildren().add(radioButtonBox);
+        userinfoBox.setAlignment(Pos.CENTER);
+        userinfoBox.setId("userInfoBox");
+        rootLayout.getChildren().clear();
+        rootLayout.getChildren().addAll(userinfoBox);
+    }
 
-        Text diceText = new Text("Nr of dice (1-6)");
+    public void createSLMenu(){
+        userinfoBox.getChildren().clear();
+        diceField.setDisable(true);
+        diceField.setText("2");
+
+        Text diceText = new Text("Dice (1-6)");
         Text boardText = new Text("Board size");
         Text nameText = new Text("Player name");
         Text colorText = new Text("Player color");
+
 
         VBox boardBox = new VBox(10);
         boardBox.getChildren().addAll(boardText, boardSizeMenu);
 
         VBox diceBox = new VBox(10);
-        diceBox.getChildren().addAll(diceText, diceField);
+        HBox diceHBox = new HBox(10);
+        diceHBox.getChildren().addAll(minusOneButton,diceField,plusOneButton);
 
-        HBox boardDiceBox = new HBox(30);
+        placeDice();
+
+        diceBox.getChildren().addAll(diceText, diceHBox, diceImagesBox);
+
+
+        HBox boardDiceBox = new HBox(80);
         boardDiceBox.setAlignment(Pos.CENTER);
         boardDiceBox.getChildren().addAll(boardBox, diceBox);
 
@@ -463,13 +489,22 @@ public class BoardGameView {
         nameColorBox.getChildren().addAll(playerBox, colorBox);
 
         userinfoBox.getChildren().clear();
-        userinfoBox.getChildren().addAll(radioButtonBox, boardDiceBox,nameColorBox, addPlayerButton, new Text(),makeGameButton);
-        userinfoBox.setAlignment(Pos.CENTER);
-        userinfoBox.setId("userInfoBox");
-        //layout.setCenter(userinfoBox);
+        userinfoBox.getChildren().addAll(boardDiceBox,nameColorBox, addPlayerButton, new Text(),makeGameButton);
         rootLayout.getChildren().clear();
         rootLayout.getChildren().add(userinfoBox);
         StackPane.setAlignment(userinfoBox, Pos.CENTER);
+    }
+
+
+
+    public void placeDice(){
+        diceImagesBox.getChildren().clear();
+        for(int i = 1; i<Integer.parseInt(diceField.getText())+1; i++){
+            ImageView diceImageView = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/dice"+i+".png")).toExternalForm()));
+            diceImageView.setFitHeight(50);
+            diceImageView.setPreserveRatio(true);
+            diceImagesBox.getChildren().add(diceImageView);
+        }
     }
 
     public void makeWinnerBox(String winnerName, String winnerColor){

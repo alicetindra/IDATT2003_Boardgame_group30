@@ -19,6 +19,15 @@
     -fx-max-height: 30px;
     -fx-max-width: 90px;
 }
+#radioButtonBox{
+    -fx-background-color: #bfbfbf;
+    -fx-background-radius: 10;
+    -fx-border-width: 3px;
+    -fx-border-radius: 10;
+    -fx-border-color: black;
+    -fx-max-width: 700px;
+    -fx-pref-height: 150px;
+}
 
 #makeGameButton{
     -fx-background-color: white;
