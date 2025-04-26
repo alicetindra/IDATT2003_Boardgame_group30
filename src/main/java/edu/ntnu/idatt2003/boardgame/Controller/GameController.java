@@ -25,10 +25,11 @@ public class GameController implements BoardGameObserver {
     private Board board;
     private Stage primaryStage;
 
+    private Board customBoard;
+
     public GameController(BoardGameView view) {
         this.view = view;
         this.boardGame = new BoardGame();
-        this.boardGame.addObserver(this);
         view.initialize();
         attachEventHandlers();
     }
@@ -40,12 +41,12 @@ public class GameController implements BoardGameObserver {
                 view.getDisplayInfoBox().getChildren().clear();
                 displayDice();
                 displayInfoBox();
+                System.out.println("notified");
 
                 Player currentPlayer = boardGame.getPlayerHolder().getCurrentPlayer();
                 int newTileId = currentPlayer.getCurrentTile().getId();
 
                 addPlayerImageToNewTile(currentPlayer, newTileId);
-
             }
             case "winnerDeclared" -> {
                 Player winner = boardGame.getWinner();
@@ -83,12 +84,16 @@ public class GameController implements BoardGameObserver {
         view.getSLButton().setOnAction(
                e-> view.createSLMenu()
         );
+        view.getCustomRadioButton().setOnAction(
+                e-> view.createCostumMenu()
+        );
         view.getPlusOneButton().setOnAction(
                 e-> updateDice(1)
         );
         view.getMinusOneButton().setOnAction(
                 e-> updateDice(-1)
         );
+        view.getLoadCustomBoardButton().setOnAction(e->loadBoard());
 
     }
 
@@ -117,6 +122,8 @@ public class GameController implements BoardGameObserver {
         } else {
             System.out.println("User cancelled file selection.");
         }
+        customBoard = boardGame.getBoard();
+        System.out.println(customBoard.getTiles().size());
     }
     public void updateDice(int i){
         int u = Integer.parseInt(view.getDiceField().getText())+i;
@@ -154,7 +161,10 @@ public class GameController implements BoardGameObserver {
      * @throws IOException
      */
     private void handleMakeGame() throws IOException {
+        this.boardGame.removeObserver(this);
+        this.boardGame.addObserver(this);
         view.getLayout().getChildren().clear();
+        view.getDisplayInfoBox().getChildren().clear();
         try {
             boardGame.createPlayerHolder("src/main/resources/players.csv",listOfPlayers);
         } catch (IOException ex) {
@@ -165,13 +175,10 @@ public class GameController implements BoardGameObserver {
             p.setImageView(imageView);
             p.setBoardGame(boardGame);
         }
-        //When starting the game, it ignores the initializeBoard method and all inputs regarding the board. It just sends the board directly in. This is a temporary solution in need of correcting
-        if (view.getCustomRadioButton().isSelected()) {
-            loadBoard();
-        } else {
+
+        if (!view.getCustomRadioButton().isSelected()) {
             boardGame.initializeBoard(view.getGameName(), view.getBoardSizeMenu().getValue(), "src/main/resources/hardcodedBoards.json");
         }
-
 
         board = boardGame.getBoard();
 
@@ -208,6 +215,8 @@ public class GameController implements BoardGameObserver {
     }
 
     private void resetMainMenu() {
+        view.getCustomRadioButton().setSelected(false);
+        view.getSLButton().setSelected(false);
         boardGame.undoWinner(boardGame.getWinner());
         view.getStartRoundButton().setDisable(false);
         view.getGrid().getChildren().clear();
@@ -230,13 +239,11 @@ public class GameController implements BoardGameObserver {
     }
 
     private void handleStartRound() {
-        if(view.getRestartGameButton().isDisabled()){
-            view.getRestartGameButton().setDisable(false);
-        }
+        view.getRestartGameButton().setDisable(false);
         boardGame.play();
+        System.out.println("Rolled the dice");
 
     }
-
 
     public void displayDice(){
         view.getDieBox().getChildren().clear();

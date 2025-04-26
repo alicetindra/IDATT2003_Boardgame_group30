@@ -64,6 +64,7 @@ public class BoardGameView {
     private final VBox infoColumn = new VBox(30);
     private final VBox winnerOverlay = new VBox(10);
     private final HBox diceImagesBox = new HBox(10);
+    VBox boardBox = new VBox(10);
 
     //Panes
     private final GridPane grid = new GridPane();
@@ -452,18 +453,28 @@ public class BoardGameView {
     }
 
     public void createSLMenu(){
+        Text boardText = new Text("Board size");
+        boardBox.getChildren().clear();
+        boardBox.getChildren().addAll(boardText, boardSizeMenu);
+        createUserMenu();
+    }
+
+    public void createCostumMenu(){
+        Text fileText = new Text("Upload board");
+        boardBox.getChildren().clear();
+        boardBox.getChildren().addAll(fileText, loadCustomBoardButton);
+        createUserMenu();
+    }
+
+    public void createUserMenu(){
         userinfoBox.getChildren().clear();
         diceField.setDisable(true);
         diceField.setText("2");
 
-        Text diceText = new Text("Dice (1-6)");
-        Text boardText = new Text("Board size");
+        Text diceText = new Text("Dice");
         Text nameText = new Text("Player name");
         Text colorText = new Text("Player color");
 
-
-        VBox boardBox = new VBox(10);
-        boardBox.getChildren().addAll(boardText, boardSizeMenu);
 
         VBox diceBox = new VBox(10);
         HBox diceHBox = new HBox(10);
@@ -472,7 +483,6 @@ public class BoardGameView {
         placeDice();
 
         diceBox.getChildren().addAll(diceText, diceHBox, diceImagesBox);
-
 
         HBox boardDiceBox = new HBox(80);
         boardDiceBox.setAlignment(Pos.CENTER);
@@ -494,7 +504,6 @@ public class BoardGameView {
         rootLayout.getChildren().add(userinfoBox);
         StackPane.setAlignment(userinfoBox, Pos.CENTER);
     }
-
 
 
     public void placeDice(){
