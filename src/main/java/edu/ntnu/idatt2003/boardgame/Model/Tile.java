@@ -33,14 +33,6 @@ public class Tile {
         this.action = action;
     }
 
-    public void setNext(int next) {
-        this.next = next;
-    }
-
-    public int getNext() {
-        return next;
-    }
-
 
     @Override
     public String toString() {

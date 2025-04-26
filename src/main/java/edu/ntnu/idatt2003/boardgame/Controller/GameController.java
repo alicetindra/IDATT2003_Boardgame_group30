@@ -25,8 +25,6 @@ public class GameController implements BoardGameObserver {
     private Board board;
     private Stage primaryStage;
 
-    private Board customBoard;
-
     public GameController(BoardGameView view) {
         this.view = view;
         this.boardGame = new BoardGame();
@@ -41,7 +39,6 @@ public class GameController implements BoardGameObserver {
                 view.getDisplayInfoBox().getChildren().clear();
                 displayDice();
                 displayInfoBox();
-                System.out.println("notified");
 
                 Player currentPlayer = boardGame.getPlayerHolder().getCurrentPlayer();
                 int newTileId = currentPlayer.getCurrentTile().getId();
@@ -50,7 +47,7 @@ public class GameController implements BoardGameObserver {
             }
             case "winnerDeclared" -> {
                 Player winner = boardGame.getWinner();
-                view.makeWinnerBox(winner.getName(), winner.getColor());
+                view.createWinnerBox(winner.getName(), winner.getColor());
                 view.getStartRoundButton().setDisable(true);
                 view.getRootLayout().getChildren().addAll(view.getWinnerBox());
                 view.playConfettiEffect();
@@ -97,20 +94,6 @@ public class GameController implements BoardGameObserver {
 
     }
 
-    /**
-     * Removes the WinnerBox and the winner of the previous game, disables the restart button, calls handleMakeGame();
-     */
-    private void handleRestartGame() {
-        view.getLayout().getChildren().remove(view.getWinnerBox());
-        view.getDisplayInfoBox().getChildren().clear();
-        boardGame.undoWinner(boardGame.getWinner());
-        view.getStartRoundButton().setDisable(false);
-        try {
-            handleMakeGame();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
     private void loadBoard() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Custom Board JSON File");
@@ -122,19 +105,7 @@ public class GameController implements BoardGameObserver {
         } else {
             System.out.println("User cancelled file selection.");
         }
-        customBoard = boardGame.getBoard();
-        System.out.println(customBoard.getTiles().size());
     }
-    public void updateDice(int i){
-        int u = Integer.parseInt(view.getDiceField().getText())+i;
-        if(u<1 || u>6){
-            getAlert("Nr of dice must be between 1 and 6");
-            throw new IllegalArgumentException("Invalid dice value");
-        }
-        view.getDiceField().setText(String.valueOf(u));
-        view.placeDice();
-    }
-
 
     /**
      * Gets player-name and player-color inputs from the user and adds them to listOfPlayers.
@@ -154,6 +125,41 @@ public class GameController implements BoardGameObserver {
 
         view.getPlayerName().clear();
         view.getPlayerColorMenu().getItems().remove(selectedColor);
+    }
+
+    public void displayDice(){
+        view.getDieBox().getChildren().clear();
+        for(Die d : boardGame.getDice().getListOfDice()){
+            ImageView die = new ImageView(new Image("/images/dice"+d.getValue()+".png"));
+            die.setFitHeight(40);
+            die.setFitWidth(40);
+            view.getDieBox().getChildren().add(die);
+        }
+        view.getDisplayInfoBox().getChildren().add(view.getDieBox());
+    }
+
+    public void updateDice(int i){
+        int u = Integer.parseInt(view.getDiceField().getText())+i;
+        if(u<1 || u>6){
+            getAlert("Nr of dice must be between 1 and 6");
+            throw new IllegalArgumentException("Invalid dice value");
+        }
+        view.getDiceField().setText(String.valueOf(u));
+        view.placeDice();
+    }
+
+    public void displayInfoBox(){
+        String message = "Player: "+ boardGame.getPlayerHolder().getCurrentPlayer().getColor() + "\nThrew a: " + boardGame.getDice().getTotalSumOfEyes() + "\nLanded on tile: " + boardGame.getPlayerHolder().getCurrentPlayer().getCurrentTile().getId();
+
+        view.updateInfoBox(message);
+    }
+
+    private void addPlayerImageToNewTile(Player player, int newTileId){
+        for(Tile t : board.getTiles()){
+            if(t.getId() == newTileId){
+                t.getTileBox().getChildren().add(view.getPlayerImage(player));
+            }
+        }
     }
 
     /**
@@ -214,6 +220,26 @@ public class GameController implements BoardGameObserver {
         }
     }
 
+    private void handleStartRound() {
+        view.getRestartGameButton().setDisable(false);
+        boardGame.play();
+    }
+
+    /**
+     * Removes the WinnerBox and the winner of the previous game, disables the restart button, calls handleMakeGame();
+     */
+    private void handleRestartGame() {
+        view.getLayout().getChildren().remove(view.getWinnerBox());
+        view.getDisplayInfoBox().getChildren().clear();
+        boardGame.undoWinner(boardGame.getWinner());
+        view.getStartRoundButton().setDisable(false);
+        try {
+            handleMakeGame();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private void resetMainMenu() {
         view.getCustomRadioButton().setSelected(false);
         view.getSLButton().setSelected(false);
@@ -238,47 +264,11 @@ public class GameController implements BoardGameObserver {
         attachEventHandlers();
     }
 
-    private void handleStartRound() {
-        view.getRestartGameButton().setDisable(false);
-        boardGame.play();
-        System.out.println("Rolled the dice");
-
-    }
-
-    public void displayDice(){
-        view.getDieBox().getChildren().clear();
-        for(Die d : boardGame.getDice().getListOfDice()){
-            ImageView die = new ImageView(new Image("/images/dice"+d.getValue()+".png"));
-            die.setFitHeight(40);
-            die.setFitWidth(40);
-            view.getDieBox().getChildren().add(die);
-        }
-        view.getDisplayInfoBox().getChildren().add(view.getDieBox());
-    }
-
-    public void displayInfoBox(){
-        String message = "Player: "+ boardGame.getPlayerHolder().getCurrentPlayer().getColor() + "\nThrew a: " + boardGame.getDice().getTotalSumOfEyes() + "\nLanded on tile: " + boardGame.getPlayerHolder().getCurrentPlayer().getCurrentTile().getId();
-
-        view.updateInfoBox(message);
-    }
-
-    private void addPlayerImageToNewTile(Player player, int newTileId){
-        for(Tile t : board.getTiles()){
-            if(t.getId() == newTileId){
-                t.getTileBox().getChildren().add(view.getPlayerImage(player));
-            }
-        }
-    }
-
     private void getAlert(String errorMessage){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText(null);
         alert.setContentText(errorMessage);
         alert.showAndWait();
-    }
-
-    public void setPrimaryStage(Stage primaryStage) {
-        this.primaryStage = primaryStage;
     }
 }

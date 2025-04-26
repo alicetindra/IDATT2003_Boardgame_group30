@@ -26,7 +26,7 @@ import javafx.scene.text.Text;
 
 
 import java.util.*;
-import java.util.function.UnaryOperator;
+
 import javafx.util.Duration;
 import java.util.logging.Logger;
 
@@ -74,7 +74,6 @@ public class BoardGameView {
     //Font
     Font customFont = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
 
-    //Methods
     public void initialize(){
         rootLayout = new StackPane();
 
@@ -85,62 +84,9 @@ public class BoardGameView {
         createStartButton();
     }
 
-    public BorderPane getLayout(){
-        return layout;
-    }
-
-    public StackPane getRootLayout(){
-        return rootLayout;
-    }
-
-    public RadioButton getCustomRadioButton(){
-        return customButton;
-    }
-
-    public void setBoardSizeBox(){
-        ObservableList<Integer> options = FXCollections.observableArrayList();
-        options.addAll(50,90,110);
-        boardSizeMenu.setItems(options);
-        boardSizeMenu.getSelectionModel().select(1);
-        boardSizeMenu.getStyleClass().add("pullDownMenu");
-    }
-
-    public ComboBox<Integer> getBoardSizeMenu() {
-        return boardSizeMenu;
-    }
-
-    public void setPlayerColorBox(){
-        ObservableList<String> colors = FXCollections.observableArrayList();
-        colors.addAll("blue","green","red","yellow","pink","black");
-        playerColorMenu.setItems(colors);
-        playerColorMenu.getSelectionModel().select(0);
-        playerColorMenu.getStyleClass().add("pullDownMenu");
-    }
-
-    public ComboBox<String> getPlayerColorMenu() {
-        return playerColorMenu;
-    }
-
-    public String getGameName(){
-        Toggle selectedToggle = toggleGroup.getSelectedToggle();
-        RadioButton selectedRadioButton = (RadioButton) selectedToggle;
-        return selectedRadioButton.getText();
-    }
-
-    public TextField getDiceField() {
-        return diceField;
-    }
-
-    public Button getAddPlayerButton() {
-        addPlayerButton.setId("addPlayerButton");
-        return addPlayerButton;
-    }
-    public Button getLoadCustomBoardButton() {
-        loadCustomBoardButton.setId("loadCustomBoardButton");
-        return loadCustomBoardButton;
-    }
-    public RadioButton getSLButton() {
-        return SLButton;
+    //Get methods
+    public Button getMainMenuButton(){
+        return mainMenuButton;
     }
     public Button getPlusOneButton() {
         plusOneButton.setId("plusOneButton");
@@ -150,20 +96,107 @@ public class BoardGameView {
         plusOneButton.setId("minusOneButton");
         return minusOneButton;
     }
-
+    public Button getLoadCustomBoardButton() {
+        loadCustomBoardButton.setId("loadCustomBoardButton");
+        return loadCustomBoardButton;
+    }
     public Button getRestartGameButton() {
         restartGame.setFont(customFont);
         restartGame.setId("restartGameButton");
         return restartGame;
     }
+    public Button getAddPlayerButton() {
+        addPlayerButton.setId("addPlayerButton");
+        return addPlayerButton;
+    }
+    public Button getMakeGameButton() {
+        makeGameButton.setId("makeGameButton");
+        return makeGameButton;
+    }
+    public Button getStartRoundButton(){
+        return startRoundButton;
+    }
+
+    public RadioButton getCustomRadioButton(){
+        return customButton;
+    }
+    public RadioButton getSLButton() {
+        return SLButton;
+    }
+
+    public BorderPane getLayout(){
+        return layout;
+    }
+    public StackPane getRootLayout(){
+        return rootLayout;
+    }
+    public GridPane getGrid(){
+        return grid;
+    }
+
+    public ComboBox<Integer> getBoardSizeMenu() {
+        return boardSizeMenu;
+    }
+    public ComboBox<String> getPlayerColorMenu() {
+        return playerColorMenu;
+    }
 
     public TextField getPlayerName() {
         return playerName;
     }
+    public TextField getDiceField() {
+        return diceField;
+    }
 
-    public Button getMakeGameButton() {
-        makeGameButton.setId("makeGameButton");
-        return makeGameButton;
+    public VBox getRulesColumn(){
+        return rulesColumn;
+    }
+    public VBox getInfoColumn(){
+        return infoColumn;
+    }
+    public VBox getDisplayInfoBox() {
+        return displayInfoBox;
+    }
+    public VBox getWinnerBox(){
+        return winnerOverlay;
+    }
+
+    public HBox getDieBox() {
+        return dieBox;
+    }
+    public HBox getTitleBox(){
+        return titleBox;
+    }
+
+    public String getGameName(){
+        Toggle selectedToggle = toggleGroup.getSelectedToggle();
+        RadioButton selectedRadioButton = (RadioButton) selectedToggle;
+        return selectedRadioButton.getText();
+    }
+
+    public ImageView getPlayerImage(Player p) {
+        ImageView imageView = p.getImageView();
+        imageView.setFitHeight(30);
+        imageView.setPreserveRatio(true);
+        return imageView;
+    }
+
+
+    //Create methods
+    public void setBoardSizeBox(){
+        ObservableList<Integer> options = FXCollections.observableArrayList();
+        options.addAll(50,90,110);
+        boardSizeMenu.setItems(options);
+        boardSizeMenu.getSelectionModel().select(1);
+        boardSizeMenu.getStyleClass().add("pullDownMenu");
+    }
+
+    public void setPlayerColorBox(){
+        ObservableList<String> colors = FXCollections.observableArrayList();
+        colors.addAll("blue","green","red","yellow","pink","black");
+        playerColorMenu.setItems(colors);
+        playerColorMenu.getSelectionModel().select(0);
+        playerColorMenu.getStyleClass().add("pullDownMenu");
     }
 
     public BorderPane createMainLayout(GridPane boardGrid, HBox titleWithImage, VBox rulesColumn, VBox infoColumn){
@@ -209,69 +242,6 @@ public class BoardGameView {
         }
     }
 
-    public GridPane getGrid(){
-        return grid;
-    }
-
-    public void decorateTileBox(VBox tileBox, TileAction tileAction, int tileId,List<Integer> snakeDestination, List<Integer> ladderDestination) {
-        tileBox.getChildren().add(new Text(tileId+""));
-
-        for(Integer i:snakeDestination){
-            if(tileId == i){
-                tileBox.getStyleClass().add("snakeDestBox");
-            }
-        }
-        for(Integer i:ladderDestination){
-            if(tileId == i){
-                tileBox.getStyleClass().add("ladderDestBox");
-            }
-        }
-
-        if(tileAction instanceof LadderAction){
-            tileBox.getStyleClass().add("ladderBox");
-        }
-        if(tileAction instanceof LadderAction){
-            tileBox.getStyleClass().add("ladderBox");
-        }
-        else if(tileAction instanceof SnakeAction){
-            tileBox.getStyleClass().add("snakeBox");
-        }
-        else if(tileAction instanceof PortalAction){
-            tileBox.getStyleClass().add("portalBox");
-            ImageView portalImage = new ImageView(new Image("images/portal.png"));
-            portalImage.setFitHeight(65);
-            portalImage.setFitWidth(65);
-            tileBox.setAlignment(Pos.CENTER);
-            tileBox.getChildren().add(portalImage);
-        }
-        else if(tileAction instanceof WinAction){
-            tileBox.getStyleClass().add("winBox");
-        }
-        else{
-            tileBox.getStyleClass().add("tileBox");
-        }
-    }
-
-    private Map<String, List<Integer>> collectDestinations(Board board){
-        List<Integer> snakeDestination = new ArrayList<>();
-        List<Integer> ladderDestination = new ArrayList<>();
-
-        //Collect destinations
-        for(Tile t : board.getTiles()){
-            if(t.getAction() instanceof SnakeAction action){
-                snakeDestination.add(action.getDestinationTileId());
-            } else if(t.getAction() instanceof LadderAction action){
-                ladderDestination.add(action.getDestinationTileId());
-            }
-        }
-
-        Map<String, List<Integer>> destinations = new HashMap<>();
-        destinations.put("snake", snakeDestination);
-        destinations.put("ladder", ladderDestination);
-
-        return destinations;
-    }
-
     public void createRulesColumn() {
         if (rulesColumn == null) {
             rulesColumn = new VBox(30);
@@ -301,11 +271,6 @@ public class BoardGameView {
         if (layout.getRight() != rulesColumn) {
             layout.setRight(rulesColumn);
         }
-    }
-
-
-    public VBox getRulesColumn(){
-        return rulesColumn;
     }
 
     public void createInfoColumn(PlayerHolder playerHolder){
@@ -350,28 +315,12 @@ public class BoardGameView {
         }
     }
 
-
-    public VBox getInfoColumn(){
-        return infoColumn;
-    }
-
-    public ImageView getPlayerImage(Player p) {
-        ImageView imageView = p.getImageView();
-        imageView.setFitHeight(30);
-        imageView.setPreserveRatio(true);
-        return imageView;
-    }
-
     public void createStartButton(){
 
         startRoundButton.setFont(customFont);
         startRoundButton.setId("start-round-button");
 
         VBox.setMargin(startRoundButton, new Insets(20,0,0,0));
-    }
-
-    public Button getStartRoundButton(){
-        return startRoundButton;
     }
 
     public void createMainMenuButton(){
@@ -381,29 +330,6 @@ public class BoardGameView {
         VBox.setMargin(mainMenuButton, new Insets(20,0,0,0));
 
     }
-
-    public Button getMainMenuButton(){
-        return mainMenuButton;
-    }
-
-    public VBox getDisplayInfoBox() {
-        return displayInfoBox;
-    }
-
-    public void updateInfoBox(String message){
-        Text text = new Text(message);
-        text.setStyle("-fx-font-size: 14;"
-            + "-fx-font-family: Georgia;");
-        text.setWrappingWidth(200);
-
-        displayInfoBox.getChildren().add(text);
-    }
-
-    public HBox getDieBox() {
-        return dieBox;
-    }
-
-
 
     public void createTitleBox() {
         //Snake image
@@ -427,10 +353,6 @@ public class BoardGameView {
         titleBox = new HBox(20, snakeImageView, title, ladderImageView);
         titleBox.setAlignment(Pos.CENTER);
         titleBox.setPadding(new Insets(50,0,0,0));
-    }
-
-    public HBox getTitleBox(){
-        return titleBox;
     }
 
     public void createMainMenu(){
@@ -505,18 +427,7 @@ public class BoardGameView {
         StackPane.setAlignment(userinfoBox, Pos.CENTER);
     }
 
-
-    public void placeDice(){
-        diceImagesBox.getChildren().clear();
-        for(int i = 1; i<Integer.parseInt(diceField.getText())+1; i++){
-            ImageView diceImageView = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/dice"+i+".png")).toExternalForm()));
-            diceImageView.setFitHeight(50);
-            diceImageView.setPreserveRatio(true);
-            diceImagesBox.getChildren().add(diceImageView);
-        }
-    }
-
-    public void makeWinnerBox(String winnerName, String winnerColor){
+    public void createWinnerBox(String winnerName, String winnerColor){
         winnerOverlay.getChildren().clear();
         winnerOverlay.setAlignment(Pos.CENTER);
         winnerOverlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7);");
@@ -551,10 +462,6 @@ public class BoardGameView {
 
     }
 
-    public VBox getWinnerBox(){
-        return winnerOverlay;
-    }
-
     private ImageView createWinnerImage(String color){
         String winnerImagePath = "/images/" + color.toLowerCase() + "_winner.png";
 
@@ -566,8 +473,85 @@ public class BoardGameView {
         return winnerImageView;
     }
 
+    //Logic methods
+    private Map<String, List<Integer>> collectDestinations(Board board){
+        List<Integer> snakeDestination = new ArrayList<>();
+        List<Integer> ladderDestination = new ArrayList<>();
 
-    //confetti
+        //Collect destinations
+        for(Tile t : board.getTiles()){
+            if(t.getAction() instanceof SnakeAction action){
+                snakeDestination.add(action.getDestinationTileId());
+            } else if(t.getAction() instanceof LadderAction action){
+                ladderDestination.add(action.getDestinationTileId());
+            }
+        }
+
+        Map<String, List<Integer>> destinations = new HashMap<>();
+        destinations.put("snake", snakeDestination);
+        destinations.put("ladder", ladderDestination);
+
+        return destinations;
+    }
+
+    public void updateInfoBox(String message){
+        Text text = new Text(message);
+        text.setStyle("-fx-font-size: 14;"
+                + "-fx-font-family: Georgia;");
+        text.setWrappingWidth(200);
+
+        displayInfoBox.getChildren().add(text);
+    }
+
+    public void placeDice(){
+        diceImagesBox.getChildren().clear();
+        for(int i = 1; i<Integer.parseInt(diceField.getText())+1; i++){
+            ImageView diceImageView = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/dice"+i+".png")).toExternalForm()));
+            diceImageView.setFitHeight(50);
+            diceImageView.setPreserveRatio(true);
+            diceImagesBox.getChildren().add(diceImageView);
+        }
+    }
+
+    public void decorateTileBox(VBox tileBox, TileAction tileAction, int tileId,List<Integer> snakeDestination, List<Integer> ladderDestination) {
+        tileBox.getChildren().add(new Text(tileId+""));
+
+        for(Integer i:snakeDestination){
+            if(tileId == i){
+                tileBox.getStyleClass().add("snakeDestBox");
+            }
+        }
+        for(Integer i:ladderDestination){
+            if(tileId == i){
+                tileBox.getStyleClass().add("ladderDestBox");
+            }
+        }
+
+        if(tileAction instanceof LadderAction){
+            tileBox.getStyleClass().add("ladderBox");
+        }
+        if(tileAction instanceof LadderAction){
+            tileBox.getStyleClass().add("ladderBox");
+        }
+        else if(tileAction instanceof SnakeAction){
+            tileBox.getStyleClass().add("snakeBox");
+        }
+        else if(tileAction instanceof PortalAction){
+            tileBox.getStyleClass().add("portalBox");
+            ImageView portalImage = new ImageView(new Image("images/portal.png"));
+            portalImage.setFitHeight(65);
+            portalImage.setFitWidth(65);
+            tileBox.setAlignment(Pos.CENTER);
+            tileBox.getChildren().add(portalImage);
+        }
+        else if(tileAction instanceof WinAction){
+            tileBox.getStyleClass().add("winBox");
+        }
+        else{
+            tileBox.getStyleClass().add("tileBox");
+        }
+    }
+
     public void playConfettiEffect() {
         // Skapa en grupp för konfetti
         Group confettiGroup = new Group();
@@ -604,7 +588,7 @@ public class BoardGameView {
         }
         // Ta bort konfettin efter animationen är klar
         new Timeline(
-            new KeyFrame(Duration.seconds(5), e -> rootLayout.getChildren().remove(confettiGroup))
+                new KeyFrame(Duration.seconds(5), e -> rootLayout.getChildren().remove(confettiGroup))
         ).play();
     }
 
