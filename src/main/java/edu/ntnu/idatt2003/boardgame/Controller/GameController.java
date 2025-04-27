@@ -82,7 +82,7 @@ public class GameController implements BoardGameObserver {
                e-> view.createSLMenu()
         );
         view.getCustomRadioButton().setOnAction(
-                e-> view.createCostumMenu()
+                e-> view.createCustomMenu()
         );
         view.getPlusOneButton().setOnAction(
                 e-> updateDice(1)
@@ -123,8 +123,19 @@ public class GameController implements BoardGameObserver {
 
         listOfPlayers.add(writtenName+","+selectedColor);
 
+        for (int i = 0; i < view.getPlayerData().size(); i++) {
+            if (view.getPlayerData().get(i).isBlank()) { // Find first empty slot
+                view.getPlayerData().set(i, writtenName + " - " + selectedColor);
+                break;
+            }
+        }
+
         view.getPlayerName().clear();
         view.getPlayerColorMenu().getItems().remove(selectedColor);
+
+        if (!view.getPlayerColorMenu().getItems().isEmpty()) {
+            view.getPlayerColorMenu().getSelectionModel().select(0);
+        }
     }
 
     public void displayDice(){
@@ -141,7 +152,7 @@ public class GameController implements BoardGameObserver {
     public void updateDice(int i){
         int u = Integer.parseInt(view.getDiceField().getText())+i;
         if(u<1 || u>6){
-            getAlert("Nr of dice must be between 1 and 6");
+            getAlert("Number of dice must be between 1 and 6");
             throw new IllegalArgumentException("Invalid dice value");
         }
         view.getDiceField().setText(String.valueOf(u));

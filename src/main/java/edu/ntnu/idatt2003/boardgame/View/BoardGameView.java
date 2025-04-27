@@ -25,6 +25,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 
+
 import java.util.*;
 
 import javafx.util.Duration;
@@ -51,8 +52,6 @@ public class BoardGameView {
     private final TextField playerName = new TextField();
     //ComboBoxes
     private final ComboBox<Integer> boardSizeMenu = new ComboBox<>();
-
-
     public ComboBox<String> playerColorMenu = new ComboBox<>();
 
     //Boxes
@@ -66,6 +65,10 @@ public class BoardGameView {
     private final HBox diceImagesBox = new HBox(10);
     VBox boardBox = new VBox(10);
 
+    //player list
+    private ObservableList<String> playerData = FXCollections.observableArrayList();
+    private ListView<String> playerList;
+
     //Panes
     private final GridPane grid = new GridPane();
     private BorderPane layout;
@@ -78,10 +81,12 @@ public class BoardGameView {
         rootLayout = new StackPane();
 
         layout = new BorderPane();
+        layout.getStyleClass().add("rootSL");
         createMainMenu();
         setBoardSizeBox();
         setPlayerColorBox();
         createStartButton();
+        initializePlayerList();
     }
 
     //Get methods
@@ -172,6 +177,14 @@ public class BoardGameView {
         Toggle selectedToggle = toggleGroup.getSelectedToggle();
         RadioButton selectedRadioButton = (RadioButton) selectedToggle;
         return selectedRadioButton.getText();
+    }
+
+    public ListView<String> getPlayerList() {
+        return playerList;
+    }
+
+    public ObservableList<String> getPlayerData(){
+        return playerData;
     }
 
     public ImageView getPlayerImage(Player p) {
@@ -315,6 +328,7 @@ public class BoardGameView {
         }
     }
 
+
     public void createStartButton(){
 
         startRoundButton.setFont(customFont);
@@ -356,10 +370,20 @@ public class BoardGameView {
     }
 
     public void createMainMenu(){
+        Text titleText = new Text("Choose your game");
+        titleText.setFont(customFont);
+        titleText.getStyleClass().add("title");
+        VBox titleBox = new VBox(20);
+        titleBox.setAlignment(Pos.CENTER);
+        titleBox.getChildren().addAll(titleText);
+        titleBox.setPadding(new Insets(20,0,20,0));
+
         SLButton.setToggleGroup(toggleGroup);
+        SLButton.setId("SLButton");
         CLButton.setToggleGroup(toggleGroup);
+        CLButton.setId("CLButton");
         customButton.setToggleGroup(toggleGroup);
-        SLButton.setSelected(true);
+        customButton.setId("customButton");
 
         HBox radioButtonBox = new HBox(20);
         radioButtonBox.setId("radioButtonBox");
@@ -367,22 +391,27 @@ public class BoardGameView {
         radioButtonBox.setAlignment(Pos.CENTER);
 
         userinfoBox.getChildren().clear();
-        userinfoBox.getChildren().add(radioButtonBox);
+        userinfoBox.getChildren().addAll(titleBox, radioButtonBox);
         userinfoBox.setAlignment(Pos.CENTER);
         userinfoBox.setId("userInfoBox");
+
         rootLayout.getChildren().clear();
         rootLayout.getChildren().addAll(userinfoBox);
+        rootLayout.getStyleClass().add("rootMainMenu");
+
     }
 
     public void createSLMenu(){
         Text boardText = new Text("Board size");
+        boardText.setId("boardSizeText");
         boardBox.getChildren().clear();
         boardBox.getChildren().addAll(boardText, boardSizeMenu);
         createUserMenu();
     }
 
-    public void createCostumMenu(){
+    public void createCustomMenu(){
         Text fileText = new Text("Upload board");
+        fileText.setId("fileText");
         boardBox.getChildren().clear();
         boardBox.getChildren().addAll(fileText, loadCustomBoardButton);
         createUserMenu();
@@ -393,38 +422,130 @@ public class BoardGameView {
         diceField.setDisable(true);
         diceField.setText("2");
 
+        //Title
+        Text titleText = new Text("Snakes and Ladders");
+        titleText.setFont(customFont);
+        titleText.getStyleClass().add("title");
+        VBox titleBox = new VBox(20);
+        titleBox.setAlignment(Pos.CENTER);
+        titleBox.getChildren().addAll(titleText);
+        titleBox.setPadding(new Insets(20,0,20,0));
+
+        //Left column
+        VBox leftColumn = new VBox(15);
+        leftColumn.setAlignment(Pos.TOP_LEFT);
+
+        //Dice section
         Text diceText = new Text("Dice");
-        Text nameText = new Text("Player name");
-        Text colorText = new Text("Player color");
-
-
-        VBox diceBox = new VBox(10);
+        diceText.setId("diceText");
         HBox diceHBox = new HBox(10);
         diceHBox.getChildren().addAll(minusOneButton,diceField,plusOneButton);
+        VBox diceSection = new VBox(10);
+        diceSection.getChildren().addAll(diceText, diceHBox);
 
-        placeDice();
+        //Player name section
+        Text nameText = new Text("Player name");
+        nameText.setId("nameText");
+        playerName.setMinWidth(120);
+        VBox playerNameSection = new VBox(10);
+        playerNameSection.getChildren().addAll(nameText, playerName);
 
-        diceBox.getChildren().addAll(diceText, diceHBox, diceImagesBox);
+        //Player color section
+        Text colorText = new Text("Player color");
+        colorText.setId("colorText");
+        playerColorMenu.setMinWidth(120);
+        VBox playerColorSection = new VBox(10);
+        playerColorSection.getChildren().addAll(colorText, playerColorMenu);
 
-        HBox boardDiceBox = new HBox(80);
-        boardDiceBox.setAlignment(Pos.CENTER);
-        boardDiceBox.getChildren().addAll(boardBox, diceBox);
+        //Add all + addPlayerButton to left column
+        addPlayerButton.setMinWidth(150);
+        addPlayerButton.setFont(customFont);
+        addPlayerButton.setId("addPlayerButton");
+        leftColumn.getChildren().addAll(boardBox, diceSection, playerNameSection, playerColorSection, addPlayerButton);
 
-        VBox playerBox = new VBox(10);
-        playerBox.getChildren().addAll(nameText, playerName);
+        //Right column player list + dice images
+        VBox rightColumn = new VBox(15);
+        rightColumn.setPrefWidth(300);
+        rightColumn.setAlignment(Pos.TOP_RIGHT);
+        //rightColumn.setPadding(new Insets(100, 0, 200, 0));
 
-        VBox colorBox = new VBox(10);
-        colorBox.getChildren().addAll(colorText, playerColorMenu);
+        //Player list section
+        Text playerTitle = new Text("Players");
+        playerTitle.setFont(customFont);
+        playerTitle.getStyleClass().add("subTitle");
 
-        HBox nameColorBox = new HBox(30);
-        nameColorBox.setAlignment(Pos.CENTER);
-        nameColorBox.getChildren().addAll(playerBox, colorBox);
+        //Insert list
+        ListView<String> playerList = createPlayerList();
 
+        // Dice Images Section
+        Text diceImagesTitle = new Text("Dice");
+        diceImagesTitle.setFont(customFont);
+        diceImagesTitle.getStyleClass().add("subTitle");
+
+        //right column
+        rightColumn.setAlignment(Pos.TOP_CENTER);
+        rightColumn.setSpacing(15);
+        rightColumn.getChildren().addAll(playerTitle, playerList, diceImagesTitle, diceImagesBox);
+
+        HBox mainLayout = new HBox(100);
+        mainLayout.setAlignment(Pos.CENTER);
+        mainLayout.getChildren().addAll(leftColumn, rightColumn);
+
+        //Start game or go back to main bix
+        HBox startOrMain = new HBox(20);
+        startOrMain.setAlignment(Pos.CENTER);
+        startOrMain.getChildren().addAll(mainMenuButton, makeGameButton);
+        makeGameButton.setFont(customFont);
+        mainMenuButton.setFont(customFont);
+        mainMenuButton.setId("menuButtonBack");
+
+        //Apply layout
         userinfoBox.getChildren().clear();
-        userinfoBox.getChildren().addAll(boardDiceBox,nameColorBox, addPlayerButton, new Text(),makeGameButton);
+        userinfoBox.getChildren().addAll(titleBox, mainLayout, startOrMain);
+
         rootLayout.getChildren().clear();
         rootLayout.getChildren().add(userinfoBox);
         StackPane.setAlignment(userinfoBox, Pos.CENTER);
+    }
+
+    private void initializePlayerList(){
+        playerList = createPlayerList();
+    }
+
+    private ListView<String> createPlayerList(){
+        ListView<String> playerList = new ListView<>(playerData);
+        playerList.setId("playerList");
+
+        playerList.setFixedCellSize(30);
+        playerList.setPrefHeight(6*30+3);
+
+        //Create list with 6 empty rows
+        for (int i = 0; i < 6; i++){
+            playerData.add("");
+        }
+
+        //Alternative row different color
+        playerList.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(String player, boolean empty) {
+                super.updateItem(player, empty);
+                if (empty || player == null) {
+                    setText(null);
+                    setStyle(""); //
+                } else {
+                    setText(player.isBlank() ? "" : player);
+
+                    // alternating row different color
+                    if (getIndex() % 2 == 0) {
+                        setStyle("-fx-background-color: rgba(176,197,221,0.75);");
+                    } else {
+                        setStyle("-fx-background-color: rgba(255,255,255,0.7);");
+                    }
+                }
+            }
+        });
+
+        return playerList;
     }
 
     public void createWinnerBox(String winnerName, String winnerColor){
@@ -496,8 +617,7 @@ public class BoardGameView {
 
     public void updateInfoBox(String message){
         Text text = new Text(message);
-        text.setStyle("-fx-font-size: 14;"
-                + "-fx-font-family: Georgia;");
+        text.setId("playerInfo");
         text.setWrappingWidth(200);
 
         displayInfoBox.getChildren().add(text);
