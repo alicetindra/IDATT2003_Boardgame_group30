@@ -263,6 +263,7 @@ public class GameController implements BoardGameObserver {
 
         view.getDiceField().clear();
         listOfPlayers.clear();
+        view.getPlayerData().clear();
         view.setPlayerColorBox();
 
         boardGame = new BoardGame();

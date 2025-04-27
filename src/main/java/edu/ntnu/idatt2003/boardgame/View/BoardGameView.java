@@ -412,6 +412,7 @@ public class BoardGameView {
     public void createCustomMenu(){
         Text fileText = new Text("Upload board");
         fileText.setId("fileText");
+        loadCustomBoardButton.setId("loadCustomBoardButton");
         boardBox.getChildren().clear();
         boardBox.getChildren().addAll(fileText, loadCustomBoardButton);
         createUserMenu();
@@ -438,6 +439,8 @@ public class BoardGameView {
         //Dice section
         Text diceText = new Text("Dice");
         diceText.setId("diceText");
+        minusOneButton.setId("minusOneButton");
+        plusOneButton.setId("plusOneButton");
         HBox diceHBox = new HBox(10);
         diceHBox.getChildren().addAll(minusOneButton,diceField,plusOneButton);
         VBox diceSection = new VBox(10);
