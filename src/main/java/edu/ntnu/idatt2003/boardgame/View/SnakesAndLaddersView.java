@@ -31,8 +31,8 @@ import java.util.*;
 import javafx.util.Duration;
 import java.util.logging.Logger;
 
-public class BoardGameView {
-    private static final Logger log = Logger.getLogger(BoardGameView.class.getName());
+public class SnakesAndLaddersView {
+    private static final Logger log = Logger.getLogger(SnakesAndLaddersView.class.getName());
     //Buttons
     private final Button addPlayerButton = new Button("Add Player");
     private final Button makeGameButton = new Button("Start game");

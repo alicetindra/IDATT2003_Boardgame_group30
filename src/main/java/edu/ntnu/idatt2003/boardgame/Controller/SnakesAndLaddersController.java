@@ -2,7 +2,7 @@ package edu.ntnu.idatt2003.boardgame.Controller;
 
 import edu.ntnu.idatt2003.boardgame.Model.*;
 import edu.ntnu.idatt2003.boardgame.Observer.BoardGameObserver;
-import edu.ntnu.idatt2003.boardgame.View.BoardGameView;
+import edu.ntnu.idatt2003.boardgame.View.SnakesAndLaddersView;
 import java.util.logging.Logger;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -19,16 +19,16 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class GameController implements BoardGameObserver {
-    private static final Logger log = Logger.getLogger(GameController.class.getName());
+public class SnakesAndLaddersController implements BoardGameObserver {
+    private static final Logger log = Logger.getLogger(SnakesAndLaddersController.class.getName());
 
-    private BoardGameView view;
+    private SnakesAndLaddersView view;
     private List<String> listOfPlayers = new ArrayList<>();
     private BoardGame boardGame;
     private Board board;
     private Stage primaryStage;
 
-    public GameController(BoardGameView view) {
+    public SnakesAndLaddersController(SnakesAndLaddersView view) {
         this.view = view;
         this.boardGame = new BoardGame();
         view.initialize();
