@@ -674,22 +674,32 @@ public class BoardGameView {
             tileBox.getStyleClass().add("snakeBox");
         }
         else if(tileAction instanceof PortalAction){
+            /*
             tileBox.getStyleClass().add("portalBox");
             ImageView portalImage = new ImageView(new Image("images/portal.png"));
             portalImage.setFitHeight(65);
             portalImage.setFitWidth(65);
             tileBox.setAlignment(Pos.CENTER);
             tileBox.getChildren().add(portalImage);
+             */
+            BackgroundImage backgroundImagePortal = new BackgroundImage(
+                new Image("images/portal.png"),
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true)
+            );
+            tileBox.setBackground(new Background(backgroundImagePortal));
         }
         else if(tileAction instanceof WinAction){
-            BackgroundImage backgroundImage = new BackgroundImage(
+            BackgroundImage backgroundImageWin = new BackgroundImage(
                 new Image("images/finish.png"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
                 new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true)
             );
-            tileBox.setBackground(new Background(backgroundImage));
+            tileBox.setBackground(new Background(backgroundImageWin));
         }
         else{
             tileBox.getStyleClass().add("tileBox");
