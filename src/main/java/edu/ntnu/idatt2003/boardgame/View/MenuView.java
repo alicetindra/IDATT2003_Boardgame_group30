@@ -11,14 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -35,6 +28,7 @@ public class MenuView {
   /*Buttons*/
   private final Button addPlayerButton = new Button("Add Player");
   private final Button setUpSnakesLaddersGameButton = new Button("Start game");
+  private final Button setUpMonopolyGameButton = new Button("Start game");
   private final Button loadCustomBoardButton = new Button("Load Custom Board");
   private final Button plusOneButton = new Button("+");
   private final Button minusOneButton = new Button("-");
@@ -48,7 +42,7 @@ public class MenuView {
   /*Radio buttons*/
   private final ToggleGroup toggleGroup = new ToggleGroup();
   private final RadioButton SLButton = new RadioButton("Snakes and ladders");
-  private final RadioButton CLButton = new RadioButton("CandyLand");
+  private final RadioButton MButton = new RadioButton("Monopoly");
 
   /*TextFields*/
   private final TextField diceField = new TextField();
@@ -90,6 +84,10 @@ public class MenuView {
     setUpSnakesLaddersGameButton.setId("setUpSnakesLaddersGame");
     return setUpSnakesLaddersGameButton;
   }
+  public Button getSetUpMonopolyGameButton() {
+    setUpMonopolyGameButton.setId("setUpSnakesLaddersGame");
+    return setUpMonopolyGameButton;
+  }
   public Button getPlusOneButton() {
     plusOneButton.setId("plusOneButton");
     return plusOneButton;
@@ -106,6 +104,10 @@ public class MenuView {
   public RadioButton getSLButton() {
     return SLButton;
   }
+  public RadioButton getMButton() {
+    return MButton;
+  }
+
   public Button getMainMenuButton(){
     return mainMenuButton;
   }
@@ -174,12 +176,12 @@ public class MenuView {
 
     SLButton.setToggleGroup(toggleGroup);
     SLButton.setId("SLButton");
-    CLButton.setToggleGroup(toggleGroup);
-    CLButton.setId("CLButton");
+    MButton.setToggleGroup(toggleGroup);
+    MButton.setId("MButton");
 
     HBox radioButtonBox = new HBox(20);
     radioButtonBox.setId("radioButtonBox");
-    radioButtonBox.getChildren().addAll(SLButton, CLButton);
+    radioButtonBox.getChildren().addAll(SLButton, MButton);
     radioButtonBox.setAlignment(Pos.CENTER);
 
     gameInfoMenuBox.getChildren().clear();
@@ -201,6 +203,13 @@ public class MenuView {
     boardBox.getChildren().addAll(boardText, boardSizeMenu, loadCustomBoardButton);
     createGameMenu();
   }
+  public void createMMenu() {
+    Text text = new Text("Welcome to monopoly");
+    boardBox.getChildren().clear();
+    boardBox.getChildren().addAll(text);
+    createGameMenu();
+  }
+
 
   public void createGameMenu(){
     gameInfoMenuBox.getChildren().clear();
@@ -279,11 +288,17 @@ public class MenuView {
     mainLayout.setAlignment(Pos.CENTER);
     mainLayout.getChildren().addAll(leftColumn, rightColumn);
 
-    //Start game or go back to main bix
     HBox startOrMainButtons = new HBox(20);
     startOrMainButtons.setAlignment(Pos.CENTER);
-    startOrMainButtons.getChildren().addAll(mainMenuButton, setUpSnakesLaddersGameButton);
-    setUpSnakesLaddersGameButton.setFont(customFont);
+    if(MButton.isSelected()){
+      startOrMainButtons.getChildren().addAll(mainMenuButton, setUpMonopolyGameButton);
+      setUpMonopolyGameButton.setFont(customFont);
+    }
+    else if(SLButton.isSelected()){
+      startOrMainButtons.getChildren().addAll(mainMenuButton, setUpSnakesLaddersGameButton);
+      setUpSnakesLaddersGameButton.setFont(customFont);
+    }
+
     mainMenuButton.setFont(customFont);
     mainMenuButton.setId("menuButtonBack");
 
@@ -394,6 +409,7 @@ public class MenuView {
         new KeyFrame(Duration.seconds(5), e -> menuLayout.getChildren().remove(confettiGroup))
     ).play();
   }
+
 
 
 }

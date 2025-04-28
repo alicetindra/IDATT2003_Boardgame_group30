@@ -1,13 +1,10 @@
 package edu.ntnu.idatt2003.boardgame.Controller;
 
-import edu.ntnu.idatt2003.boardgame.Model.Board;
 import edu.ntnu.idatt2003.boardgame.Model.BoardGame;
 import edu.ntnu.idatt2003.boardgame.View.MenuView;
 import edu.ntnu.idatt2003.boardgame.View.MonopolyView;
 import edu.ntnu.idatt2003.boardgame.View.SnakesAndLaddersView;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.scene.control.Alert;
 
 public class MenuController{
@@ -29,7 +26,7 @@ public class MenuController{
 
     //Controllers
     this.snakeLadderController = new SnakesAndLaddersController(snakeLadderView, menuView, boardGame);
-    this.monopolyController = new MonopolyController();
+    this.monopolyController = new MonopolyController(monopolyView, menuView, boardGame);
 
 
     menuView.initialize();
@@ -55,12 +52,23 @@ public class MenuController{
       }
     });
 
+    menuView.getSetUpMonopolyGameButton().setOnAction(e -> {
+        try {
+            monopolyController.setUpMonopolyGame();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    });
+
     //Back to main menu button
     menuView.getMainMenuButton().setOnAction(e -> snakeLadderController.clearGame());
 
     //Radio buttons to choose game
     menuView.getSLButton().setOnAction(
         e-> menuView.createSLMenu()
+    );
+    menuView.getMButton().setOnAction(
+            e-> menuView.createMMenu()
     );
     menuView.getPlusOneButton().setOnAction(
         e-> updateDice(1)

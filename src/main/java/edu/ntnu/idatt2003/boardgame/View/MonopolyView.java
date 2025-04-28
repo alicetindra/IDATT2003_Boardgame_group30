@@ -9,6 +9,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
 
 
 public class MonopolyView {
@@ -23,7 +24,6 @@ public class MonopolyView {
         rootLayout = new StackPane();
         monopolyLayout = new BorderPane();
         monopolyGrid = new GridPane();
-        createMonopolyLayout();
     }
 
     public StackPane getRootLayout() {
@@ -32,10 +32,6 @@ public class MonopolyView {
 
     public BorderPane getMonopolyLayout() {
         return monopolyLayout;
-    }
-
-    public GridPane getGridPane() {
-        return monopolyGrid;
     }
 
     public void createBoardGrid(int width, int height, Board board) {
@@ -66,19 +62,19 @@ public class MonopolyView {
         }
     }
 
-
     public void styliseTileBox(Tile tile){
         tile.getTileBox().getChildren().add(new Text(tile.getId()+""));
-        tile.getTileBox().setStyle("-fx-max-height: 50px; -fx-min-height: 50px; -fx-max-width: 50px; -fx-min-width: 50px;-fx-border-color: black; -fx-border-width: 1px;");
-        //ACtions decorate the box here
+        tile.getTileBox().setStyle("-fx-pref-height: 75px; -fx-pref-width: 75px;-fx-border-color: black; -fx-border-width: 1px;");
+        //Actions decorate the box here
+        //Start tile, jail tile etc.
     }
-
 
     public void createTitle(){
         title = new Text("Monopoly");
     }
 
-    public void createMonopolyLayout(){
+    public void createMonopolyLayout() throws IOException {
+        monopolyLayout.getChildren().clear();
         createTitle();
         monopolyLayout.setTop(title);
         monopolyLayout.setCenter(monopolyGrid);
