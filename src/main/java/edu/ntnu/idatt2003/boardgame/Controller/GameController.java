@@ -3,6 +3,7 @@ package edu.ntnu.idatt2003.boardgame.Controller;
 import edu.ntnu.idatt2003.boardgame.Model.*;
 import edu.ntnu.idatt2003.boardgame.Observer.BoardGameObserver;
 import edu.ntnu.idatt2003.boardgame.View.BoardGameView;
+import java.util.logging.Logger;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
@@ -19,6 +20,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class GameController implements BoardGameObserver {
+    private static final Logger log = Logger.getLogger(GameController.class.getName());
+
     private BoardGameView view;
     private List<String> listOfPlayers = new ArrayList<>();
     private BoardGame boardGame;
@@ -103,7 +106,7 @@ public class GameController implements BoardGameObserver {
         if (file != null) {
             boardGame.loadCustomBoard(file.getPath());
         } else {
-            System.out.println("User cancelled file selection.");
+            log.info("User cancelled file selection.");
         }
     }
 
