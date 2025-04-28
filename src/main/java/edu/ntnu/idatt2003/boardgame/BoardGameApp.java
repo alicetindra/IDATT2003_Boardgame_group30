@@ -1,7 +1,9 @@
 package edu.ntnu.idatt2003.boardgame;
 
+import edu.ntnu.idatt2003.boardgame.Controller.MonopolyController;
 import edu.ntnu.idatt2003.boardgame.Controller.SnakesAndLaddersController;
 
+import edu.ntnu.idatt2003.boardgame.View.MonopolyView;
 import edu.ntnu.idatt2003.boardgame.View.SnakesAndLaddersView;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -13,8 +15,8 @@ public class BoardGameApp extends Application {
 
   @Override
   public void start(Stage primaryStage){
-    SnakesAndLaddersView view = new SnakesAndLaddersView();
-    new SnakesAndLaddersController(view);
+    MonopolyView view = new MonopolyView();
+    new MonopolyController(view);
 
 
     Scene scene = new Scene(view.getRootLayout());

@@ -79,7 +79,6 @@ public class SnakesAndLaddersView {
 
     public void initialize(){
         rootLayout = new StackPane();
-
         layout = new BorderPane();
         layout.getStyleClass().add("rootSL");
         createMainMenu();
