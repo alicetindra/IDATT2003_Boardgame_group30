@@ -269,13 +269,19 @@ public class BoardGameView {
         Text title = new Text("Game Rules");
         title.setFont(customFont);
         title.getStyleClass().add("subTitle");
-        rulesColumn.getChildren().add(title);
 
 
         Text ruleText = new Text("1. Roll the dice to move when it's your turn.\n\n2. Land on dark green to climb, dark red to slide, dark blue to teleport.\n\n3. The first player at the finish is the winner.");
         ruleText.setWrappingWidth(200);
         ruleText.getStyleClass().add("infoText");
-        rulesColumn.getChildren().add(ruleText);
+
+        VBox ruleBox = new VBox(20);
+        ruleBox.setPadding(new Insets(20));
+        ruleBox.setAlignment(Pos.CENTER);
+        ruleBox.setId("ruleText");
+        ruleBox.getChildren().addAll(title, ruleText);
+
+        rulesColumn.getChildren().add(ruleBox);
 
         Region spacer = new Region();
         VBox.setVgrow(spacer, Priority.ALWAYS);
@@ -293,11 +299,17 @@ public class BoardGameView {
         infoColumn.setAlignment(Pos.TOP_CENTER);
         infoColumn.setPadding(new Insets(100, 0, 200, 0));
 
+        VBox infoBoxText = new VBox(20);
+        infoBoxText.setPadding(new Insets(20));
+        infoBoxText.setSpacing(5);
+        infoBoxText.setAlignment(Pos.CENTER);
+        infoBoxText.setId("infoText");
+
         Text infoTitle = new Text("Player Info");
         infoTitle.setFont(customFont);
         infoTitle.getStyleClass().add("subTitle");
 
-        infoColumn.getChildren().add(infoTitle);
+        infoBoxText.getChildren().add(infoTitle);
 
         for (Player p : playerHolder.getPlayers()) {
             HBox playerInfoBox = new HBox(10);
@@ -311,23 +323,24 @@ public class BoardGameView {
             playerImage.setPreserveRatio(true);
             playerInfoBox.getChildren().addAll(playerImage, playerName);
 
-            infoColumn.getChildren().add(playerInfoBox);
+            infoBoxText.getChildren().add(playerInfoBox);
         }
+
 
         Region SpacerAboveDisplayBox = new Region();
         VBox.setVgrow(SpacerAboveDisplayBox, Priority.ALWAYS);
-        infoColumn.getChildren().add(SpacerAboveDisplayBox);
+        infoBoxText.getChildren().add(SpacerAboveDisplayBox);
 
         displayInfoBox.setAlignment(Pos.CENTER);
         displayInfoBox.getStyleClass().add("infoBox");
 
-        infoColumn.getChildren().addAll(displayInfoBox);
+        infoBoxText.getChildren().addAll(displayInfoBox);
+        infoColumn.getChildren().add(infoBoxText);
 
         if (layout.getRight() != infoColumn) {
             layout.setRight(infoColumn);
         }
     }
-
 
     public void createStartButton(){
 
@@ -460,7 +473,7 @@ public class BoardGameView {
         VBox playerColorSection = new VBox(10);
         playerColorSection.getChildren().addAll(colorText, playerColorMenu);
 
-        //Add all + addPlayerButton to left column
+        //Add addPlayerButton to left column
         addPlayerButton.setMinWidth(150);
         addPlayerButton.setFont(customFont);
         addPlayerButton.setId("addPlayerButton");
@@ -470,7 +483,6 @@ public class BoardGameView {
         VBox rightColumn = new VBox(15);
         rightColumn.setPrefWidth(300);
         rightColumn.setAlignment(Pos.TOP_RIGHT);
-        //rightColumn.setPadding(new Insets(100, 0, 200, 0));
 
         //Player list section
         Text playerTitle = new Text("Players");
@@ -484,6 +496,8 @@ public class BoardGameView {
         Text diceImagesTitle = new Text("Dice");
         diceImagesTitle.setFont(customFont);
         diceImagesTitle.getStyleClass().add("subTitle");
+        diceImagesBox.setAlignment(Pos.CENTER);
+        placeDice();
 
         //right column
         rightColumn.setAlignment(Pos.TOP_CENTER);
@@ -628,9 +642,9 @@ public class BoardGameView {
 
     public void placeDice(){
         diceImagesBox.getChildren().clear();
-        for(int i = 1; i<Integer.parseInt(diceField.getText())+1; i++){
+        for(int i = 1; i<= Integer.parseInt(diceField.getText()); i++){
             ImageView diceImageView = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/dice"+i+".png")).toExternalForm()));
-            diceImageView.setFitHeight(50);
+            diceImageView.setFitHeight(40);
             diceImageView.setPreserveRatio(true);
             diceImagesBox.getChildren().add(diceImageView);
         }

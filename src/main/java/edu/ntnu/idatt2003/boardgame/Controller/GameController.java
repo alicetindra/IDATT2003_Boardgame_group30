@@ -145,6 +145,7 @@ public class GameController implements BoardGameObserver {
             die.setFitHeight(40);
             die.setFitWidth(40);
             view.getDieBox().getChildren().add(die);
+            view.getDieBox().setAlignment(Pos.CENTER);
         }
         view.getDisplayInfoBox().getChildren().add(view.getDieBox());
     }
@@ -160,7 +161,15 @@ public class GameController implements BoardGameObserver {
     }
 
     public void displayInfoBox(){
-        String message = "Player: "+ boardGame.getPlayerHolder().getCurrentPlayer().getColor() + "\nThrew a: " + boardGame.getDice().getTotalSumOfEyes() + "\nLanded on tile: " + boardGame.getPlayerHolder().getCurrentPlayer().getCurrentTile().getId();
+        String message = "";
+        if(boardGame.getDice().getTotalSumOfEyes() == 8|| boardGame.getDice().getTotalSumOfEyes() == 11 || boardGame.getDice().getTotalSumOfEyes() == 18){
+            message = "Player "+ boardGame.getPlayerHolder().getCurrentPlayer().getColor() + ", threw an " + boardGame.getDice().getTotalSumOfEyes() + " and landed on tile " + boardGame.getPlayerHolder().getCurrentPlayer().getCurrentTile().getId();
+        } else {
+            message =
+                "Player " + boardGame.getPlayerHolder().getCurrentPlayer().getColor() + ", threw a "
+                    + boardGame.getDice().getTotalSumOfEyes() + " and landed on tile "
+                    + boardGame.getPlayerHolder().getCurrentPlayer().getCurrentTile().getId();
+        }
 
         view.updateInfoBox(message);
     }
