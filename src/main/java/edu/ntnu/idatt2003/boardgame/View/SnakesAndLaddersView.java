@@ -179,7 +179,7 @@ public class SnakesAndLaddersView {
         VBox ruleBox = new VBox(20);
         ruleBox.setPadding(new Insets(20));
         ruleBox.setAlignment(Pos.CENTER);
-        ruleBox.setId("ruleText");
+        ruleBox.setId("ruleBoxText");
         ruleBox.getChildren().addAll(title, ruleText);
 
         rulesColumn.getChildren().add(ruleBox);
@@ -204,7 +204,7 @@ public class SnakesAndLaddersView {
         infoBoxText.setPadding(new Insets(20));
         infoBoxText.setSpacing(5);
         infoBoxText.setAlignment(Pos.CENTER);
-        infoBoxText.setId("infoText");
+        infoBoxText.setId("infoBoxText");
 
         Text infoTitle = new Text("Player Info");
         infoTitle.setFont(customFont);

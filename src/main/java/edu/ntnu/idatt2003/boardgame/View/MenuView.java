@@ -204,9 +204,10 @@ public class MenuView {
     createGameMenu();
   }
   public void createMMenu() {
-    Text text = new Text("Welcome to monopoly");
+    Text monopolyText = new Text("Welcome to monopoly");
+    monopolyText.setId("monopolyText");
     boardBox.getChildren().clear();
-    boardBox.getChildren().addAll(text);
+    boardBox.getChildren().addAll(monopolyText);
     createGameMenu();
   }
 

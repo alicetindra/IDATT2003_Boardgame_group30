@@ -108,7 +108,7 @@ Buttons
     -fx-max-height: 150px;
 }
 
-#SLButton, #CLButton{
+#SLButton, #MButton{
     -fx-text-fill: #1d528e;
 }
 
@@ -143,14 +143,14 @@ Texts
     -fx-border-radius: 10px;
 }
 
-#ruleText, #infoText{
+#ruleBoxText, #infoBoxText{
     -fx-background-color: rgba(225, 221, 221, 0.62);
     -fx-background-radius: 10;
     -fx-border-width: 2px;
     -fx-border-radius: 10;
     -fx-border-color: rgba(225, 221, 221, 0.62);
 }
-.infoText, #playerInfo, #boardSizeText, #fileText, #diceText, #nameText, #colorText {
+.infoText, #playerInfo, #boardSizeText, #fileText, #diceText, #nameText, #colorText, #diceTextM, #moneyBoxText, #monopolyText {
     -fx-font-size: 18px;
     -fx-fill: #1d528e;
     -fx-font-family: Georgia;

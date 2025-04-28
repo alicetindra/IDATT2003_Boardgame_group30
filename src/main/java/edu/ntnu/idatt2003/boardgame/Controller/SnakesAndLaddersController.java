@@ -210,6 +210,7 @@ public class SnakesAndLaddersController implements BoardGameObserver {
         snakesLaddersView.getDieBox().getChildren().clear();
         snakesLaddersView.getLayout().getChildren().clear();
 
+        menuView.getMButton().setSelected(false);
         menuView.getSLButton().setSelected(false);
         menuView.getPlayerData().clear();
         menuView.setPlayerColorBox();

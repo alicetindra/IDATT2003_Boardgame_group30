@@ -78,9 +78,11 @@ public class MonopolyView {
     }
 
     public void createMoneyBox(){
+        Text moneyBoxText = new Text("This is where the money will be displayed");
+        moneyBoxText.setId("moneyBoxText");
         moneyBox = new VBox();
         moneyBox.setAlignment(Pos.CENTER);
-        moneyBox.getChildren().add(new Text("This is where the money will be displayed"));
+        moneyBox.getChildren().add(moneyBoxText);
     }
 
     public void createTitleBox(){
@@ -92,9 +94,11 @@ public class MonopolyView {
     }
 
     public void createDiceBox(){
+        Text diceText = new Text("Dice and the current player can be here");
+        diceText.setId("diceTextM");
         diceBox.getChildren().clear();
         diceBox.setAlignment(Pos.CENTER);
-        diceBox.getChildren().add(new Text("Dice and the current player can be here"));
+        diceBox.getChildren().add(diceText);
     }
 
     public void createMonopolyLayout(){
