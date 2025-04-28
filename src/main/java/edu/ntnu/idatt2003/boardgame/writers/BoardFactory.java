@@ -27,8 +27,8 @@ public class BoardFactory {
       }
     }
 
-    //CandyLand map will come soon
-    else if(chosenGame.toLowerCase().contains("candy")) {
+    //Monopoly map will come soon
+    else if(chosenGame.toLowerCase().contains("monopoly")) {
       JsonArray candyJsonArray = new JsonArray();
 
       for (int i = 1; i <= n; i++) {
