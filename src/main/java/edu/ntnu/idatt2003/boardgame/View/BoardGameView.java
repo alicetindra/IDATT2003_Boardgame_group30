@@ -682,7 +682,14 @@ public class BoardGameView {
             tileBox.getChildren().add(portalImage);
         }
         else if(tileAction instanceof WinAction){
-            tileBox.getStyleClass().add("winBox");
+            BackgroundImage backgroundImage = new BackgroundImage(
+                new Image("images/finish.png"),
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true)
+            );
+            tileBox.setBackground(new Background(backgroundImage));
         }
         else{
             tileBox.getStyleClass().add("tileBox");

@@ -209,9 +209,7 @@ Board grid, tiles and boxes
 .portalBox{
     -fx-background-color: #77b7d8;
 }
-.winBox{
-    -fx-background-color: #fff900;
-}
+
 .snakeDestBox{
     -fx-background-color: #FBC4C4;
 }

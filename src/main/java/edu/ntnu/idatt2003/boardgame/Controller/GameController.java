@@ -208,7 +208,6 @@ public class GameController implements BoardGameObserver {
 
         board = boardGame.getBoard();
 
-
         boardGame.initializeDice(Integer.parseInt(view.getDiceField().getText()));
 
         //Create BoardGrid
