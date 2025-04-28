@@ -3,6 +3,7 @@ package edu.ntnu.idatt2003.boardgame.View;
 import edu.ntnu.idatt2003.boardgame.Model.Board;
 import edu.ntnu.idatt2003.boardgame.Model.Tile;
 import javafx.geometry.Pos;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -121,8 +122,26 @@ public class MonopolyView {
 
 
     public void styliseTileBox(Tile tile){
-        tile.getTileBox().getChildren().add(new Text(tile.getId()+""));                                                                     
-        tile.getTileBox().getStyleClass().add("monopolyTileBox");
+        tile.getTileBox().getChildren().add(new Text(tile.getId()+""));
+
+        if(tile.getId() == 12 || tile.getId() == 14 || tile.getId() == 15){
+            BackgroundImage cloudCastleBackground = new BackgroundImage(
+                new Image("images/cloudCastle.png"),
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true)
+            );
+            tile.getTileBox().getStyleClass().add("cottonCandyStreet");
+            tile.getTileBox().setBackground(new Background(cloudCastleBackground));
+        }else{
+            tile.getTileBox().getStyleClass().add("monopolyTileBox");
+        }
+
+
+
+
+
         //Actions decorate the box here                                                                                                     
         //Start tile, jail tile etc.                                                                                                        
     }

@@ -226,6 +226,13 @@ Board grid, tiles and boxes
     -fx-background-color: #ffffff;
 }
 
+.cottonCandyStreet{
+    -fx-max-height: 100px;
+    -fx-min-height: 100px;
+    -fx-max-width: 100px;
+    -fx-min-width: 100px;
+    -fx-border-color: black;
+}
 
 
 
