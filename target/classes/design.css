@@ -24,7 +24,7 @@ Background colors and images
 /*
 Main menu components
  */
-#userInfoBox{
+#gameInfoMenuBox{
     -fx-background-color: transparent;
     -fx-font-size: 18px;
     -fx-font-family: Georgia;
@@ -91,7 +91,7 @@ Buttons
     -fx-border-width: 2px;
 }
 
-#addPlayerButton, #makeGameButton, #menuButtonBack{
+#addPlayerButton, #setUpSnakesLaddersGame, #menuButtonBack{
     -fx-background-color: #92b8e3;
     -fx-border-color: #1d528e;
     -fx-text-fill: #1d528e;
@@ -108,7 +108,7 @@ Buttons
     -fx-max-height: 150px;
 }
 
-#SLButton, #CLButton, #customButton{
+#SLButton, #CLButton{
     -fx-text-fill: #1d528e;
 }
 

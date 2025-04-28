@@ -13,10 +13,13 @@ import java.util.List;
 
 public class BoardGame {
     private List<BoardGameObserver> observers = new ArrayList<>();
+    private List<String> listOfPlayers = new ArrayList<>();
+
     private Board board;
     private Dice dice;
     private PlayerHolder playerHolder;
     private Player winner = null;
+    private boolean customBoardLoaded = false;
 
     public BoardGame() {
     }
@@ -48,13 +51,17 @@ public class BoardGame {
     public void loadCustomBoard(String filePath) {
         BoardFileReaderGson reader = new BoardFileReaderGson();
         this.board = reader.readTilesFromFile(filePath);
+        customBoardLoaded = true;
+    }
+
+    public boolean isCustomBoardLoaded(){
+        return customBoardLoaded;
     }
 
 
     public void initializeDice(int numberOfDice){
         this.dice = new Dice(numberOfDice);
     }
-
 
     //Players
     public void createPlayerHolder(String filename, List<String> playerString) throws IOException {
@@ -79,6 +86,15 @@ public class BoardGame {
         notifyObservers("playerMoved");
     }
 
+    public void addPlayer(String name, String color){
+        listOfPlayers.add(name + "," + color);
+    }
+
+
+    public List<String> getListOfPlayers(){
+        return listOfPlayers;
+    }
+
     public void declareWinner(Player winner) {
         this.winner = winner;
         notifyObservers("winnerDeclared");
@@ -94,6 +110,11 @@ public class BoardGame {
 
     public Board getBoard() {
         return board;
+    }
+
+    public void clearBoard(){
+        board = null;
+        listOfPlayers.clear();
     }
 
     public Dice getDice() {

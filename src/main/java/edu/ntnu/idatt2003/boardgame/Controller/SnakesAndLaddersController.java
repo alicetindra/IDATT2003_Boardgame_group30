@@ -2,6 +2,7 @@ package edu.ntnu.idatt2003.boardgame.Controller;
 
 import edu.ntnu.idatt2003.boardgame.Model.*;
 import edu.ntnu.idatt2003.boardgame.Observer.BoardGameObserver;
+import edu.ntnu.idatt2003.boardgame.View.MenuView;
 import edu.ntnu.idatt2003.boardgame.View.SnakesAndLaddersView;
 import java.util.logging.Logger;
 import javafx.geometry.Pos;
@@ -22,16 +23,18 @@ import javafx.stage.Stage;
 public class SnakesAndLaddersController implements BoardGameObserver {
     private static final Logger log = Logger.getLogger(SnakesAndLaddersController.class.getName());
 
-    private SnakesAndLaddersView view;
-    private List<String> listOfPlayers = new ArrayList<>();
+    private final SnakesAndLaddersView snakesLaddersView;
+    private final MenuView menuView;
     private BoardGame boardGame;
     private Board board;
     private Stage primaryStage;
 
-    public SnakesAndLaddersController(SnakesAndLaddersView view) {
-        this.view = view;
-        this.boardGame = new BoardGame();
-        view.initialize();
+
+    public SnakesAndLaddersController(SnakesAndLaddersView snakesLaddersView, MenuView menuView, BoardGame boardGame) {
+        this.snakesLaddersView = snakesLaddersView;
+        this.menuView = menuView;
+        this.boardGame = boardGame;
+        snakesLaddersView.initialize();
         attachEventHandlers();
     }
 
@@ -39,7 +42,7 @@ public class SnakesAndLaddersController implements BoardGameObserver {
     public void update(String event, BoardGame boardGame){
         switch (event) {
             case "playerMoved" -> {
-                view.getDisplayInfoBox().getChildren().clear();
+                snakesLaddersView.getDisplayInfoBox().getChildren().clear();
                 displayDice();
                 displayInfoBox();
 
@@ -50,10 +53,10 @@ public class SnakesAndLaddersController implements BoardGameObserver {
             }
             case "winnerDeclared" -> {
                 Player winner = boardGame.getWinner();
-                view.createWinnerBox(winner.getName(), winner.getColor());
-                view.getStartRoundButton().setDisable(true);
-                view.getRootLayout().getChildren().addAll(view.getWinnerBox());
-                view.playConfettiEffect();
+                snakesLaddersView.createWinnerBox(winner.getName(), winner.getColor());
+                snakesLaddersView.getStartRoundButton().setDisable(true);
+                menuView.getMenuLayout().getChildren().addAll(snakesLaddersView.getWinnerBox());
+                menuView.playConfettiEffect();
             }
         }
     }
@@ -61,43 +64,13 @@ public class SnakesAndLaddersController implements BoardGameObserver {
      * Attaching actions to the buttons made in BoardGameView.java
      */
     private void attachEventHandlers() {
-        view.getAddPlayerButton().setOnAction(e -> handleAddPlayer());
-
-        view.getMakeGameButton().setOnAction(e -> {
-            if(listOfPlayers.isEmpty() || view.getDiceField() == null || view.getBoardSizeMenu().getSelectionModel().isEmpty()) {
-                    getAlert("To start the game, you need the type of game, players, dice and board size!");
-                    throw new IllegalArgumentException("Players, board size, game and/or dice is not added");
-            }
-            try {
-                handleMakeGame();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-
-        view.getStartRoundButton().setOnAction(e ->handleStartRound());
-
-        view.getMainMenuButton().setOnAction(e -> resetMainMenu());
-
-        view.getRestartGameButton().setOnAction(e ->handleRestartGame());
-
-        view.getSLButton().setOnAction(
-               e-> view.createSLMenu()
-        );
-        view.getCustomRadioButton().setOnAction(
-                e-> view.createCustomMenu()
-        );
-        view.getPlusOneButton().setOnAction(
-                e-> updateDice(1)
-        );
-        view.getMinusOneButton().setOnAction(
-                e-> updateDice(-1)
-        );
-        view.getLoadCustomBoardButton().setOnAction(e->loadBoard());
-
+        snakesLaddersView.getStartRoundButton().setOnAction(e ->handleStartRound());
+        snakesLaddersView.getRestartGameButton().setOnAction(e ->handleRestartGame());
+        menuView.getMainMenuButton().setOnAction(e -> clearGame());
     }
 
-    private void loadBoard() {
+
+    public void loadBoard() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Custom Board JSON File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON files", "*.json"));
@@ -105,62 +78,22 @@ public class SnakesAndLaddersController implements BoardGameObserver {
 
         if (file != null) {
             boardGame.loadCustomBoard(file.getPath());
+            menuView.getBoardSizeMenu().setDisable(true);
         } else {
             log.info("User cancelled file selection.");
         }
     }
 
-    /**
-     * Gets player-name and player-color inputs from the user and adds them to listOfPlayers.
-     * Clears the TextField and removes the color from the color-menu.
-     * Gives the user an errormessage if the color and/or name field is empty.
-     * @throws RuntimeException
-     */
-    private void handleAddPlayer() throws RuntimeException {
-        String selectedColor = view.getPlayerColorMenu().getSelectionModel().getSelectedItem();
-        String writtenName = view.getPlayerName().getText();
-        if(selectedColor == null || writtenName.isEmpty()) {
-            getAlert("Please select a name and color for the player");
-            throw new RuntimeException("Color or name is not selected");
-        }
-
-        listOfPlayers.add(writtenName+","+selectedColor);
-
-        for (int i = 0; i < view.getPlayerData().size(); i++) {
-            if (view.getPlayerData().get(i).isBlank()) { // Find first empty slot
-                view.getPlayerData().set(i, writtenName + " - " + selectedColor);
-                break;
-            }
-        }
-
-        view.getPlayerName().clear();
-        view.getPlayerColorMenu().getItems().remove(selectedColor);
-
-        if (!view.getPlayerColorMenu().getItems().isEmpty()) {
-            view.getPlayerColorMenu().getSelectionModel().select(0);
-        }
-    }
-
     public void displayDice(){
-        view.getDieBox().getChildren().clear();
+        snakesLaddersView.getDieBox().getChildren().clear();
         for(Die d : boardGame.getDice().getListOfDice()){
             ImageView die = new ImageView(new Image("/images/dice"+d.getValue()+".png"));
             die.setFitHeight(40);
             die.setFitWidth(40);
-            view.getDieBox().getChildren().add(die);
-            view.getDieBox().setAlignment(Pos.CENTER);
+            snakesLaddersView.getDieBox().getChildren().add(die);
+            snakesLaddersView.getDieBox().setAlignment(Pos.CENTER);
         }
-        view.getDisplayInfoBox().getChildren().add(view.getDieBox());
-    }
-
-    public void updateDice(int i){
-        int u = Integer.parseInt(view.getDiceField().getText())+i;
-        if(u<1 || u>6){
-            getAlert("Number of dice must be between 1 and 6");
-            throw new IllegalArgumentException("Invalid dice value");
-        }
-        view.getDiceField().setText(String.valueOf(u));
-        view.placeDice();
+        snakesLaddersView.getDisplayInfoBox().getChildren().add(snakesLaddersView.getDieBox());
     }
 
     public void displayInfoBox(){
@@ -174,13 +107,13 @@ public class SnakesAndLaddersController implements BoardGameObserver {
                     + boardGame.getPlayerHolder().getCurrentPlayer().getCurrentTile().getId();
         }
 
-        view.updateInfoBox(message);
+        snakesLaddersView.updateInfoBox(message);
     }
 
     private void addPlayerImageToNewTile(Player player, int newTileId){
         for(Tile t : board.getTiles()){
             if(t.getId() == newTileId){
-                t.getTileBox().getChildren().add(view.getPlayerImage(player));
+                t.getTileBox().getChildren().add(snakesLaddersView.getPlayerImage(player));
             }
         }
     }
@@ -189,13 +122,13 @@ public class SnakesAndLaddersController implements BoardGameObserver {
      *
      * @throws IOException
      */
-    private void handleMakeGame() throws IOException {
+    public void setUpSnakesLaddersGame() throws IOException {
         this.boardGame.removeObserver(this);
         this.boardGame.addObserver(this);
-        view.getLayout().getChildren().clear();
-        view.getDisplayInfoBox().getChildren().clear();
+        snakesLaddersView.getLayout().getChildren().clear();
+        snakesLaddersView.getDisplayInfoBox().getChildren().clear();
         try {
-            boardGame.createPlayerHolder("src/main/resources/players.csv",listOfPlayers);
+            boardGame.createPlayerHolder("src/main/resources/players.csv",boardGame.getListOfPlayers());
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
@@ -205,35 +138,37 @@ public class SnakesAndLaddersController implements BoardGameObserver {
             p.setBoardGame(boardGame);
         }
 
-        if (!view.getCustomRadioButton().isSelected()) {
-            boardGame.initializeBoard(view.getGameName(), view.getBoardSizeMenu().getValue(), "src/main/resources/hardcodedBoards.json");
+        if (!boardGame.isCustomBoardLoaded()) {
+            boardGame.initializeBoard(
+            menuView.getGameName(), menuView.getBoardSizeMenu().getValue(), "src/main/resources/hardcodedBoards.json");
         }
 
         board = boardGame.getBoard();
 
-        boardGame.initializeDice(Integer.parseInt(view.getDiceField().getText()));
+        boardGame.initializeDice(Integer.parseInt(menuView.getDiceField().getText()));
 
         //Create BoardGrid
-        view.createGridBoard(board);
-        GridPane boardGrid = view.getGrid();
+        snakesLaddersView.createGridBoard(board);
+        GridPane boardGrid = snakesLaddersView.getGrid();
         boardGrid.setAlignment(Pos.CENTER);
 
-        view.createTitleBox();
-        view.createRulesColumn();
-        view.createStartButton();
-        view.createMainMenuButton();
+        snakesLaddersView.createTitleBox();
+        snakesLaddersView.createRulesColumn();
+        snakesLaddersView.createStartButton();
+        menuView.createMainMenuButton();
 
-        view.createInfoColumn(boardGame.getPlayerHolder());
+        snakesLaddersView.createInfoColumn(boardGame.getPlayerHolder());
 
-        view.getInfoColumn().getChildren().add(view.getStartRoundButton());
-        view.getRulesColumn().getChildren().add(view.getRestartGameButton());
-        view.getRulesColumn().getChildren().add(view.getMainMenuButton());
+        snakesLaddersView.getInfoColumn().getChildren().add(snakesLaddersView.getStartRoundButton());
+        snakesLaddersView.getRulesColumn().getChildren().add(snakesLaddersView.getRestartGameButton());
+        snakesLaddersView.getRulesColumn().getChildren().add(menuView.getMainMenuButton());
 
         //add to StackPane layout
-        BorderPane gameLayout = view.createMainLayout(boardGrid,view.getTitleBox(),view.getRulesColumn(),view.getInfoColumn());
+        BorderPane gameLayout = snakesLaddersView.createSnakesLaddersLayout(boardGrid, snakesLaddersView.getTitleBox(),
+            snakesLaddersView.getRulesColumn(), snakesLaddersView.getInfoColumn());
 
-        view.getRootLayout().getChildren().clear();
-        view.getRootLayout().getChildren().add(gameLayout);
+        menuView.getMenuLayout().getChildren().clear();
+        menuView.getMenuLayout().getChildren().add(gameLayout);
         StackPane.setAlignment(gameLayout, Pos.CENTER);
 
         for(Player p : boardGame.getPlayerHolder().getPlayers()){
@@ -243,55 +178,44 @@ public class SnakesAndLaddersController implements BoardGameObserver {
     }
 
     private void handleStartRound() {
-        view.getRestartGameButton().setDisable(false);
+        snakesLaddersView.getRestartGameButton().setDisable(false);
         boardGame.play();
     }
 
     /**
-     * Removes the WinnerBox and the winner of the previous game, disables the restart button, calls handleMakeGame();
+     * Removes the WinnerBox and the winner of the previous game, disables the restart button, calls setUpSnakesLaddersGame();
      */
     private void handleRestartGame() {
-        view.getLayout().getChildren().remove(view.getWinnerBox());
-        view.getDisplayInfoBox().getChildren().clear();
+        snakesLaddersView.getLayout().getChildren().remove(snakesLaddersView.getWinnerBox());
+        snakesLaddersView.getDisplayInfoBox().getChildren().clear();
         boardGame.undoWinner(boardGame.getWinner());
-        view.getStartRoundButton().setDisable(false);
+        snakesLaddersView.getStartRoundButton().setDisable(false);
         try {
-            handleMakeGame();
+            setUpSnakesLaddersGame();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void resetMainMenu() {
-        view.getCustomRadioButton().setSelected(false);
-        view.getSLButton().setSelected(false);
+
+    public void clearGame(){
         boardGame.undoWinner(boardGame.getWinner());
-        view.getStartRoundButton().setDisable(false);
-        view.getGrid().getChildren().clear();
-        view.getInfoColumn().getChildren().clear();
-        view.getLayout().getChildren().clear();
-        view.getDieBox().getChildren().clear();
 
-        view.getDiceField().clear();
-        listOfPlayers.clear();
-        view.getPlayerData().clear();
-        view.setPlayerColorBox();
+        snakesLaddersView.getStartRoundButton().setDisable(false);
+        snakesLaddersView.getGrid().getChildren().clear();
+        snakesLaddersView.getInfoColumn().getChildren().clear();
+        snakesLaddersView.getLayout().getChildren().clear();
+        snakesLaddersView.getDieBox().getChildren().clear();
 
-        boardGame = new BoardGame();
-        board = null;
+        menuView.getSLButton().setSelected(false);
+        menuView.getPlayerData().clear();
+        menuView.setPlayerColorBox();
+        menuView.getDiceField().clear();
 
-        view.getLayout().getChildren().clear();
-
-        view.createMainMenu();
-
-        attachEventHandlers();
+        snakesLaddersView.getLayout().getChildren().clear();
+        boardGame.clearBoard();
+        menuView.createMainMenu();
     }
 
-    private void getAlert(String errorMessage){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText(errorMessage);
-        alert.showAndWait();
-    }
+
 }
