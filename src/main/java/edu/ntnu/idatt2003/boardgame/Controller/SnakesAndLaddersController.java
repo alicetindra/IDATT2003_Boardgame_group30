@@ -200,20 +200,21 @@ public class SnakesAndLaddersController implements BoardGameObserver {
 
     public void clearGame(){
         boardGame.undoWinner(boardGame.getWinner());
+        boardGame.clearBoard();
+        boardGame.undoCustomBoardLoad();
 
         snakesLaddersView.getStartRoundButton().setDisable(false);
         snakesLaddersView.getGrid().getChildren().clear();
         snakesLaddersView.getInfoColumn().getChildren().clear();
         snakesLaddersView.getLayout().getChildren().clear();
         snakesLaddersView.getDieBox().getChildren().clear();
+        snakesLaddersView.getLayout().getChildren().clear();
 
         menuView.getSLButton().setSelected(false);
         menuView.getPlayerData().clear();
         menuView.setPlayerColorBox();
         menuView.getDiceField().clear();
-
-        snakesLaddersView.getLayout().getChildren().clear();
-        boardGame.clearBoard();
+        menuView.getBoardSizeMenu().setDisable(false);
         menuView.createMainMenu();
     }
 

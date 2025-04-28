@@ -54,6 +54,10 @@ public class BoardGame {
         customBoardLoaded = true;
     }
 
+    public void undoCustomBoardLoad(){
+        customBoardLoaded = false;
+    }
+
     public boolean isCustomBoardLoaded(){
         return customBoardLoaded;
     }
