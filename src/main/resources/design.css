@@ -217,6 +217,15 @@ Board grid, tiles and boxes
     -fx-background-color: #D3F9D8;
 }
 
+.monopolyTileBox{
+    -fx-max-height: 100px;
+    -fx-min-height: 100px;
+    -fx-max-width: 100px;
+    -fx-min-width: 100px;
+    -fx-border-color: black;
+    -fx-background-color: #ffffff;
+}
+
 
 
 

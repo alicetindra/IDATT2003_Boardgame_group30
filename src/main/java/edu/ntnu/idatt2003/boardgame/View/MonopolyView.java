@@ -3,27 +3,32 @@ package edu.ntnu.idatt2003.boardgame.View;
 import edu.ntnu.idatt2003.boardgame.Model.Board;
 import edu.ntnu.idatt2003.boardgame.Model.Tile;
 import javafx.geometry.Pos;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-import java.io.IOException;
+import java.util.Objects;
 
 
 public class MonopolyView {
     private BorderPane monopolyLayout;
     private GridPane monopolyGrid;
     private StackPane rootLayout;
+    private VBox moneyBox;
+    private HBox buttonBox = new HBox();
+    private HBox titleBox = new HBox();
+    private VBox diceBox = new VBox();
 
-
-    private Text title;
+    Font customFont = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
 
     public void initialize() {
         rootLayout = new StackPane();
         monopolyLayout = new BorderPane();
         monopolyGrid = new GridPane();
+    }
+
+    public VBox getMoneyBox() {
+        return moneyBox;
     }
 
     public StackPane getRootLayout() {
@@ -33,6 +38,15 @@ public class MonopolyView {
     public BorderPane getMonopolyLayout() {
         return monopolyLayout;
     }
+
+    public HBox getButtonBox(){
+        return buttonBox;
+    }
+
+    public VBox getDiceBox() {
+        return diceBox;
+    }
+
 
     public void createBoardGrid(int width, int height, Board board) {
         monopolyGrid.setGridLinesVisible(true);
@@ -60,27 +74,53 @@ public class MonopolyView {
                 row++;
             }
         }
+        monopolyGrid.setAlignment(Pos.CENTER);
     }
+
+    public void createMoneyBox(){
+        moneyBox = new VBox();
+        moneyBox.setAlignment(Pos.CENTER);
+        moneyBox.getChildren().add(new Text("This is where the money will be displayed"));
+    }
+
+    public void createTitleBox(){
+        Text title = new Text("Monopoly");
+        title.getStyleClass().add("title");
+        title.setFont(customFont);
+        titleBox.setAlignment(Pos.CENTER);
+        titleBox.getChildren().add(title);
+    }
+
+    public void createDiceBox(){
+        diceBox.getChildren().clear();
+        diceBox.setAlignment(Pos.CENTER);
+        diceBox.getChildren().add(new Text("Dice and the current player can be here"));
+    }
+
+    public void createMonopolyLayout(){
+        monopolyLayout.getChildren().clear();
+        buttonBox.setAlignment(Pos.CENTER);
+
+        createTitleBox();
+        createMoneyBox();
+        createDiceBox();
+
+        monopolyLayout.setTop(titleBox);
+        monopolyLayout.setCenter(monopolyGrid);
+        monopolyLayout.setLeft(moneyBox);
+        monopolyLayout.setBottom(buttonBox);
+        monopolyLayout.setRight(diceBox);
+
+        rootLayout.getChildren().add(monopolyLayout);
+    }
+
+
 
     public void styliseTileBox(Tile tile){
-        tile.getTileBox().getChildren().add(new Text(tile.getId()+""));
-        tile.getTileBox().setStyle("-fx-pref-height: 75px; -fx-pref-width: 75px;-fx-border-color: black; -fx-border-width: 1px;");
-        //Actions decorate the box here
-        //Start tile, jail tile etc.
+        tile.getTileBox().getChildren().add(new Text(tile.getId()+""));                                                                     
+        tile.getTileBox().getStyleClass().add("monopolyTileBox");
+        //Actions decorate the box here                                                                                                     
+        //Start tile, jail tile etc.                                                                                                        
     }
-
-    public void createTitle(){
-        title = new Text("Monopoly");
-    }
-
-    public void createMonopolyLayout() throws IOException {
-        monopolyLayout.getChildren().clear();
-        createTitle();
-        monopolyLayout.setTop(title);
-        monopolyLayout.setCenter(monopolyGrid);
-        rootLayout.getChildren().add(monopolyLayout);
-        StackPane.setAlignment(title, Pos.CENTER);
-    }
-
 }
 
