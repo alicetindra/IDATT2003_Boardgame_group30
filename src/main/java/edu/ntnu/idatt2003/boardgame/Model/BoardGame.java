@@ -20,6 +20,7 @@ public class BoardGame {
     private PlayerHolder playerHolder;
     private Player winner = null;
     private boolean customBoardLoaded = false;
+    private String gameType;
 
     public BoardGame() {
     }
@@ -45,6 +46,11 @@ public class BoardGame {
 
         BoardFileReaderGson reader = new BoardFileReaderGson();
         this.board = reader.readTilesFromFile(filename);
+        this.gameType = chosenGame;
+        System.out.println(chosenGame);
+    }
+    public String getGameType() {
+        return gameType;
     }
 
     //Skips over chosen game, size and filename. Just loads the board it gets

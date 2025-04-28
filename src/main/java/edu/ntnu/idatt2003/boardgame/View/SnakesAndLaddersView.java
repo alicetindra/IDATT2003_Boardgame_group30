@@ -246,7 +246,7 @@ public class SnakesAndLaddersView {
     public void createStartButton(){
 
         startRoundButton.setFont(customFont);
-        startRoundButton.setId("start-round-button");
+        startRoundButton.getStyleClass().add("start-round-button");
 
         VBox.setMargin(startRoundButton, new Insets(20,0,0,0));
     }

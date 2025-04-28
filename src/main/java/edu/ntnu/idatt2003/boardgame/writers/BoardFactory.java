@@ -29,23 +29,35 @@ public class BoardFactory {
 
     //Monopoly map will come soon
     else if(chosenGame.toLowerCase().contains("monopoly")) {
-      JsonArray candyJsonArray = new JsonArray();
+      JsonArray monopolyJsonArray = new JsonArray();
 
-      for (int i = 1; i <= n; i++) {
+      for (int i = 1; i <= 24; i++) {
         //Tile map
         JsonObject tileJson = new JsonObject();
         tileJson.addProperty("id", i);
-
-        //adding the next tile
-        if (i < n) {
+        if(i==24){
+          tileJson.addProperty("next", 1);
+        }
+        else{
           tileJson.addProperty("next", i + 1);
         }
 
-        //action map comes here...
+        if (i == 1) {
+          JsonObject actionObj = new JsonObject();
+          actionObj.addProperty("type", "start");
+          actionObj.addProperty("destination", 0);
+          tileJson.add("action", actionObj);
+        }
+        if (i == 13) {
+          JsonObject actionObj = new JsonObject();
+          actionObj.addProperty("type", "jail");
+          actionObj.addProperty("destination", 0);
+          tileJson.add("action", actionObj);
+        }
 
-        candyJsonArray.add(tileJson);
+        monopolyJsonArray.add(tileJson);
       }
-      tileBook.add("tiles", candyJsonArray);
+      tileBook.add("tiles", monopolyJsonArray);
     }
 
     return tileBook;

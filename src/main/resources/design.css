@@ -98,7 +98,7 @@ Buttons
     -fx-border-radius: 20px;
     -fx-background-radius: 20px;
 }
-#start-round-button, #main-menu-button, #restartGameButton{
+.start-round-button, #main-menu-button, #restartGameButton{
     -fx-background-color: #92b8e3;
     -fx-text-fill: #1d528e;
     -fx-background-radius: 20px;
@@ -224,6 +224,13 @@ Board grid, tiles and boxes
     -fx-min-width: 100px;
     -fx-border-color: black;
     -fx-background-color: #ffffff;
+}
+
+.jailBox{
+    -fx-background-color: #ff2727;
+}
+.startBox{
+    -fx-background-color: #64ff3d;
 }
 
 

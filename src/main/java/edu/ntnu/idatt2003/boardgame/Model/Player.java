@@ -40,10 +40,16 @@ public class Player {
         if(destTile <= board.getTiles().size() && board.getTiles().get(destTile - 1).getAction() != null){
             board.getTiles().get(destTile -1).getAction().perform(this);
         } else if(destTile > board.getTiles().size()){
-            destTile = (2*board.getTiles().size() - destTile);
-            this.placeOnTile(board, destTile);
-            if(board.getTiles().get(destTile - 1).getAction() != null){
-                board.getTiles().get(destTile - 1).getAction().perform(this);
+            if( this.boardGame.getGameType().equals("Snakes and ladders")) {
+                destTile = (2 * board.getTiles().size() - destTile);
+                this.placeOnTile(board, destTile);
+                if (board.getTiles().get(destTile - 1).getAction() != null) {
+                    board.getTiles().get(destTile - 1).getAction().perform(this);
+                }
+            }
+            else{
+                destTile = destTile - board.getTiles().size();
+                this.placeOnTile(board, destTile);
             }
         }else{
             this.placeOnTile(board, destTile);

@@ -204,9 +204,12 @@ public class MenuView {
     createGameMenu();
   }
   public void createMMenu() {
-    Text text = new Text("Welcome to monopoly");
+    Text boardText = new Text("Board size");
+    boardText.setId("boardSizeText");
+    loadCustomBoardButton.setId("loadCustomBoardButton");
+
     boardBox.getChildren().clear();
-    boardBox.getChildren().addAll(text);
+    boardBox.getChildren().addAll(boardText, boardSizeMenu, loadCustomBoardButton);
     createGameMenu();
   }
 

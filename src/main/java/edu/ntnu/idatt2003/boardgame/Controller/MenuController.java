@@ -53,7 +53,12 @@ public class MenuController{
     });
 
     menuView.getSetUpMonopolyGameButton().setOnAction(e -> {
-        try {
+      if(boardGame.getListOfPlayers().isEmpty() || menuView.getDiceField() == null || menuView.getBoardSizeMenu().getSelectionModel().isEmpty()) {
+        getAlert("To start the game, you need the type of game, players, dice and board size!");
+        throw new IllegalArgumentException("Players, board size, game and/or dice is not added");
+      }
+
+      try {
             monopolyController.setUpMonopolyGame();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
@@ -97,6 +102,9 @@ public class MenuController{
     }
 
     boardGame.addPlayer(writtenName,selectedColor);
+
+    System.out.println("Added player " + writtenName);
+    System.out.println(boardGame.getListOfPlayers());
 
     for (int i = 0; i < menuView.getPlayerData().size(); i++) {
       if (menuView.getPlayerData().get(i).isBlank()) { // Find first empty slot

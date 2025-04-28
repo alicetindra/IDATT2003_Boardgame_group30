@@ -1,8 +1,13 @@
 package edu.ntnu.idatt2003.boardgame.View;
 
 import edu.ntnu.idatt2003.boardgame.Model.Board;
+import edu.ntnu.idatt2003.boardgame.Model.Player;
 import edu.ntnu.idatt2003.boardgame.Model.Tile;
+import edu.ntnu.idatt2003.boardgame.Model.actions.JailAction;
+import edu.ntnu.idatt2003.boardgame.Model.actions.PassStartAction;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -18,6 +23,7 @@ public class MonopolyView {
     private HBox buttonBox = new HBox();
     private HBox titleBox = new HBox();
     private VBox diceBox = new VBox();
+    private final Button startRoundButton = new Button("Roll dice");
 
     Font customFont = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
 
@@ -45,6 +51,11 @@ public class MonopolyView {
 
     public VBox getDiceBox() {
         return diceBox;
+    }
+
+    public Button getStartRoundButton(){
+        startRoundButton.getStyleClass().add("start-round-button");
+        return startRoundButton;
     }
 
 
@@ -114,13 +125,30 @@ public class MonopolyView {
         rootLayout.getChildren().add(monopolyLayout);
     }
 
+    public ImageView getPlayerImage(Player p) {
+            ImageView imageView = p.getImageView();
+            imageView.setFitHeight(30);
+            imageView.setPreserveRatio(true);
+            return imageView;
+    }
+
+
+
+
+
+
 
 
     public void styliseTileBox(Tile tile){
-        tile.getTileBox().getChildren().add(new Text(tile.getId()+""));                                                                     
+        tile.getTileBox().getChildren().add(new Text(tile.getId()+""));
         tile.getTileBox().getStyleClass().add("monopolyTileBox");
-        //Actions decorate the box here                                                                                                     
-        //Start tile, jail tile etc.                                                                                                        
+
+        if(tile.getAction() instanceof JailAction){
+            tile.getTileBox().getStyleClass().add("jailBox");
+        }
+        if(tile.getAction() instanceof PassStartAction){
+            tile.getTileBox().getStyleClass().add("startBox");
+        }
     }
 }
 
