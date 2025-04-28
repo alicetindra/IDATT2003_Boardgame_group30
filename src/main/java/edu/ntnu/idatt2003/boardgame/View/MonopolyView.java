@@ -1,7 +1,6 @@
 package edu.ntnu.idatt2003.boardgame.View;
 
 import edu.ntnu.idatt2003.boardgame.Model.Board;
-import edu.ntnu.idatt2003.boardgame.Model.BoardGame;
 import edu.ntnu.idatt2003.boardgame.Model.Tile;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
@@ -17,9 +16,6 @@ public class MonopolyView {
     private GridPane monopolyGrid;
     private StackPane rootLayout;
 
-    private Board board;
-    private BoardGame boardGame;
-
 
     private Text title;
 
@@ -27,12 +23,7 @@ public class MonopolyView {
         rootLayout = new StackPane();
         monopolyLayout = new BorderPane();
         monopolyGrid = new GridPane();
-        boardGame = new BoardGame();
-        boardGame.initializeBoard("snakesAndLadders", 90, "hardcodedBoards.json");
-        board = boardGame.getBoard();
-        createGridBoard(7,6);
         createMonopolyLayout();
-
     }
 
     public StackPane getRootLayout() {
@@ -47,7 +38,7 @@ public class MonopolyView {
         return monopolyGrid;
     }
 
-    public void createGridBoard(int width, int height) {
+    public void createBoardGrid(int width, int height, Board board) {
         monopolyGrid.setGridLinesVisible(true);
         monopolyGrid.getChildren().clear();
 
@@ -60,7 +51,7 @@ public class MonopolyView {
             VBox box = new VBox();
             Tile tile = board.getTiles().get(tileIndex);
             tile.setTileBox(box);
-            styliseTilebox(tile);
+            styliseTileBox(tile);
             monopolyGrid.add(tile.getTileBox(), col, row);
 
             if (row == height - 1 && col > 0) {
@@ -76,7 +67,7 @@ public class MonopolyView {
     }
 
 
-    public void styliseTilebox(Tile tile){
+    public void styliseTileBox(Tile tile){
         tile.getTileBox().getChildren().add(new Text(tile.getId()+""));
         tile.getTileBox().setStyle("-fx-max-height: 50px; -fx-min-height: 50px; -fx-max-width: 50px; -fx-min-width: 50px;-fx-border-color: black; -fx-border-width: 1px;");
         //ACtions decorate the box here
