@@ -38,6 +38,7 @@ public class MenuView {
   private final VBox gameInfoMenuBox = new VBox(20);
   private final HBox diceImagesBox = new HBox(10);
   private final VBox boardBox = new VBox(10); //Holds the text 'Board' with the pull down menu in game menu
+  HBox startOrMainButtons = new HBox(20);
 
   /*Radio buttons*/
   private final ToggleGroup toggleGroup = new ToggleGroup();
@@ -58,6 +59,8 @@ public class MenuView {
 
   /*Layouts */
   private StackPane menuLayout;
+
+  Text titleText;
 
   /*Font*/
   Font customFont = Font.loadFont(
@@ -195,24 +198,29 @@ public class MenuView {
   }
 
   public void createSLMenu(){
+
     Text boardText = new Text("Board size");
     boardText.setId("boardSizeText");
     loadCustomBoardButton.setId("loadCustomBoardButton");
 
+    titleText = new Text("Monopoly");
+
     boardBox.getChildren().clear();
     boardBox.getChildren().addAll(boardText, boardSizeMenu, loadCustomBoardButton);
+
+    startOrMainButtons.getChildren().clear();
+    startOrMainButtons.getChildren().addAll(mainMenuButton, setUpSnakesLaddersGameButton);
+    setUpSnakesLaddersGameButton.setFont(customFont);
     createGameMenu();
   }
   public void createMMenu() {
-    Text boardText = new Text("Board size");
-    boardText.setId("boardSizeText");
-    loadCustomBoardButton.setId("loadCustomBoardButton");
-
     boardBox.getChildren().clear();
-    boardBox.getChildren().addAll(boardText, boardSizeMenu, loadCustomBoardButton);
+    startOrMainButtons.getChildren().clear();
+    titleText = new Text("Monopoly");
+    startOrMainButtons.getChildren().addAll(mainMenuButton, setUpMonopolyGameButton);
+    setUpMonopolyGameButton.setFont(customFont);
     createGameMenu();
   }
-
 
   public void createGameMenu(){
     gameInfoMenuBox.getChildren().clear();
@@ -220,7 +228,6 @@ public class MenuView {
     diceField.setText("2");
 
     //Title
-    Text titleText = new Text("Snakes and Ladders");
     titleText.setFont(customFont);
     titleText.getStyleClass().add("title");
     VBox titleBox = new VBox(20);
@@ -291,16 +298,7 @@ public class MenuView {
     mainLayout.setAlignment(Pos.CENTER);
     mainLayout.getChildren().addAll(leftColumn, rightColumn);
 
-    HBox startOrMainButtons = new HBox(20);
     startOrMainButtons.setAlignment(Pos.CENTER);
-    if(MButton.isSelected()){
-      startOrMainButtons.getChildren().addAll(mainMenuButton, setUpMonopolyGameButton);
-      setUpMonopolyGameButton.setFont(customFont);
-    }
-    else if(SLButton.isSelected()){
-      startOrMainButtons.getChildren().addAll(mainMenuButton, setUpSnakesLaddersGameButton);
-      setUpSnakesLaddersGameButton.setFont(customFont);
-    }
 
     mainMenuButton.setFont(customFont);
     mainMenuButton.setId("menuButtonBack");

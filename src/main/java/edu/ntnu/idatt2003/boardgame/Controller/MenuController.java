@@ -53,11 +53,10 @@ public class MenuController{
     });
 
     menuView.getSetUpMonopolyGameButton().setOnAction(e -> {
-      if(boardGame.getListOfPlayers().isEmpty() || menuView.getDiceField() == null || menuView.getBoardSizeMenu().getSelectionModel().isEmpty()) {
-        getAlert("To start the game, you need the type of game, players, dice and board size!");
-        throw new IllegalArgumentException("Players, board size, game and/or dice is not added");
+      if(boardGame.getListOfPlayers().isEmpty() || menuView.getDiceField() == null) {
+        getAlert("To start the game, you need players and dice.");
+        throw new IllegalArgumentException("Players and/or dice is not added");
       }
-
       try {
             monopolyController.setUpMonopolyGame();
         } catch (IOException ex) {
@@ -84,7 +83,6 @@ public class MenuController{
     menuView.getLoadCustomBoardButton().setOnAction(e->snakeLadderController.loadBoard());
 
   }
-
 
   //Handlers
   /**

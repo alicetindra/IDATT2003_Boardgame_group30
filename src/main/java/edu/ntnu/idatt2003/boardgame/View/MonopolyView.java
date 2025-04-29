@@ -19,7 +19,7 @@ public class MonopolyView {
     private BorderPane monopolyLayout;
     private GridPane monopolyGrid;
     private StackPane rootLayout;
-    private VBox moneyBox;
+    private VBox moneyBox = new VBox();;
     private HBox buttonBox = new HBox();
     private HBox titleBox = new HBox();
     private VBox diceBox = new VBox();
@@ -89,12 +89,13 @@ public class MonopolyView {
     }
 
     public void createMoneyBox(){
-        moneyBox = new VBox();
+        moneyBox.getChildren().clear();
         moneyBox.setAlignment(Pos.CENTER);
         moneyBox.getChildren().add(new Text("This is where the money will be displayed"));
     }
 
     public void createTitleBox(){
+        titleBox.getChildren().clear();
         Text title = new Text("Monopoly");
         title.getStyleClass().add("title");
         title.setFont(customFont);

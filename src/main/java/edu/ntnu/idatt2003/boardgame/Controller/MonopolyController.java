@@ -55,6 +55,9 @@ public class MonopolyController implements BoardGameObserver {
     public void setUpMonopolyGame() throws IOException {
         boardGame.removeObserver(this);
         boardGame.addObserver(this);
+        monopolyView.getDiceBox().getChildren().clear();
+        monopolyView.getMoneyBox().getChildren().clear();
+        monopolyView.getButtonBox().getChildren().clear();
         monopolyView.getMonopolyLayout().getChildren().clear();
         monopolyView.getRootLayout().getChildren().clear();
 
