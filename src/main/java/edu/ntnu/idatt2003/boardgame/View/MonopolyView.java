@@ -144,11 +144,21 @@ public class MonopolyView {
         tile.getTileBox().getChildren().add(new Text(tile.getId()+""));
         tile.getTileBox().getStyleClass().add("monopolyTileBox");
 
-        if(tile.getAction() instanceof JailAction){
-            tile.getTileBox().getStyleClass().add("jailBox");
+        if(tile.getId() == 8){
+            tile.getTileBox().setStyle("-fx-background-color: #FFB765");
+            tile.getTileBox().getChildren().add(new Text("Jail"));
         }
-        if(tile.getAction() instanceof PassStartAction){
-            tile.getTileBox().getStyleClass().add("startBox");
+        if(tile.getId() == 14){
+            tile.getTileBox().setStyle("-fx-background-color: #EE3636");
+            tile.getTileBox().getChildren().add(new Text("Parking"));
+        }
+        if(tile.getId() == 21){
+            tile.getTileBox().setStyle("-fx-background-color: #015AFF");
+            tile.getTileBox().getChildren().add(new Text("Go to jail!"));
+        }
+        if(tile.getId() == 1){
+            tile.getTileBox().setStyle("-fx-background-color: #575757");
+            tile.getTileBox().getChildren().add(new Text("Go!"));
         }
     }
 }

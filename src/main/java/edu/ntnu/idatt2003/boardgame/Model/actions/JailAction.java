@@ -6,13 +6,16 @@ import java.util.logging.Logger;
 public class JailAction implements TileAction {
     private static final Logger log = Logger.getLogger(JailAction.class.getName());
     private String description;
+    private int destination;
 
-    public JailAction(String description) {
+    public JailAction(int destination,String description) {
         this.description = description;
+        this.destination = destination;
     }
 
     @Override
     public void perform(Player player) {
         log.info("Player is in jail");
+        player.placeOnTile(player.getBoardGame().getBoard(), destination);
     }
 }

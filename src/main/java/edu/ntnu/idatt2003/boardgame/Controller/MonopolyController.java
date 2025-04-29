@@ -62,7 +62,7 @@ public class MonopolyController implements BoardGameObserver {
         monopolyView.getRootLayout().getChildren().clear();
 
         //need to take in user input, this is just for testing
-        initializeBoard(8,6);
+        initializeBoard(8,7);
 
         monopolyView.createMonopolyLayout();
         BorderPane gameLayout = monopolyView.getMonopolyLayout();
