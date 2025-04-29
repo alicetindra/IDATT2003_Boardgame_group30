@@ -226,6 +226,59 @@ Board grid, tiles and boxes
     -fx-background-color: #ffffff;
 }
 
+.startBox{
+    -fx-max-height: 100px;
+    -fx-min-height: 100px;
+    -fx-max-width: 100px;
+    -fx-min-width: 100px;
+    -fx-border-color: black;
+    -fx-background-color: #416c42;
+}
+
+.chocolateRiver{
+    -fx-max-height: 100px;
+    -fx-min-height: 100px;
+    -fx-max-width: 100px;
+    -fx-min-width: 100px;
+    -fx-border-color: black;
+    -fx-background-color: #7D5D41;
+}
+
+.cookieDessert{
+    -fx-max-height: 100px;
+    -fx-min-height: 100px;
+    -fx-max-width: 100px;
+    -fx-min-width: 100px;
+    -fx-border-color: black;
+    -fx-background-color: #ecd6b6;
+}
+
+.goToJail{
+    -fx-max-height: 100px;
+    -fx-min-height: 100px;
+    -fx-max-width: 100px;
+    -fx-min-width: 100px;
+    -fx-border-color: black;
+    -fx-background-color: #adc5df;
+}
+.sugarTopMountain{
+    -fx-max-height: 100px;
+    -fx-min-height: 100px;
+    -fx-max-width: 100px;
+    -fx-min-width: 100px;
+    -fx-border-color: black;
+    -fx-background-color: #ede3d0;
+}
+
+.parkBox{
+    -fx-max-height: 100px;
+    -fx-min-height: 100px;
+    -fx-max-width: 100px;
+    -fx-min-width: 100px;
+    -fx-border-color: black;
+    -fx-background-color: #7ea7d5;
+}
+
 .cottonCandyStreet{
     -fx-max-height: 100px;
     -fx-min-height: 100px;
@@ -234,5 +287,40 @@ Board grid, tiles and boxes
     -fx-border-color: black;
 }
 
+.gummyBearForrest{
+    -fx-max-height: 100px;
+    -fx-min-height: 100px;
+    -fx-max-width: 100px;
+    -fx-min-width: 100px;
+    -fx-border-color: black;
+    -fx-background-color: #5b855c;
+}
+
+.jail{
+    -fx-max-height: 100px;
+    -fx-min-height: 100px;
+    -fx-max-width: 100px;
+    -fx-min-width: 100px;
+    -fx-border-color: black;
+    -fx-background-color: #cc8f8f;
+}
+
+.ocean{
+    -fx-max-height: 100px;
+    -fx-min-height: 100px;
+    -fx-max-width: 100px;
+    -fx-min-width: 100px;
+    -fx-border-color: black;
+    -fx-background-color: #3277c6;
+}
+
+.cardBoxes{
+    -fx-max-height: 100px;
+    -fx-min-height: 100px;
+    -fx-max-width: 100px;
+    -fx-min-width: 100px;
+    -fx-border-color: black;
+    -fx-background-color: rgba(134, 105, 191, 0.76);
+}
 
 

@@ -124,7 +124,21 @@ public class MonopolyView {
     public void styliseTileBox(Tile tile){
         tile.getTileBox().getChildren().add(new Text(tile.getId()+""));
 
-        if(tile.getId() == 12 || tile.getId() == 14 || tile.getId() == 15){
+        if(tile.getId() == 1){
+            tile.getTileBox().getStyleClass().add("startBox");
+        }
+        else if(tile.getId() == 2 || tile.getId() == 3){
+            tile.getTileBox().getStyleClass().add("chocolateRiver");
+        }
+        else if(tile.getId() == 5 || tile.getId() == 6 || tile.getId() == 7){
+            tile.getTileBox().getStyleClass().add("cookieDessert");
+        } else if (tile.getId() == 8) {
+            tile.getTileBox().getStyleClass().add("goToJail");
+        } else if(tile.getId() == 9 || tile.getId() == 10 || tile.getId() == 12){
+            tile.getTileBox().getStyleClass().add("sugarTopMountain");
+        } else if (tile.getId()==13) {
+            tile.getTileBox().getStyleClass().add("parkBox");
+        } else if(tile.getId() == 14 || tile.getId() == 15 || tile.getId() == 17){
             BackgroundImage cloudCastleBackground = new BackgroundImage(
                 new Image("images/cloudCastle.png"),
                 BackgroundRepeat.NO_REPEAT,
@@ -134,7 +148,18 @@ public class MonopolyView {
             );
             tile.getTileBox().getStyleClass().add("cottonCandyStreet");
             tile.getTileBox().setBackground(new Background(cloudCastleBackground));
-        }else{
+        }
+        else if(tile.getId() == 18 || tile.getId() == 19 || tile.getId() == 21){
+            tile.getTileBox().getStyleClass().add("gummyBearForrest");
+        } else if (tile.getId() == 20) {
+            tile.getTileBox().getStyleClass().add("jail");
+        } else if(tile.getId() == 23 || tile.getId() == 24){
+            tile.getTileBox().getStyleClass().add("ocean");
+        }
+        else if(tile.getId() == 4 || tile.getId() == 11 || tile.getId() == 16 || tile.getId() == 22){
+            tile.getTileBox().getStyleClass().add("cardBoxes");
+        }
+        else{
             tile.getTileBox().getStyleClass().add("monopolyTileBox");
         }
 
