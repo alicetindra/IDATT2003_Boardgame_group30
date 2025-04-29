@@ -1,9 +1,13 @@
 package edu.ntnu.idatt2003.boardgame.View;
 
 import edu.ntnu.idatt2003.boardgame.Model.Board;
+import edu.ntnu.idatt2003.boardgame.Model.Player;
 import edu.ntnu.idatt2003.boardgame.Model.Tile;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -19,6 +23,8 @@ public class MonopolyView {
     private HBox buttonBox = new HBox();
     private HBox titleBox = new HBox();
     private VBox diceBox = new VBox();
+    private final Button startRoundButton = new Button("Roll dice");
+
 
     Font customFont = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
 
@@ -46,6 +52,21 @@ public class MonopolyView {
 
     public VBox getDiceBox() {
         return diceBox;
+    }
+
+    public GridPane getMonopolyGrid() {
+        return monopolyGrid;
+    }
+
+    public HBox getTitleBox() {
+        return titleBox;
+    }
+
+    public Button getStartRoundButton(){
+        startRoundButton.setFont(customFont);
+        startRoundButton.setId("start-round-button-monopoly");
+        VBox.setMargin(startRoundButton, new Insets(20,0,0,0));
+        return startRoundButton;
     }
 
 
@@ -83,7 +104,7 @@ public class MonopolyView {
         moneyBoxText.setId("moneyBoxText");
         moneyBox = new VBox();
         moneyBox.setAlignment(Pos.CENTER);
-        moneyBox.getChildren().add(moneyBoxText);
+        moneyBox.getChildren().addAll(moneyBoxText);
     }
 
     public void createTitleBox(){
@@ -99,7 +120,7 @@ public class MonopolyView {
         diceText.setId("diceTextM");
         diceBox.getChildren().clear();
         diceBox.setAlignment(Pos.CENTER);
-        diceBox.getChildren().add(diceText);
+        diceBox.getChildren().addAll(diceText, startRoundButton);
     }
 
     public void createMonopolyLayout(){
@@ -113,12 +134,17 @@ public class MonopolyView {
         monopolyLayout.setTop(titleBox);
         monopolyLayout.setCenter(monopolyGrid);
         monopolyLayout.setLeft(moneyBox);
-        monopolyLayout.setBottom(buttonBox);
         monopolyLayout.setRight(diceBox);
 
         rootLayout.getChildren().add(monopolyLayout);
     }
 
+    public ImageView getPlayerImage(Player p) {
+        ImageView imageView = p.getImageView();
+        imageView.setFitHeight(30);
+        imageView.setPreserveRatio(true);
+        return imageView;
+    }
 
 
     public void styliseTileBox(Tile tile){
