@@ -11,6 +11,7 @@ import edu.ntnu.idatt2003.boardgame.View.MonopolyView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 
@@ -37,12 +38,22 @@ public class MonopolyController implements BoardGameObserver {
             int newTileId = currentPlayer.getCurrentTile().getId();
 
             addPlayerImageToNewTile(currentPlayer, newTileId);
+            //updateMoneyBox();
+            //monopolyView.getBuyHouseButton().setDisable(false);
         }
     }
 
     private void attachEventHandlers() {
         menuView.getMainMenuButton().setOnAction(e -> clearGame());
         monopolyView.getStartRoundButton().setOnAction(e -> startRound());
+        monopolyView.getBuyHouseButton().setOnAction(e -> buyHouse());
+    }
+
+    private void buyHouse() {
+        Tile tile = boardGame.getPlayerHolder().getCurrentPlayer().getCurrentTile();
+        tile.setFee(100);
+        tile.setOwner(boardGame.getPlayerHolder().getCurrentPlayer());
+        tile.getTileBox().getChildren().add(new Text(boardGame.getPlayerHolder().getCurrentPlayer().getName()+"House"));
     }
 
 
@@ -50,6 +61,22 @@ public class MonopolyController implements BoardGameObserver {
         boardGame.initializeBoard("monopoly", (width*2+height*2), "hardcodedBoards.json");
         board = boardGame.getBoard();
         monopolyView.createBoardGrid(width, height, board);
+    }
+
+    public void updateMoneyBox(){
+        Player p = boardGame.getPlayerHolder().getCurrentPlayer();
+        Tile t = boardGame.getPlayerHolder().getCurrentPlayer().getCurrentTile();
+        //Takes money from the person landing on the house and gives it to the owner
+        if(!t.getOwner().equals(p)){
+            p.editMoney(-t.getFee());
+            t.getOwner().editMoney(t.getFee());
+        }
+
+        String s = "";
+        for(Player player: boardGame.getPlayerHolder().getPlayers()){
+            s += player.getColor() +" : "+ p.getMoney() + "\n";
+        }
+        monopolyView.updateMoneyBox(s);
     }
 
     public void setUpMonopolyGame() throws IOException {
@@ -87,6 +114,7 @@ public class MonopolyController implements BoardGameObserver {
             p.setBoardGame(boardGame);
             p.placeOnTile(board,1);
             addPlayerImageToNewTile(p, 1);
+            p.editMoney(500);
         }
     }
 

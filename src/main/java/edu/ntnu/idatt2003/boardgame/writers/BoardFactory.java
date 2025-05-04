@@ -31,11 +31,11 @@ public class BoardFactory {
     else if(chosenGame.toLowerCase().contains("monopoly")) {
       JsonArray monopolyJsonArray = new JsonArray();
 
-      for (int i = 1; i <= n; i++) {
+      for (int i = 1; i <=30; i++) {
         //Tile map
         JsonObject tileJson = new JsonObject();
         tileJson.addProperty("id", i);
-        if(i==24){
+        if(i==30){
           tileJson.addProperty("next", 1);
         }
         else{

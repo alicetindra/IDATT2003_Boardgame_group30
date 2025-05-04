@@ -10,6 +10,7 @@ public class Player {
     private Tile currentTile;
     private BoardGame boardGame;
     private ImageView imageView;
+    private int money = 0;
 
     public Player(String name, String color) {
         this.name = name;
@@ -30,6 +31,13 @@ public class Player {
 
     public void placeOnTile(Board board, int id){
         this.currentTile = board.getTiles().get(id-1);
+    }
+
+    public void editMoney(int value){
+        money += value;
+    }
+    public int getMoney(){
+        return money;
     }
 
 

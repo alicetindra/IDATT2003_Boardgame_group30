@@ -24,6 +24,7 @@ public class MonopolyView {
     private HBox titleBox = new HBox();
     private VBox diceBox = new VBox();
     private final Button startRoundButton = new Button("Roll dice");
+    private final Button buyHouseButton = new Button("Buy house");
 
     Font customFont = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
 
@@ -56,6 +57,9 @@ public class MonopolyView {
     public Button getStartRoundButton(){
         startRoundButton.getStyleClass().add("start-round-button");
         return startRoundButton;
+    }
+    public Button getBuyHouseButton(){
+        return buyHouseButton;
     }
 
 
@@ -91,7 +95,11 @@ public class MonopolyView {
     public void createMoneyBox(){
         moneyBox.getChildren().clear();
         moneyBox.setAlignment(Pos.CENTER);
-        moneyBox.getChildren().add(new Text("This is where the money will be displayed"));
+    }
+
+    public void updateMoneyBox(String s){
+        moneyBox.getChildren().clear();
+        moneyBox.getChildren().add(new Text(s));
     }
 
     public void createTitleBox(){
@@ -107,6 +115,8 @@ public class MonopolyView {
         diceBox.getChildren().clear();
         diceBox.setAlignment(Pos.CENTER);
         diceBox.getChildren().add(new Text("Dice and the current player can be here"));
+        buyHouseButton.setDisable(true);
+        diceBox.getChildren().add(buyHouseButton);
     }
 
     public void createMonopolyLayout(){
