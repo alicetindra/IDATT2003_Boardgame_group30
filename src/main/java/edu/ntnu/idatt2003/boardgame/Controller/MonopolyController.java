@@ -22,6 +22,7 @@ public class MonopolyController implements BoardGameObserver {
     private final MenuView menuView;
     private final BoardGame boardGame;
     private Board board;
+    private ImageView houseView;
 
     public MonopolyController(MonopolyView monopolyView, MenuView menuView ,BoardGame boardGame) {
         this.monopolyView = monopolyView;
@@ -35,6 +36,7 @@ public class MonopolyController implements BoardGameObserver {
     @Override
     public void update(String event, BoardGame boardGame){
         if (event.equals("playerMoved")) {
+            monopolyView.getDiceBox().getChildren().remove(monopolyView.getSellHouseButton());
             Player currentPlayer = boardGame.getPlayerHolder().getCurrentPlayer();
             int newTileId = currentPlayer.getCurrentTile().getId();
 
@@ -49,12 +51,18 @@ public class MonopolyController implements BoardGameObserver {
         if(tile.getOwner() == null){
             monopolyView.getBuyHouseButton().setDisable(false);
         }
+        else if(tile.getOwner()!= null) {
+            if (tile.getOwner().equals(boardGame.getPlayerHolder().getCurrentPlayer())) {
+                monopolyView.getDiceBox().getChildren().add(monopolyView.getSellHouseButton());
+            }
+        }
     }
 
     private void attachEventHandlers() {
         menuView.getMainMenuButton().setOnAction(e -> clearGame());
         monopolyView.getStartRoundButton().setOnAction(e -> startRound());
         monopolyView.getBuyHouseButton().setOnAction(e -> buyHouse());
+        monopolyView.getSellHouseButton().setOnAction(e -> sellHouse());
     }
 
     private void buyHouse() {
@@ -66,16 +74,19 @@ public class MonopolyController implements BoardGameObserver {
     }
 
     private void sellHouse(){
-
+        Tile tile = boardGame.getPlayerHolder().getCurrentPlayer().getCurrentTile();
+        tile.setOwner(null);
+        tile.setFee(0);
+        tile.getTileBox().getChildren().remove(houseView);
     }
 
     private void addHouseToTile() {
         Player p = boardGame.getPlayerHolder().getCurrentPlayer();
-        ImageView i = new ImageView(new Image("images/"+p.getColor()+"house.png"));
-        i.setFitHeight(30);
-        i.setPreserveRatio(true);
+        houseView = new ImageView(new Image("images/"+p.getColor()+"house.png"));
+        houseView.setFitHeight(30);
+        houseView.setPreserveRatio(true);
 
-        p.getCurrentTile().getTileBox().getChildren().add(i);
+        p.getCurrentTile().getTileBox().getChildren().add(houseView);
     }
 
 

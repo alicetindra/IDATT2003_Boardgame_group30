@@ -25,6 +25,7 @@ public class MonopolyView {
     private final VBox diceBox = new VBox();
     private final Button startRoundButton = new Button("Roll dice");
     private final Button buyHouseButton = new Button("Buy house");
+    private final Button sellHouseButton = new Button("Sell house");
 
     Font customFont = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
 
@@ -60,6 +61,10 @@ public class MonopolyView {
     }
     public Button getBuyHouseButton(){
         return buyHouseButton;
+    }
+
+    public Button getSellHouseButton(){
+        return sellHouseButton;
     }
 
 
