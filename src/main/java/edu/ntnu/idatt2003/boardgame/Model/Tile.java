@@ -8,8 +8,9 @@ public class Tile {
     private TileAction action;
     private int next;
     private transient VBox tileBox;
-    private int fee = 0;
-    private Player houseOwner = null;
+
+    private transient int fee = 0;
+    private transient Player houseOwner = null;
 
     public Tile(int tileId){
         this.id = tileId;

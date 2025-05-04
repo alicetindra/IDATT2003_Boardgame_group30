@@ -19,10 +19,10 @@ public class MonopolyView {
     private BorderPane monopolyLayout;
     private GridPane monopolyGrid;
     private StackPane rootLayout;
-    private VBox moneyBox = new VBox();;
-    private HBox buttonBox = new HBox();
-    private HBox titleBox = new HBox();
-    private VBox diceBox = new VBox();
+    private final VBox moneyBox = new VBox();;
+    private final HBox buttonBox = new HBox();
+    private final HBox titleBox = new HBox();
+    private final VBox diceBox = new VBox();
     private final Button startRoundButton = new Button("Roll dice");
     private final Button buyHouseButton = new Button("Buy house");
 

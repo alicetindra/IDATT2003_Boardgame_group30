@@ -8,6 +8,7 @@ import edu.ntnu.idatt2003.boardgame.Model.Tile;
 import edu.ntnu.idatt2003.boardgame.Observer.BoardGameObserver;
 import edu.ntnu.idatt2003.boardgame.View.MenuView;
 import edu.ntnu.idatt2003.boardgame.View.MonopolyView;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -38,8 +39,15 @@ public class MonopolyController implements BoardGameObserver {
             int newTileId = currentPlayer.getCurrentTile().getId();
 
             addPlayerImageToNewTile(currentPlayer, newTileId);
-            //updateMoneyBox();
-            //monopolyView.getBuyHouseButton().setDisable(false);
+            updateMoneyBox();
+            updateBuyHouseButton();
+        }
+    }
+
+    private void updateBuyHouseButton() {
+        Tile tile = boardGame.getPlayerHolder().getCurrentPlayer().getCurrentTile();
+        if(tile.getOwner() == null){
+            monopolyView.getBuyHouseButton().setDisable(false);
         }
     }
 
@@ -53,7 +61,21 @@ public class MonopolyController implements BoardGameObserver {
         Tile tile = boardGame.getPlayerHolder().getCurrentPlayer().getCurrentTile();
         tile.setFee(100);
         tile.setOwner(boardGame.getPlayerHolder().getCurrentPlayer());
-        tile.getTileBox().getChildren().add(new Text(boardGame.getPlayerHolder().getCurrentPlayer().getName()+"House"));
+        monopolyView.getBuyHouseButton().setDisable(true);
+        addHouseToTile();
+    }
+
+    private void sellHouse(){
+
+    }
+
+    private void addHouseToTile() {
+        Player p = boardGame.getPlayerHolder().getCurrentPlayer();
+        ImageView i = new ImageView(new Image("images/"+p.getColor()+"house.png"));
+        i.setFitHeight(30);
+        i.setPreserveRatio(true);
+
+        p.getCurrentTile().getTileBox().getChildren().add(i);
     }
 
 
@@ -67,16 +89,34 @@ public class MonopolyController implements BoardGameObserver {
         Player p = boardGame.getPlayerHolder().getCurrentPlayer();
         Tile t = boardGame.getPlayerHolder().getCurrentPlayer().getCurrentTile();
         //Takes money from the person landing on the house and gives it to the owner
-        if(!t.getOwner().equals(p)){
+        if(t.getOwner() != null && !t.getOwner().equals(p)){
             p.editMoney(-t.getFee());
             t.getOwner().editMoney(t.getFee());
         }
 
         String s = "";
         for(Player player: boardGame.getPlayerHolder().getPlayers()){
-            s += player.getColor() +" : "+ p.getMoney() + "\n";
+            checkBankruptcy(player);
+            s += player.getColor() +" : "+ player.getMoney() + "\n";
         }
-        monopolyView.updateMoneyBox(s);
+        monopolyView.updateMoneyBox(s+" monopoly money");
+    }
+
+    private void checkBankruptcy(Player player) {
+        if(player.getMoney()<=0){
+            player.getCurrentTile().getTileBox().getChildren().clear();
+            player.getCurrentTile().getTileBox().getChildren().add(new Text(player.getCurrentTile().getId()+""));
+
+
+            boardGame.getPlayerHolder().getPlayers().remove(player);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Bankruptcy");
+            alert.setHeaderText(null);
+            alert.setContentText(player.getColor()+" went bankrupt!");
+
+            alert.showAndWait();
+
+        }
     }
 
     public void setUpMonopolyGame() throws IOException {
@@ -88,7 +128,6 @@ public class MonopolyController implements BoardGameObserver {
         monopolyView.getMonopolyLayout().getChildren().clear();
         monopolyView.getRootLayout().getChildren().clear();
 
-        //need to take in user input, this is just for testing
         initializeBoard(8,7);
 
         monopolyView.createMonopolyLayout();
