@@ -1,6 +1,8 @@
 package edu.ntnu.idatt2003.boardgame.Model;
 
 
+import edu.ntnu.idatt2003.boardgame.Model.actions.JailAction;
+import edu.ntnu.idatt2003.boardgame.Model.actions.PassStartAction;
 import javafx.scene.image.ImageView;
 
 public class Player {
@@ -89,6 +91,7 @@ public class Player {
         int destTile = this.currentTile.getId() + steps;
         Board board = this.boardGame.getBoard();
 
+
         if(destTile <= board.getTiles().size() && board.getTiles().get(destTile - 1).getAction() != null){
             board.getTiles().get(destTile -1).getAction().perform(this);
         } else if(destTile > board.getTiles().size()){
@@ -101,6 +104,8 @@ public class Player {
             }
             else{
                 destTile = destTile - board.getTiles().size();
+                PassStartAction passStartAction = new PassStartAction("Player passed start and gets 100 money");
+                passStartAction.perform(this);
                 this.placeOnTile(board, destTile);
             }
         }
@@ -108,6 +113,7 @@ public class Player {
         else{
             this.placeOnTile(board, destTile);
         }
+
 
     }
 

@@ -301,7 +301,7 @@ public class MonopolyController implements BoardGameObserver {
         Player p = boardGame.getPlayerHolder().getCurrentPlayer();
         monopolyView.getDiceBox().getChildren().add(new Text(p.getName()+", "+p.getColor()));
         if(p.isInJail()){
-          monopolyView.getDiceBox().getChildren().add(new Text("\nYou are in jail. \n Roll for 6 in three tries \n or pay a 200 coin fee"));
+          monopolyView.getDiceBox().getChildren().add(new Text("\nYou are in jail. \n Roll for 6 in three tries \n or pay a 200 money fee"));
         }
          else{
             for(Die d : boardGame.getDice().getListOfDice()){

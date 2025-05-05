@@ -13,6 +13,7 @@ public class PassStartAction implements TileAction {
 
     @Override
     public void perform(Player player) {
-        log.info("Pass start action performed. Player got 100 money??");
+        player.editMoney(100);
+        log.info(description);
     }
 }

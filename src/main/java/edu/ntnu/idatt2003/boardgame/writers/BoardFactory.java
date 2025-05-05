@@ -42,12 +42,6 @@ public class BoardFactory {
           tileJson.addProperty("next", i + 1);
         }
 
-        if (i == 1) {
-          JsonObject actionObj = new JsonObject();
-          actionObj.addProperty("type", "start");
-          actionObj.addProperty("destination", 0);
-          tileJson.add("action", actionObj);
-        }
         if (i == 21) {
           JsonObject actionObj = new JsonObject();
           actionObj.addProperty("type", "jail");
