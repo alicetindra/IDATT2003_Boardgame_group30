@@ -17,5 +17,6 @@ public class JailAction implements TileAction {
     public void perform(Player player) {
         log.info("Player is in jail");
         player.placeOnTile(player.getBoardGame().getBoard(), destination);
+        player.setInJail(true);
     }
 }

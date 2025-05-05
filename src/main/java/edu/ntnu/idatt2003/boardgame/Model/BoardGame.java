@@ -84,6 +84,10 @@ public class BoardGame {
         return playerHolder;
     }
 
+    public void alertRelease(){
+        notifyObservers("release");
+    }
+
     public void play() {
 
         playerHolder = getPlayerHolder();
@@ -91,8 +95,13 @@ public class BoardGame {
 
         int totalEyes = dice.roll();
 
-        playerHolder.getCurrentPlayer().move(totalEyes);
 
+        if(playerHolder.getCurrentPlayer().isInJail()){
+            notifyObservers("inJail");
+            return;
+        }
+
+        playerHolder.getCurrentPlayer().move(totalEyes);
         notifyObservers("playerMoved");
     }
 

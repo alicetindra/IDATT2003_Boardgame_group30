@@ -1,7 +1,6 @@
 package edu.ntnu.idatt2003.boardgame.Model;
 
 
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Player {
@@ -11,6 +10,9 @@ public class Player {
     private BoardGame boardGame;
     private ImageView imageView;
     private int money = 0;
+    private boolean inJail = false;
+    private int jailTurnsLeft = 3;
+
 
     public Player(String name, String color) {
         this.name = name;
@@ -41,6 +43,48 @@ public class Player {
     }
 
 
+    public void setInJail(boolean inJail) {
+        this.inJail = inJail;
+        this.jailTurnsLeft = inJail ? 3 : 0; // Reset turns if going to jail
+    }
+
+    public boolean isInJail() {
+        return inJail;
+    }
+
+    public void decrementJailTurn() {
+        if (inJail && jailTurnsLeft > 0) {
+            jailTurnsLeft--;
+            if (jailTurnsLeft == 0) {
+                boardGame.notifyObservers("usedUpTurns");
+                jailTurnsLeft = 3;
+            }
+        }
+    }
+
+    public void releaseFromJail() {
+        this.inJail = false;
+        this.jailTurnsLeft = 0;
+        boardGame.alertRelease();
+    }
+
+    public boolean canAttemptExit() {
+        return inJail;
+    }
+
+    public void attemptRollExit(int dieRoll) {
+        if (dieRoll == 6) {
+            releaseFromJail();
+        } else {
+            decrementJailTurn();
+        }
+    }
+
+    public void payToExit() {
+        editMoney(-200);
+        releaseFromJail();
+    }
+
     public void move(int steps){
         int destTile = this.currentTile.getId() + steps;
         Board board = this.boardGame.getBoard();
@@ -59,7 +103,9 @@ public class Player {
                 destTile = destTile - board.getTiles().size();
                 this.placeOnTile(board, destTile);
             }
-        }else{
+        }
+
+        else{
             this.placeOnTile(board, destTile);
         }
 
