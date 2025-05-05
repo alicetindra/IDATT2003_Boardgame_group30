@@ -36,7 +36,7 @@ public class MonopolyController implements BoardGameObserver {
     @Override
     public void update(String event, BoardGame boardGame){
         if (event.equals("playerMoved")) {
-            monopolyView.getDiceBox().getChildren().remove(monopolyView.getSellHouseButton());
+            monopolyView.getHouseButtonsBox().getChildren().remove(monopolyView.getSellHouseButton());
             Player currentPlayer = boardGame.getPlayerHolder().getCurrentPlayer();
             int newTileId = currentPlayer.getCurrentTile().getId();
 
@@ -47,19 +47,24 @@ public class MonopolyController implements BoardGameObserver {
             updateBuyHouseButton();
         }
         if (event.equals("inJail")) {
-            monopolyView.getButtonBox().getChildren().remove(monopolyView.getStartRoundButton());
-            monopolyView.getButtonBox().getChildren().addAll(monopolyView.getRollForSixButton(),monopolyView.getPayFeeButton());
+            monopolyView.getStartRoundButton().setDisable(true);
+            monopolyView.getJailButtonsBox().getChildren().addAll(monopolyView.getRollForSixButton(),monopolyView.getPayFeeButton());
+            monopolyView.getBuyHouseButton().setDisable(true);  
         }
         if (event.equals("usedUpTurns")) {
-            monopolyView.getButtonBox().getChildren().add(monopolyView.getStartRoundButton());
-            monopolyView.getButtonBox().getChildren().remove(monopolyView.getRollForSixButton());
-            monopolyView.getButtonBox().getChildren().remove(monopolyView.getPayFeeButton());
+            monopolyView.getJailButtonsBox().getChildren().clear();
+            monopolyView.getStartRoundButton().setDisable(false);
         }
         if (event.equals("release")) {
-            monopolyView.getButtonBox().getChildren().add(monopolyView.getStartRoundButton());
-            monopolyView.getButtonBox().getChildren().remove(monopolyView.getPayFeeButton());
-            monopolyView.getButtonBox().getChildren().remove(monopolyView.getRollForSixButton());
-            monopolyView.getButtonBox().getChildren().add(new Text(boardGame.getPlayerHolder().getCurrentPlayer().getColor()+" released from jail!!!!"));
+            monopolyView.getJailButtonsBox().getChildren().clear();
+            monopolyView.getDiceBox().getChildren().clear();
+            monopolyView.getDiceBox().getChildren().add(new Text("You are released from jail"));
+            monopolyView.getStartRoundButton().setDisable(false);
+        }
+        if(event.equals("Winner")) {
+            monopolyView.getGameUpdates().getChildren().clear();
+            monopolyView.getGameUpdates().getChildren().add(new Text(boardGame.getPlayerHolder().getPlayers().getFirst().getName()+" is the winner!"));
+            monopolyView.getStartRoundButton().setDisable(true);
         }
     }
 
@@ -75,12 +80,17 @@ public class MonopolyController implements BoardGameObserver {
 
     private void updateBuyHouseButton() {
         Tile tile = boardGame.getPlayerHolder().getCurrentPlayer().getCurrentTile();
-        if(tile.getOwner() == null){
+
+        if(tile.getId() == 1 || tile.getId() == 8 || tile.getId() == 14) {
+            monopolyView.getBuyHouseButton().setDisable(true);
+        }
+
+        else if(tile.getOwner() == null){
             monopolyView.getBuyHouseButton().setDisable(false);
         }
         else if(tile.getOwner()!= null) {
             if (tile.getOwner().equals(boardGame.getPlayerHolder().getCurrentPlayer())) {
-                monopolyView.getDiceBox().getChildren().add(monopolyView.getSellHouseButton());
+                monopolyView.getHouseButtonsBox().getChildren().add(monopolyView.getSellHouseButton());
             }
         }
     }
@@ -90,18 +100,18 @@ public class MonopolyController implements BoardGameObserver {
         monopolyView.getStartRoundButton().setOnAction(e -> startRound());
         monopolyView.getBuyHouseButton().setOnAction(e -> buyHouse());
         monopolyView.getSellHouseButton().setOnAction(e -> sellHouse());
-        monopolyView.getPayFeeButton().setOnAction(e -> payFee());
-        monopolyView.getRollForSixButton().setOnAction(e -> tryRelease());
+        monopolyView.getPayFeeButton().setOnAction(e -> payReleaseFee());
+        monopolyView.getRollForSixButton().setOnAction(e -> throwDieForRelease());
     }
 
-    private void tryRelease() {
+    private void throwDieForRelease() {
         Player p = boardGame.getPlayerHolder().getCurrentPlayer();
         Die die = new Die();
         p.attemptRollExit(die.roll());
         monopolyView.getDiceBox().getChildren().add(new Text(die.getValue()+""));
     }
 
-    private void payFee() {
+    private void payReleaseFee() {
         Player p = boardGame.getPlayerHolder().getCurrentPlayer();
         if(p.getMoney()<=200){
             getAlert("You dont have enough money to get out of jail");
@@ -134,7 +144,6 @@ public class MonopolyController implements BoardGameObserver {
             }
             owner.editMoney(-450);
         }
-
 
         tile.setOwner(owner);
         monopolyView.getBuyHouseButton().setDisable(true);
@@ -169,7 +178,6 @@ public class MonopolyController implements BoardGameObserver {
         houseViews.put(tile, house);
     }
 
-
     public void initializeBoard(int width, int height) {
         boardGame.initializeBoard("monopoly", (width*2+height*2), "hardcodedBoards.json");
         board = boardGame.getBoard();
@@ -202,8 +210,11 @@ public class MonopolyController implements BoardGameObserver {
 
             boardGame.getPlayerHolder().getPlayers().remove(player);
         }
-    }
+        if(boardGame.getPlayerHolder().getPlayers().size()==1){
+            update("Winner",boardGame);
+        }
 
+    }
 
     public void setUpMonopolyGame() throws IOException {
         boardGame.removeObserver(this);
@@ -250,21 +261,28 @@ public class MonopolyController implements BoardGameObserver {
             }
         }
     }
+
     public void clearGame() {
         boardGame.undoWinner(boardGame.getWinner());
         boardGame.clearBoard();
         boardGame.undoCustomBoardLoad();
 
         monopolyView.getMonopolyLayout().getChildren().clear();
+        monopolyView.getDiceBox().getChildren().clear();
+        monopolyView.getButtonBox().getChildren().clear();
+        monopolyView.getMoneyBox().getChildren().clear();
+        monopolyView.getGameUpdates().getChildren().clear();
+        monopolyView.getHouseButtonsBox().getChildren().clear();
+        monopolyView.getJailButtonsBox().getChildren().clear();
 
         menuView.getMButton().setSelected(false);
-        menuView.getSLButton().setSelected(false);
         menuView.getPlayerData().clear();
         menuView.setPlayerColorBox();
         menuView.getDiceField().clear();
         menuView.getBoardSizeMenu().setDisable(false);
         menuView.createMainMenu();
     }
+
     private void startRound() {
         boardGame.play();
         displayDice();
@@ -280,13 +298,21 @@ public class MonopolyController implements BoardGameObserver {
 
     public void displayDice(){
         monopolyView.getDiceBox().getChildren().clear();
-        for(Die d : boardGame.getDice().getListOfDice()){
-            ImageView die = new ImageView(new Image("/images/dice"+d.getValue()+".png"));
-            die.setFitHeight(40);
-            die.setFitWidth(40);
-            monopolyView.getDiceBox().getChildren().add(die);
-            monopolyView.getDiceBox().setAlignment(Pos.CENTER);
+        Player p = boardGame.getPlayerHolder().getCurrentPlayer();
+        monopolyView.getDiceBox().getChildren().add(new Text(p.getName()+", "+p.getColor()));
+        if(p.isInJail()){
+          monopolyView.getDiceBox().getChildren().add(new Text("\nYou are in jail. \n Roll for 6 in three tries \n or pay a 200 coin fee"));
         }
+         else{
+            for(Die d : boardGame.getDice().getListOfDice()){
+                ImageView die = new ImageView(new Image("/images/dice"+d.getValue()+".png"));
+                die.setFitHeight(40);
+                die.setFitWidth(40);
+                monopolyView.getDiceBox().getChildren().add(die);
+                monopolyView.getDiceBox().setAlignment(Pos.CENTER);
+            }
+        }
+
     }
 
 

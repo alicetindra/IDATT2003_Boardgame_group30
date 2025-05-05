@@ -98,7 +98,7 @@ Buttons
     -fx-border-radius: 20px;
     -fx-background-radius: 20px;
 }
-.start-round-button, #main-menu-button, #restartGameButton{
+.start-round-button, #main-menu-button, #restartGameButton, .monopolyButtons{
     -fx-background-color: #92b8e3;
     -fx-text-fill: #1d528e;
     -fx-background-radius: 20px;
@@ -233,6 +233,13 @@ Board grid, tiles and boxes
     -fx-background-color: #64ff3d;
 }
 
-
-
-
+#gameUpdatesBox, #moneyBox, #buttonBox{
+    -fx-font-size: 18px;
+    -fx-font-family: Georgia;
+    -fx-background-color: rgba(225, 221, 221, 0.62);
+    -fx-background-radius: 10;
+    -fx-border-width: 2px;
+    -fx-pref-width: 250px;
+    -fx-border-radius: 10;
+    -fx-border-color: rgba(225, 221, 221, 0.62);
+}

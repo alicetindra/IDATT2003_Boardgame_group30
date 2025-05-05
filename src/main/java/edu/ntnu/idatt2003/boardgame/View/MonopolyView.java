@@ -3,8 +3,6 @@ package edu.ntnu.idatt2003.boardgame.View;
 import edu.ntnu.idatt2003.boardgame.Model.Board;
 import edu.ntnu.idatt2003.boardgame.Model.Player;
 import edu.ntnu.idatt2003.boardgame.Model.Tile;
-import edu.ntnu.idatt2003.boardgame.Model.actions.JailAction;
-import edu.ntnu.idatt2003.boardgame.Model.actions.PassStartAction;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
@@ -23,12 +21,16 @@ public class MonopolyView {
     private final HBox buttonBox = new HBox();
     private final HBox titleBox = new HBox();
     private final VBox diceBox = new VBox();
+    private final VBox gameUpdates = new VBox();
+    private final VBox jailButtonsBox = new VBox();
+    private final VBox houseButtonsBox = new VBox();
     private final Button startRoundButton = new Button("Roll dice");
     private final Button buyHouseButton = new Button("Buy house");
     private final Button sellHouseButton = new Button("Sell house");
-    private final Button payFeeButton = new Button("Pay release fee (300) ");
+    private final Button payFeeButton = new Button("Pay fee");
     private final Button rollForSixButton = new Button("Roll for six ");
     private final VBox bankRuptcyBox = new VBox(20);
+    Text moneyHeader = new Text("Monopoly money");
 
     Font customFont = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
 
@@ -41,6 +43,7 @@ public class MonopolyView {
     public VBox getMoneyBox() {
         return moneyBox;
     }
+
     public VBox getBankRuptcyBox() {
         return bankRuptcyBox;
     }
@@ -54,6 +57,7 @@ public class MonopolyView {
     }
 
     public HBox getButtonBox(){
+        buttonBox.setId("buttonBox");
         return buttonBox;
     }
 
@@ -61,15 +65,22 @@ public class MonopolyView {
         return diceBox;
     }
 
+
+    public VBox getGameUpdates() {
+        return gameUpdates;
+    }
+
     public Button getStartRoundButton(){
-        startRoundButton.getStyleClass().add("start-round-button");
+        startRoundButton.getStyleClass().add("monopolyButtons");
         return startRoundButton;
     }
     public Button getBuyHouseButton(){
+        buyHouseButton.getStyleClass().add("monopolyButtons");
         return buyHouseButton;
     }
 
     public Button getSellHouseButton(){
+        sellHouseButton.getStyleClass().add("monopolyButtons");
         return sellHouseButton;
     }
 
@@ -105,14 +116,15 @@ public class MonopolyView {
 
     public void createMoneyBox(){
         moneyBox.getChildren().clear();
+        moneyHeader.setFont(customFont);
+        moneyHeader.getStyleClass().add("subTitle");
+        moneyBox.getChildren().add(moneyHeader);
         moneyBox.setAlignment(Pos.CENTER);
+        moneyBox.setId("moneyBox");
     }
 
     public void updateMoneyBox(String s){
         moneyBox.getChildren().clear();
-        Text moneyHeader = new Text("Monopoly money");
-        moneyHeader.setFont(customFont);
-        moneyHeader.getStyleClass().add("subTitle");
         Text moneyText = new Text(s);
         moneyText.setId("moneyText");
         moneyBox.getChildren().addAll(moneyHeader,moneyText, bankRuptcyBox);
@@ -131,14 +143,22 @@ public class MonopolyView {
         diceBox.getChildren().clear();
         diceBox.setAlignment(Pos.CENTER);
         buyHouseButton.setDisable(true);
-        diceBox.getChildren().add(buyHouseButton);
-
     }
+
     public Button getPayFeeButton(){
+        payFeeButton.getStyleClass().add("monopolyButtons");
         return payFeeButton;
     }
     public Button getRollForSixButton(){
+        rollForSixButton.getStyleClass().add("monopolyButtons");
         return rollForSixButton;
+    }
+
+    public VBox getJailButtonsBox(){
+        return jailButtonsBox;
+    }
+    public VBox getHouseButtonsBox(){
+        return houseButtonsBox;
     }
 
 
@@ -149,14 +169,25 @@ public class MonopolyView {
         createTitleBox();
         createMoneyBox();
         createDiceBox();
+        createGameUpdatesBox();
+
 
         monopolyLayout.setTop(titleBox);
         monopolyLayout.setCenter(monopolyGrid);
         monopolyLayout.setLeft(moneyBox);
         monopolyLayout.setBottom(buttonBox);
-        monopolyLayout.setRight(diceBox);
+        monopolyLayout.setRight(gameUpdates);
 
         rootLayout.getChildren().add(monopolyLayout);
+    }
+
+    private void createGameUpdatesBox() {
+        houseButtonsBox.getChildren().add(buyHouseButton);
+        gameUpdates.getChildren().add(diceBox);
+        gameUpdates.getChildren().add(houseButtonsBox);
+        gameUpdates.getChildren().add(jailButtonsBox);
+        gameUpdates.setAlignment(Pos.CENTER);
+        gameUpdates.setId("gameUpdatesBox");
     }
 
     public ImageView getPlayerImage(Player p) {
@@ -165,12 +196,6 @@ public class MonopolyView {
             imageView.setPreserveRatio(true);
             return imageView;
     }
-
-
-
-
-
-
 
 
     public void styliseTileBox(Tile tile){
