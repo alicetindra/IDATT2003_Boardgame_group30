@@ -9,4 +9,7 @@ public class Board {
         return tiles;
     }
 
+    public Tile getTileById(int propertyId) {
+        return tiles.get(propertyId-1);
+    }
 }

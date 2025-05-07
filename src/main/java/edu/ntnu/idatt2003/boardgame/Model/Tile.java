@@ -9,9 +9,6 @@ public class Tile {
     private int next;
     private transient VBox tileBox;
 
-    private transient int fee = 0;
-    private transient Player houseOwner = null;
-
     public Tile(int tileId){
         this.id = tileId;
     }
@@ -34,21 +31,6 @@ public class Tile {
 
     public void setAction(TileAction action) {
         this.action = action;
-    }
-
-    public void setFee(int value){
-        this.fee = value;
-    }
-
-    public int getFee() {
-        return fee;
-    }
-
-    public void setOwner(Player owner){
-        this.houseOwner = owner;
-    }
-    public Player getOwner(){
-        return houseOwner;
     }
 
 

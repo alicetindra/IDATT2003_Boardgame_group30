@@ -1,9 +1,10 @@
 package edu.ntnu.idatt2003.boardgame.Model;
 
 
-import edu.ntnu.idatt2003.boardgame.Model.actions.JailAction;
 import edu.ntnu.idatt2003.boardgame.Model.actions.PassStartAction;
 import javafx.scene.image.ImageView;
+
+import java.util.Random;
 
 public class Player {
     private String name;
@@ -14,6 +15,9 @@ public class Player {
     private int money = 0;
     private boolean inJail = false;
     private int jailTurnsLeft = 3;
+    private int randomTreasureCard;
+    private int randomFeeCard;
+    private PropertyHolder propertyHolder;
 
 
     public Player(String name, String color) {
@@ -130,6 +134,22 @@ public class Player {
 
     public BoardGame getBoardGame(){
         return boardGame;
+    }
+
+    public void drawRandomTreasureCard(){
+        //From 0 til hvor mange kort i bunken. Skal lage JSON eller txt med noen kort.
+        randomTreasureCard = new Random().nextInt(0,10);
+    }
+    public void drawRandomFeeCard(){
+        //From 0 til hvor mange kort i bunken. Skal lage JSON eller txt med noen kort.
+        randomFeeCard = new Random().nextInt(0,10);
+    }
+
+    public void setPropertyHolder(PropertyHolder propertyHolder){
+        this.propertyHolder = propertyHolder;
+    }
+    public PropertyHolder getPropertyholder(){
+        return propertyHolder;
     }
 
 }
