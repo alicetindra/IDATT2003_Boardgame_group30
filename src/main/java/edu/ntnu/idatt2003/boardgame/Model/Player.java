@@ -7,18 +7,14 @@ import javafx.scene.image.ImageView;
 import java.util.Random;
 
 public class Player {
-    private String name;
-    private String color;
+    private final String name;
+    private final String color;
     private Tile currentTile;
     private BoardGame boardGame;
     private ImageView imageView;
     private int money = 0;
     private boolean inJail = false;
     private int jailTurnsLeft = 3;
-    private int randomTreasureCard;
-    private int randomFeeCard;
-    private PropertyHolder propertyHolder;
-
 
     public Player(String name, String color) {
         this.name = name;
@@ -51,7 +47,7 @@ public class Player {
 
     public void setInJail(boolean inJail) {
         this.inJail = inJail;
-        this.jailTurnsLeft = inJail ? 3 : 0; // Reset turns if going to jail
+        this.jailTurnsLeft = inJail ? 3 : 0;
     }
 
     public boolean isInJail() {
@@ -74,9 +70,6 @@ public class Player {
         boardGame.alertRelease();
     }
 
-    public boolean canAttemptExit() {
-        return inJail;
-    }
 
     public void attemptRollExit(int dieRoll) {
         if (dieRoll == 6) {
@@ -113,11 +106,9 @@ public class Player {
                 this.placeOnTile(board, destTile);
             }
         }
-
         else{
             this.placeOnTile(board, destTile);
         }
-
 
     }
 
@@ -134,22 +125,6 @@ public class Player {
 
     public BoardGame getBoardGame(){
         return boardGame;
-    }
-
-    public void drawRandomTreasureCard(){
-        //From 0 til hvor mange kort i bunken. Skal lage JSON eller txt med noen kort.
-        randomTreasureCard = new Random().nextInt(0,10);
-    }
-    public void drawRandomFeeCard(){
-        //From 0 til hvor mange kort i bunken. Skal lage JSON eller txt med noen kort.
-        randomFeeCard = new Random().nextInt(0,10);
-    }
-
-    public void setPropertyHolder(PropertyHolder propertyHolder){
-        this.propertyHolder = propertyHolder;
-    }
-    public PropertyHolder getPropertyholder(){
-        return propertyHolder;
     }
 
 }

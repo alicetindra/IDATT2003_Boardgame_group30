@@ -39,6 +39,7 @@ public class MenuView {
   private final HBox diceImagesBox = new HBox(10);
   private final VBox boardBox = new VBox(10); //Holds the text 'Board' with the pull down menu in game menu
   HBox startOrMainButtons = new HBox(20);
+  VBox diceSection = new VBox(10);
 
   /*Radio buttons*/
   private final ToggleGroup toggleGroup = new ToggleGroup();
@@ -196,14 +197,25 @@ public class MenuView {
     menuLayout.getChildren().addAll(gameInfoMenuBox);
     menuLayout.getStyleClass().add("rootMainMenu");
   }
+  public VBox getDiceSection(){
+    return diceSection;
+  }
 
   public void createSLMenu(){
-
+    diceField.setText("2");
     Text boardText = new Text("Board size");
     boardText.setId("boardSizeText");
     loadCustomBoardButton.setId("loadCustomBoardButton");
 
-    titleText = new Text("Monopoly");
+    Text diceText = new Text("Dice");
+    diceText.setId("diceText");
+    minusOneButton.setId("minusOneButton");
+    plusOneButton.setId("plusOneButton");
+    HBox diceHBox = new HBox(10);
+    diceHBox.getChildren().addAll(minusOneButton,diceField,plusOneButton);
+    diceSection.getChildren().addAll(diceText, diceHBox);
+
+    titleText = new Text("Snakes and ladders");
 
     boardBox.getChildren().clear();
     boardBox.getChildren().addAll(boardText, boardSizeMenu, loadCustomBoardButton);
@@ -214,9 +226,18 @@ public class MenuView {
     createGameMenu();
   }
   public void createMMenu() {
+    diceField.setText("1");
     boardBox.getChildren().clear();
     startOrMainButtons.getChildren().clear();
     titleText = new Text("Monopoly");
+
+
+    Text diceText = new Text("Dice");
+    diceText.setId("diceText");
+    HBox diceHBox = new HBox(10);
+    diceHBox.getChildren().add(diceField);
+    diceSection.getChildren().addAll(diceText, diceHBox);
+
     startOrMainButtons.getChildren().addAll(mainMenuButton, setUpMonopolyGameButton);
     setUpMonopolyGameButton.setFont(customFont);
     createGameMenu();
@@ -225,7 +246,6 @@ public class MenuView {
   public void createGameMenu(){
     gameInfoMenuBox.getChildren().clear();
     diceField.setDisable(true);
-    diceField.setText("2");
 
     //Title
     titleText.setFont(customFont);
@@ -239,15 +259,6 @@ public class MenuView {
     VBox leftColumn = new VBox(15);
     leftColumn.setAlignment(Pos.TOP_LEFT);
 
-    //Dice section
-    Text diceText = new Text("Dice");
-    diceText.setId("diceText");
-    minusOneButton.setId("minusOneButton");
-    plusOneButton.setId("plusOneButton");
-    HBox diceHBox = new HBox(10);
-    diceHBox.getChildren().addAll(minusOneButton,diceField,plusOneButton);
-    VBox diceSection = new VBox(10);
-    diceSection.getChildren().addAll(diceText, diceHBox);
 
     //Player name section
     Text nameText = new Text("Player name");

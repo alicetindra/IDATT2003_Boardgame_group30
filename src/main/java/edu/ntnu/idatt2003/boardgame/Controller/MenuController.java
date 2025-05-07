@@ -65,7 +65,7 @@ public class MenuController{
     });
 
     //Back to main menu button
-    menuView.getMainMenuButton().setOnAction(e -> snakeLadderController.clearGame());
+    menuView.getMainMenuButton().setOnAction(e -> clearGames());
 
     //Radio buttons to choose game
     menuView.getSLButton().setOnAction(
@@ -82,6 +82,11 @@ public class MenuController{
     );
     menuView.getLoadCustomBoardButton().setOnAction(e->snakeLadderController.loadBoard());
 
+  }
+
+  private void clearGames() {
+    snakeLadderController.clearGame();
+    monopolyController.clearGame();
   }
 
   //Handlers
