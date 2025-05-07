@@ -22,6 +22,7 @@ public class TileActionReader implements JsonDeserializer<TileAction> {
             case "portal" -> new PortalAction();
             case "win" -> new WinAction(destination,type);
             case "jail" -> new JailAction(destination,type);
+            case "draw" -> new DrawCardAction(destination, type);
             default -> throw new JsonParseException("Unknown action type: " + type);
         };
     }

@@ -20,8 +20,6 @@ public class PropertyHolder {
     }
 
     public void makeImage(Integer integer) {
-        System.out.println(integer);
-        System.out.println(properties.get(integer));
         houseImage = new ImageView(new Image("/images/"+properties.get(integer).getColor()+"house.png"));
 
     }

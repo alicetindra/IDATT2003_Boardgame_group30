@@ -39,6 +39,9 @@ public class Player {
 
     public void editMoney(int value){
         money += value;
+        if(money <= 0){
+            getBoardGame().notifyObservers("bankrupt");
+        }
     }
     public int getMoney(){
         return money;

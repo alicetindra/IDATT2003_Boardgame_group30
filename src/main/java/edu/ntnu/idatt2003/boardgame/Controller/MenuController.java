@@ -53,9 +53,9 @@ public class MenuController{
     });
 
     menuView.getSetUpMonopolyGameButton().setOnAction(e -> {
-      if(boardGame.getListOfPlayers().isEmpty() || menuView.getDiceField() == null) {
-        getAlert("To start the game, you need players and dice.");
-        throw new IllegalArgumentException("Players and/or dice is not added");
+      if(boardGame.getListOfPlayers().size()<2 || menuView.getDiceField() == null) {
+        getAlert("To start the game, you need at least 2 players.");
+        throw new IllegalArgumentException("Not enough players added");
       }
       try {
             monopolyController.setUpMonopolyGame();

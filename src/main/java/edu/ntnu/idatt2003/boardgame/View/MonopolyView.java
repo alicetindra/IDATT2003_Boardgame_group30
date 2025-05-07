@@ -3,7 +3,9 @@ package edu.ntnu.idatt2003.boardgame.View;
 import edu.ntnu.idatt2003.boardgame.Model.Board;
 import edu.ntnu.idatt2003.boardgame.Model.Player;
 import edu.ntnu.idatt2003.boardgame.Model.Tile;
+import edu.ntnu.idatt2003.boardgame.Model.actions.DrawCardAction;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -38,6 +40,11 @@ public class MonopolyView {
         rootLayout = new StackPane();
         monopolyLayout = new BorderPane();
         monopolyGrid = new GridPane();
+    }
+    public Text getReleaseText(Player player){
+        Text releaseText = new Text(player.getName()+", "+player.getColor()+" is released from jail");
+        releaseText.getStyleClass().add("releaseText");
+        return releaseText;
     }
 
     public VBox getMoneyBox() {
@@ -202,22 +209,38 @@ public class MonopolyView {
         tile.getTileBox().getChildren().add(new Text(tile.getId()+""));
         tile.getTileBox().getStyleClass().add("monopolyTileBox");
 
+        if(tile.getAction() instanceof DrawCardAction){
+            tile.getTileBox().getStyleClass().add("drawCard");
+            tile.getTileBox().getChildren().add(new Text("Draw card"));
+        }
+
         if(tile.getId() == 8){
-            tile.getTileBox().setStyle("-fx-background-color: #FFB765");
+            tile.getTileBox().getStyleClass().add("jailTile");
             tile.getTileBox().getChildren().add(new Text("Jail"));
         }
         if(tile.getId() == 14){
-            tile.getTileBox().setStyle("-fx-background-color: #EE3636");
+            tile.getTileBox().getStyleClass().add("parkingTile");
             tile.getTileBox().getChildren().add(new Text("Parking"));
         }
         if(tile.getId() == 21){
-            tile.getTileBox().setStyle("-fx-background-color: #015AFF");
+            tile.getTileBox().getStyleClass().add("goToJailTile");
             tile.getTileBox().getChildren().add(new Text("Go to jail!"));
         }
         if(tile.getId() == 1){
-            tile.getTileBox().setStyle("-fx-background-color: #575757");
+            tile.getTileBox().getStyleClass().add("startTile");
             tile.getTileBox().getChildren().add(new Text("Go!"));
         }
+    }
+    public Text getWinnerAnnouncement(){
+        Text winnerText = new Text(" is the winner!");
+        winnerText.setId("anouncementTextWinner");
+        return winnerText;
+    }
+
+    public Node getBankRuptcyText() {
+        Text bankRuptcyText = new Text(" went bankrupt");
+        bankRuptcyText.setId("bankRuptcyText");
+        return bankRuptcyText;
     }
 }
 

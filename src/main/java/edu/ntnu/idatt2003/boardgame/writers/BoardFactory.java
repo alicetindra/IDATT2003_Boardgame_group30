@@ -48,6 +48,12 @@ public class BoardFactory {
           actionObj.addProperty("destination", 8);
           tileJson.add("action", actionObj);
         }
+        if(i == 4 || i == 11 || i == 13 || i == 22 || i == 25){
+          JsonObject actionObj = new JsonObject();
+          actionObj.addProperty("type", "draw");
+          actionObj.addProperty("destination", 1);
+          tileJson.add("action", actionObj);
+        }
 
         monopolyJsonArray.add(tileJson);
       }

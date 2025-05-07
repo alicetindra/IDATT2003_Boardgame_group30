@@ -6,6 +6,7 @@ import edu.ntnu.idatt2003.boardgame.Observer.BoardGameObserver;
 import edu.ntnu.idatt2003.boardgame.View.MenuView;
 import edu.ntnu.idatt2003.boardgame.View.MonopolyView;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,6 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,45 +38,59 @@ public class MonopolyController implements BoardGameObserver {
 
     @Override
     public void update(String event, BoardGame boardGame){
-        if (event.equals("playerMoved")) {
-            monopolyView.getHouseButtonsBox().getChildren().remove(monopolyView.getSellHouseButton());
-            Player currentPlayer = boardGame.getPlayerHolder().getCurrentPlayer();
-            int newTileId = currentPlayer.getCurrentTile().getId();
+        switch (event) {
+            case "playerMoved":
+                monopolyView.getHouseButtonsBox().getChildren().remove(monopolyView.getSellHouseButton());
+                Player currentPlayer = boardGame.getPlayerHolder().getCurrentPlayer();
+                int newTileId = currentPlayer.getCurrentTile().getId();
+                addPlayerImageToNewTile(currentPlayer, newTileId);
+                payAndGetFees();
+                updateMoneyBox();
+                updateBuyHouseButton();
+                break;
 
-            addPlayerImageToNewTile(currentPlayer, newTileId);
+            case "inJail":
+                monopolyView.getHouseButtonsBox().getChildren().remove(monopolyView.getSellHouseButton());
+                monopolyView.getBuyHouseButton().setDisable(true);
+                monopolyView.getStartRoundButton().setDisable(true);
+                monopolyView.getJailButtonsBox().getChildren().addAll(monopolyView.getRollForSixButton(),monopolyView.getPayFeeButton());
+                break;
 
-            updateFees();
-            updateMoneyBox();
-            updateBuyHouseButton();
-        }
-        if (event.equals("inJail")) {
-            monopolyView.getStartRoundButton().setDisable(true);
-            monopolyView.getJailButtonsBox().getChildren().addAll(monopolyView.getRollForSixButton(),monopolyView.getPayFeeButton());
-            monopolyView.getBuyHouseButton().setDisable(true);  
-        }
-        if (event.equals("usedUpTurns")) {
-            monopolyView.getJailButtonsBox().getChildren().clear();
-            monopolyView.getStartRoundButton().setDisable(false);
-        }
-        if (event.equals("release")) {
-            monopolyView.getJailButtonsBox().getChildren().clear();
-            monopolyView.getDiceBox().getChildren().clear();
-            monopolyView.getDiceBox().getChildren().add(new Text("You are released from jail"));
-            monopolyView.getStartRoundButton().setDisable(false);
-        }
-        if(event.equals("Winner")) {
-            monopolyView.getGameUpdates().getChildren().clear();
-            monopolyView.getGameUpdates().getChildren().add(new Text(boardGame.getPlayerHolder().getPlayers().getFirst().getName()+" is the winner!"));
-            monopolyView.getStartRoundButton().setDisable(true);
+            case "usedUpTurns":
+                monopolyView.getJailButtonsBox().getChildren().clear();
+                monopolyView.getStartRoundButton().setDisable(false);
+                break;
+
+            case "release":
+                monopolyView.getJailButtonsBox().getChildren().clear();
+                monopolyView.getDiceBox().getChildren().clear();
+                monopolyView.getDiceBox().getChildren().add(monopolyView.getReleaseText(boardGame.getPlayerHolder().getCurrentPlayer()));
+                monopolyView.getStartRoundButton().setDisable(false);
+                break;
+
+            case "bankrupt":
+                declareBankrupt();
+                break;
+
+            case "winner":
+                monopolyView.getGameUpdates().getChildren().clear();
+                ImageView newImage = new ImageView(new Image("/images/"+boardGame.getPlayerHolder().getPlayers().getFirst().getColor()+".png"));
+                newImage.setPreserveRatio(true);
+                newImage.setFitHeight(60);
+                monopolyView.getGameUpdates().getChildren().addAll(newImage, monopolyView.getWinnerAnnouncement());
+                monopolyView.getStartRoundButton().setDisable(true);
+                break;
         }
     }
 
-    private void updateFees() {
+    private void payAndGetFees() {
         Player currentPlayer = boardGame.getPlayerHolder().getCurrentPlayer();
-        Tile t = boardGame.getPlayerHolder().getCurrentPlayer().getCurrentTile();
+        Tile tile = boardGame.getPlayerHolder().getCurrentPlayer().getCurrentTile();
+        int fee = propertyHolder.getFee(tile.getId());
 
-        if(propertyHolder.getProperties().get(t.getId())!=currentPlayer && propertyHolder.getProperties().get(t.getId())!=null){
-            currentPlayer.editMoney(-propertyHolder.getFee(t.getId()));
+        if(propertyHolder.getProperties().get(tile.getId())!=currentPlayer && propertyHolder.getProperties().get(tile.getId())!=null){
+            currentPlayer.editMoney(-fee);
+            propertyHolder.getProperties().get(tile.getId()).editMoney(fee);
         }
     }
 
@@ -82,8 +98,9 @@ public class MonopolyController implements BoardGameObserver {
         Tile tile = boardGame.getPlayerHolder().getCurrentPlayer().getCurrentTile();
         boolean housePresent = false;
 
-        if(tile.getId() == 1 || tile.getId() == 8 || tile.getId() == 14) {
+        if(tile.getId() == 1 || tile.getId() == 8 || tile.getId() == 14 || tile.getAction() !=  null) {
             monopolyView.getBuyHouseButton().setDisable(true);
+            return;
         }
 
         if(propertyHolder.getProperties().get(tile.getId())!=null){
@@ -96,6 +113,7 @@ public class MonopolyController implements BoardGameObserver {
         if(!housePresent){
             monopolyView.getBuyHouseButton().setDisable(false);
         }
+
     }
 
     private void attachEventHandlers() {
@@ -111,7 +129,10 @@ public class MonopolyController implements BoardGameObserver {
         Player p = boardGame.getPlayerHolder().getCurrentPlayer();
         Die die = new Die();
         p.attemptRollExit(die.roll());
-        monopolyView.getDiceBox().getChildren().add(new Text(die.getValue()+""));
+        ImageView diceImage = new ImageView(new Image("/images/dice"+die.getValue()+".png"));
+        diceImage.setFitHeight(40);
+        diceImage.setPreserveRatio(true);
+        monopolyView.getDiceBox().getChildren().add(diceImage);
     }
 
     private void payReleaseFee() {
@@ -156,7 +177,7 @@ public class MonopolyController implements BoardGameObserver {
         if (houseImage != null) {
             tile.getTileBox().getChildren().remove(houseImage);
         }
-
+        monopolyView.getSellHouseButton().setDisable(true);
         updateMoneyBox();
     }
 
@@ -164,7 +185,7 @@ public class MonopolyController implements BoardGameObserver {
 
     public void addHouseToTile(Tile tile) {
         ImageView houseImage = propertyHolder.getImage(tile.getId());
-        houseImage.setFitHeight(40);
+        houseImage.setFitHeight(35);
         houseImage.setPreserveRatio(true);
         tile.getTileBox().getChildren().add(houseImage);
         houseViews.put(tile, houseImage);
@@ -180,35 +201,45 @@ public class MonopolyController implements BoardGameObserver {
     public void updateMoneyBox(){
         String s = "";
         for(Player player: boardGame.getPlayerHolder().getPlayers()){
-            checkBankruptcy(player);
             s += player.getColor() +" : "+ player.getMoney() + "\n";
         }
         monopolyView.updateMoneyBox(s);
     }
 
-    private void checkBankruptcy(Player player) {
-        if (player.getMoney() <= 0) {
-            for (Integer key : propertyHolder.getProperties().keySet()) {
-                Player owner = propertyHolder.getProperties().get(key);
-                if (owner != null && owner.equals(player)) {
-                    propertyHolder.removeOwner(key);
+    private void declareBankrupt() {
+        ArrayList<Player> toRemove = new ArrayList<>();
 
-                    Tile tile = board.getTiles().get(key-1);
-                    ImageView houseImage = houseViews.remove(tile);
-                    if (houseImage != null) {
-                        tile.getTileBox().getChildren().remove(houseImage);
+        for (Player player : boardGame.getPlayerHolder().getPlayers()) {
+            if (player.getMoney() <= 0) {
+                for (Integer key : propertyHolder.getProperties().keySet()) {
+                    Player owner = propertyHolder.getProperties().get(key);
+                    if (owner != null && owner.equals(player)) {
+                        propertyHolder.removeOwner(key);
+
+                        Tile tile = board.getTiles().get(key - 1);
+                        ImageView houseImage = houseViews.remove(tile);
+                        if (houseImage != null) {
+                            tile.getTileBox().getChildren().remove(houseImage);
+                        }
                     }
-
-                    monopolyView.getBankRuptcyBox().getChildren()
-                            .addAll(monopolyView.getPlayerImage(player), new Text(" went bankrupt!"));
                 }
+                ImageView newImage = new ImageView(new Image("/images/"+player.getColor()+".png"));
+                newImage.setFitHeight(60);
+                newImage.setPreserveRatio(true);
+                monopolyView.getBankRuptcyBox().getChildren().addAll(newImage, monopolyView.getBankRuptcyText());
+                toRemove.add(player);
             }
-
-            boardGame.getPlayerHolder().getPlayers().remove(player);
         }
 
-        if (boardGame.getPlayerHolder().getPlayers().size() == 1) {
-            update("Winner", boardGame);
+        for (Player player : toRemove) {
+            boardGame.getPlayerHolder().getPlayers().remove(player);
+            boardGame.removePlayer(player);
+        }
+
+        System.out.println("Remaining players: " + boardGame.getPlayerHolder().getPlayers().size());
+
+        if (boardGame.getPlayerHolder().getPlayers().size() == 1 || boardGame.getListOfPlayers().size() == 1) {
+            update("winner", boardGame);
         }
     }
 
@@ -255,12 +286,16 @@ public class MonopolyController implements BoardGameObserver {
     }
 
     private void addPlayerImageToNewTile(Player player, int newTileId){
-        for(Tile t : board.getTiles()){
-            if(t.getId() == newTileId){
-                t.getTileBox().getChildren().add(monopolyView.getPlayerImage(player));
+        for (Tile t : board.getTiles()) {
+            if (t.getId() == newTileId) {
+                Node playerImage = monopolyView.getPlayerImage(player);
+                if (!t.getTileBox().getChildren().contains(playerImage)) {
+                    t.getTileBox().getChildren().add(playerImage);
+                }
             }
         }
     }
+
 
     public void clearGame() {
         boardGame.undoWinner(boardGame.getWinner());

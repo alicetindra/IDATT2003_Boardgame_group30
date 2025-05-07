@@ -108,6 +108,9 @@ public class BoardGame {
     public void addPlayer(String name, String color){
         listOfPlayers.add(name + "," + color);
     }
+    public void removePlayer(Player player){
+        listOfPlayers.remove(player.getName());
+    }
 
 
     public List<String> getListOfPlayers(){

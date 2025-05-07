@@ -10,7 +10,7 @@
 /Users/nicolinetonnessen/IDATT1005/IDATT2003_Boardgame_group30/src/main/java/edu/ntnu/idatt2003/boardgame/Model/PlayerHolder.java
 /Users/nicolinetonnessen/IDATT1005/IDATT2003_Boardgame_group30/src/main/java/edu/ntnu/idatt2003/boardgame/Model/PropertyHolder.java
 /Users/nicolinetonnessen/IDATT1005/IDATT2003_Boardgame_group30/src/main/java/edu/ntnu/idatt2003/boardgame/Model/Tile.java
-/Users/nicolinetonnessen/IDATT1005/IDATT2003_Boardgame_group30/src/main/java/edu/ntnu/idatt2003/boardgame/Model/actions/DrawTreasureCardAction.java
+/Users/nicolinetonnessen/IDATT1005/IDATT2003_Boardgame_group30/src/main/java/edu/ntnu/idatt2003/boardgame/Model/actions/DrawCardAction.java
 /Users/nicolinetonnessen/IDATT1005/IDATT2003_Boardgame_group30/src/main/java/edu/ntnu/idatt2003/boardgame/Model/actions/JailAction.java
 /Users/nicolinetonnessen/IDATT1005/IDATT2003_Boardgame_group30/src/main/java/edu/ntnu/idatt2003/boardgame/Model/actions/LadderAction.java
 /Users/nicolinetonnessen/IDATT1005/IDATT2003_Boardgame_group30/src/main/java/edu/ntnu/idatt2003/boardgame/Model/actions/PassStartAction.java

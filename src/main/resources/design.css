@@ -150,8 +150,14 @@ Texts
     -fx-border-radius: 10;
     -fx-border-color: rgba(225, 221, 221, 0.62);
 }
-.infoText, #playerInfo, #boardSizeText, #fileText, #diceText, #nameText, #colorText, #moneyText {
+.infoText, #playerInfo, #boardSizeText, #fileText, #diceText, #nameText, #colorText, #moneyText, #releaseText, #bankRuptcyText {
     -fx-font-size: 18px;
+    -fx-fill: #1d528e;
+    -fx-font-family: Georgia;
+}
+
+#anouncementTextWinner{
+    -fx-font-size: 20px;
     -fx-fill: #1d528e;
     -fx-font-family: Georgia;
 }
@@ -226,12 +232,24 @@ Board grid, tiles and boxes
     -fx-background-color: #ffffff;
 }
 
-.jailBox{
-    -fx-background-color: #ff2727;
+.drawCard{
+    -fx-background-color: #389bd1;
 }
-.startBox{
-    -fx-background-color: #64ff3d;
+.jailTile{
+    -fx-background-color: #f19f41;
 }
+.goToJailTile{
+    -fx-background-color: #054bcd;
+}
+.startTile{
+    -fx-background-color: #575757;
+}
+.parkingTile{
+    -fx-background-color: #cc2525;
+}
+
+
+
 
 #gameUpdatesBox, #moneyBox, #buttonBox{
     -fx-font-size: 18px;
