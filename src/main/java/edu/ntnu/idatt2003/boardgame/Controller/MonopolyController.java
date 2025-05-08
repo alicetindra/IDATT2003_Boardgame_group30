@@ -257,7 +257,8 @@ public class MonopolyController implements BoardGameObserver {
 
         monopolyView.createMonopolyLayout();
         BorderPane gameLayout = monopolyView.getMonopolyLayout();
-        monopolyView.getButtonBox().getChildren().addAll(menuView.getMainMenuButton(), monopolyView.getStartRoundButton());
+        monopolyView.getMoneyBox().getChildren().add(menuView.getMainMenuButton());
+        //monopolyView.getButtonBox().getChildren().addAll(menuView.getMainMenuButton(), monopolyView.getStartRoundButton());
 
         menuView.getMenuLayout().getChildren().clear();
         menuView.getMenuLayout().getChildren().add(gameLayout);
@@ -308,6 +309,7 @@ public class MonopolyController implements BoardGameObserver {
         monopolyView.getMoneyBox().getChildren().clear();
         monopolyView.getGameUpdates().getChildren().clear();
         monopolyView.getHouseButtonsBox().getChildren().clear();
+        monopolyView.getTitleBox().getChildren().clear();
         monopolyView.getJailButtonsBox().getChildren().clear();
 
         menuView.getMButton().setSelected(false);

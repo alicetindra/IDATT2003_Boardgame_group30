@@ -4,6 +4,7 @@ import edu.ntnu.idatt2003.boardgame.Model.Board;
 import edu.ntnu.idatt2003.boardgame.Model.Player;
 import edu.ntnu.idatt2003.boardgame.Model.Tile;
 import edu.ntnu.idatt2003.boardgame.Model.actions.DrawCardAction;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -20,7 +21,10 @@ public class MonopolyView {
     private BorderPane monopolyLayout;
     private GridPane monopolyGrid;
     private StackPane rootLayout;
-    private final VBox moneyBox = new VBox();;
+
+    //Boxes
+    private final VBox moneyBox = new VBox();
+    private final VBox updatedMoneyBox = new VBox();
     private final HBox buttonBox = new HBox();
     private final HBox titleBox = new HBox();
     private final VBox diceBox = new VBox();
@@ -33,7 +37,7 @@ public class MonopolyView {
     private final Button payFeeButton = new Button("Pay fee");
     private final Button rollForSixButton = new Button("Roll for six ");
     private final VBox bankRuptcyBox = new VBox(20);
-    Text moneyHeader = new Text("Monopoly money");
+    private final Text moneyHeader = new Text("Monopoly money");
 
     Font customFont = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
 
@@ -50,6 +54,10 @@ public class MonopolyView {
 
     public VBox getMoneyBox() {
         return moneyBox;
+    }
+
+    public VBox getUpdatedMoneyBox() {
+        return updatedMoneyBox;
     }
 
     public VBox getBankRuptcyBox() {
@@ -73,6 +81,9 @@ public class MonopolyView {
         return diceBox;
     }
 
+    public HBox getTitleBox() {
+        return titleBox;
+    }
 
     public VBox getGameUpdates() {
         return gameUpdates;
@@ -124,22 +135,43 @@ public class MonopolyView {
 
     public void createMoneyBox(){
         moneyBox.getChildren().clear();
+
+        moneyBox.setPrefWidth(300);
+        moneyBox.setAlignment(Pos.TOP_CENTER);
+        moneyBox.setId("moneyBox");
+        moneyBox.setPadding(new Insets(100,0,100,0));
+
+        VBox textBoxMoney = new VBox(20);
+        textBoxMoney.setPadding(new Insets(20));
+        textBoxMoney.setSpacing(10);
+        textBoxMoney.setAlignment(Pos.CENTER);
+        textBoxMoney.setId("textBoxMoney");
+
         moneyHeader.setFont(customFont);
         moneyHeader.getStyleClass().add("subTitle");
-        moneyBox.getChildren().add(moneyHeader);
-        moneyBox.setAlignment(Pos.CENTER);
-        moneyBox.setId("moneyBox");
+        textBoxMoney.getChildren().add(moneyHeader);
+
+        updatedMoneyBox.setAlignment(Pos.CENTER);
+        updatedMoneyBox.setId("updatedMoneyBox");
+
+        textBoxMoney.getChildren().add(updatedMoneyBox);
+        moneyBox.getChildren().add(textBoxMoney);
+
+        Region spacer = new Region();
+        VBox.setVgrow(spacer, Priority.ALWAYS);
+        textBoxMoney.getChildren().add(spacer);
+
+
     }
 
     public void updateMoneyBox(String s){
-        moneyBox.getChildren().clear();
+        updatedMoneyBox.getChildren().clear();
         Text moneyText = new Text(s);
         moneyText.setId("moneyText");
-        moneyBox.getChildren().addAll(moneyHeader,moneyText, bankRuptcyBox);
+        updatedMoneyBox.getChildren().addAll(moneyText, bankRuptcyBox);
     }
 
     public void createTitleBox(){
-        titleBox.getChildren().clear();
         Text title = new Text("Monopoly");
         title.getStyleClass().add("title");
         title.setFont(customFont);
@@ -154,11 +186,11 @@ public class MonopolyView {
     }
 
     public Button getPayFeeButton(){
-        payFeeButton.getStyleClass().add("monopolyButtons");
+        payFeeButton.setId("monopolyButtons");
         return payFeeButton;
     }
     public Button getRollForSixButton(){
-        rollForSixButton.getStyleClass().add("monopolyButtons");
+        rollForSixButton.setId("monopolyButtons");
         return rollForSixButton;
     }
 
@@ -179,23 +211,42 @@ public class MonopolyView {
         createDiceBox();
         createGameUpdatesBox();
 
-
         monopolyLayout.setTop(titleBox);
         monopolyLayout.setCenter(monopolyGrid);
         monopolyLayout.setLeft(moneyBox);
-        monopolyLayout.setBottom(buttonBox);
         monopolyLayout.setRight(gameUpdates);
 
         rootLayout.getChildren().add(monopolyLayout);
     }
 
     private void createGameUpdatesBox() {
-        houseButtonsBox.getChildren().add(buyHouseButton);
-        gameUpdates.getChildren().add(diceBox);
-        gameUpdates.getChildren().add(houseButtonsBox);
-        gameUpdates.getChildren().add(jailButtonsBox);
-        gameUpdates.setAlignment(Pos.CENTER);
+        gameUpdates.getChildren().clear();
+        gameUpdates.setPrefWidth(300);
+        gameUpdates.setAlignment(Pos.TOP_CENTER);
         gameUpdates.setId("gameUpdatesBox");
+        gameUpdates.setPadding(new Insets(100,0,100,0));
+
+        VBox infoTextAndButtons = new VBox(20);
+        infoTextAndButtons.setPadding(new Insets(20));
+        infoTextAndButtons.setSpacing(10);
+        infoTextAndButtons.setAlignment(Pos.CENTER);
+        infoTextAndButtons.setId("infoTextAndButtons");
+
+        Text infoText = new Text("Round Info");
+        infoText.setFont(customFont);
+        infoText.getStyleClass().add("subTitle");
+
+        infoTextAndButtons.getChildren().add(infoText);
+
+        houseButtonsBox.getChildren().add(buyHouseButton);
+        infoTextAndButtons.getChildren().add(diceBox);
+        infoTextAndButtons.getChildren().add(houseButtonsBox);
+        infoTextAndButtons.getChildren().add(jailButtonsBox);
+        infoTextAndButtons.getChildren().add(startRoundButton);
+        gameUpdates.setId("gameUpdatesBox");
+
+        gameUpdates.getChildren().add(infoTextAndButtons);
+
     }
 
     public ImageView getPlayerImage(Player p) {
@@ -261,7 +312,7 @@ public class MonopolyView {
     }
     public Text getWinnerAnnouncement(){
         Text winnerText = new Text(" is the winner!");
-        winnerText.setId("anouncementTextWinner");
+        winnerText.setId("announcementTextWinner");
         return winnerText;
     }
 
