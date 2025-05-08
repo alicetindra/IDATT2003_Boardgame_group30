@@ -80,6 +80,9 @@ public class MonopolyController implements BoardGameObserver {
                 monopolyView.getGameUpdates().getChildren().addAll(newImage, monopolyView.getWinnerAnnouncement());
                 monopolyView.getStartRoundButton().setDisable(true);
                 break;
+            case "drewCard":
+                getAlert(boardGame.getCardManager().sendAlert());
+                updateMoneyBox();
         }
     }
 
@@ -281,6 +284,7 @@ public class MonopolyController implements BoardGameObserver {
         }
 
         propertyHolder.setProperties(boardGame.getBoard().getTiles().size());
+        boardGame.setCardManager(new CardManager("src/main/resources/cards.json"));
 
         updateMoneyBox();
     }
