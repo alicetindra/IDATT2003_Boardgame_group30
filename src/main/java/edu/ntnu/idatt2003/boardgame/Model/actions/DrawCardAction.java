@@ -15,6 +15,9 @@ public class DrawCardAction implements TileAction {
     public void perform(Player player) {
         log.info(description);
         player.placeOnTile(player.getBoardGame().getBoard(),player.getBoardGame().getDice().getTotalSumOfEyes()+player.getCurrentTile().getId());
-        player.editMoney(-100);
+        player.getBoardGame().getCardManager().drawCard();
+        player.getBoardGame().notifyObservers("drewCard");
+        player.getBoardGame().getCardManager().applyCard(player.getBoardGame().getCardManager().getLastDrawnCard(), player);
+
     }
 }

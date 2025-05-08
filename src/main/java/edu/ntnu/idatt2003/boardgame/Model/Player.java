@@ -83,7 +83,7 @@ public class Player {
     }
 
     public void payToExit() {
-        editMoney(-200);
+        editMoney(-50);
         releaseFromJail();
     }
 

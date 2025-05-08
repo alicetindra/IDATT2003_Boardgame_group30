@@ -21,8 +21,16 @@ public class BoardGame {
     private Player winner = null;
     private boolean customBoardLoaded = false;
     private String gameType;
+    private CardManager cardManager;
 
     public BoardGame() {
+    }
+
+    public void setCardManager(CardManager cardManager) {
+        this.cardManager = cardManager;
+    }
+    public CardManager getCardManager() {
+        return cardManager;
     }
 
     public void addObserver(BoardGameObserver observer) {
@@ -144,7 +152,6 @@ public class BoardGame {
     }
 
 }
-
 
 
 

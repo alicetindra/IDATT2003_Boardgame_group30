@@ -1,2 +1,6 @@
+edu\ntnu\idatt2003\boardgame\Model\Card.class
+edu\ntnu\idatt2003\boardgame\readers\CardReaderGson.class
+edu\ntnu\idatt2003\boardgame\readers\CardReaderGson$1.class
 edu\ntnu\idatt2003\boardgame\Model\actions\DrawCardAction.class
+edu\ntnu\idatt2003\boardgame\Model\CardManager.class
 edu\ntnu\idatt2003\boardgame\Model\PropertyHolder.class

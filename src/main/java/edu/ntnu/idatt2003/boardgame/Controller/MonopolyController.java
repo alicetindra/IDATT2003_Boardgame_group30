@@ -137,7 +137,7 @@ public class MonopolyController implements BoardGameObserver {
 
     private void payReleaseFee() {
         Player p = boardGame.getPlayerHolder().getCurrentPlayer();
-        if(p.getMoney()<=200){
+        if(p.getMoney()<50){
             getAlert("You dont have enough money to get out of jail");
             throw new IllegalArgumentException("You dont have enough money to get out of jail");
         }
@@ -336,7 +336,7 @@ public class MonopolyController implements BoardGameObserver {
         Player p = boardGame.getPlayerHolder().getCurrentPlayer();
         monopolyView.getDiceBox().getChildren().add(new Text("Player '"+p.getName()+", "+p.getColor() + "' \n threw a"));
         if(p.isInJail()){
-          monopolyView.getDiceBox().getChildren().add(new Text("\nYou are in jail. \n Roll for 6 in three tries \n or pay a 200 money fee"));
+          monopolyView.getDiceBox().getChildren().add(new Text("\nYou are in jail. \n Roll for 6 in three tries \n or pay a 50$ fee"));
         }
          else{
             for(Die d : boardGame.getDice().getListOfDice()){
