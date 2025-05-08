@@ -23,14 +23,13 @@ public class MonopolyView {
     private StackPane rootLayout;
 
     //Boxes
-    private final VBox moneyBox = new VBox();
-    private final VBox updatedMoneyBox = new VBox();
-    private final HBox buttonBox = new HBox();
+    private final VBox moneyBox = new VBox(30);
+    private final VBox updatedMoneyBox = new VBox(10);
     private final HBox titleBox = new HBox();
-    private final VBox diceBox = new VBox();
-    private final VBox gameUpdates = new VBox();
-    private final VBox jailButtonsBox = new VBox();
-    private final VBox houseButtonsBox = new VBox();
+    private final VBox diceBox = new VBox(10);
+    private final VBox gameUpdates = new VBox(10);
+    private final VBox jailButtonsBox = new VBox(10);
+    private final VBox houseButtonsBox = new VBox(10);
     private final Button startRoundButton = new Button("Roll dice");
     private final Button buyHouseButton = new Button("Buy house");
     private final Button sellHouseButton = new Button("Sell house");
@@ -72,10 +71,6 @@ public class MonopolyView {
         return monopolyLayout;
     }
 
-    public HBox getButtonBox(){
-        buttonBox.setId("buttonBox");
-        return buttonBox;
-    }
 
     public VBox getDiceBox() {
         return diceBox;
@@ -91,15 +86,20 @@ public class MonopolyView {
 
     public Button getStartRoundButton(){
         startRoundButton.setId("monopolyButtons");
+        startRoundButton.setFont(customFont);
+        startRoundButton.setAlignment(Pos.CENTER);
         return startRoundButton;
     }
     public Button getBuyHouseButton(){
         buyHouseButton.setId("monopolyButtons");
+        buyHouseButton.setFont(customFont);
+        buyHouseButton.setAlignment(Pos.CENTER);
         return buyHouseButton;
     }
 
     public Button getSellHouseButton(){
         sellHouseButton.setId("monopolyButtons");
+        sellHouseButton.setFont(customFont);
         return sellHouseButton;
     }
 
@@ -159,7 +159,7 @@ public class MonopolyView {
 
         Region spacer = new Region();
         VBox.setVgrow(spacer, Priority.ALWAYS);
-        textBoxMoney.getChildren().add(spacer);
+        moneyBox.getChildren().add(spacer);
 
 
     }
@@ -177,20 +177,26 @@ public class MonopolyView {
         title.setFont(customFont);
         titleBox.setAlignment(Pos.CENTER);
         titleBox.getChildren().add(title);
+        titleBox.setPadding(new Insets(20));
     }
 
     public void createDiceBox(){
         diceBox.getChildren().clear();
         diceBox.setAlignment(Pos.CENTER);
+        diceBox.setId("diceText");
         buyHouseButton.setDisable(true);
     }
 
     public Button getPayFeeButton(){
         payFeeButton.setId("monopolyButtons");
+        payFeeButton.setFont(customFont);
+        payFeeButton.setAlignment(Pos.CENTER);
         return payFeeButton;
     }
     public Button getRollForSixButton(){
         rollForSixButton.setId("monopolyButtons");
+        rollForSixButton.setFont(customFont);
+        rollForSixButton.setAlignment(Pos.CENTER);
         return rollForSixButton;
     }
 
@@ -204,7 +210,6 @@ public class MonopolyView {
 
     public void createMonopolyLayout(){
         monopolyLayout.getChildren().clear();
-        buttonBox.setAlignment(Pos.CENTER);
 
         createTitleBox();
         createMoneyBox();
@@ -216,6 +221,9 @@ public class MonopolyView {
         monopolyLayout.setLeft(moneyBox);
         monopolyLayout.setRight(gameUpdates);
 
+        BorderPane.setMargin(moneyBox, new Insets(0,20,0,20));
+        BorderPane.setMargin(gameUpdates, new Insets(0,20,0,20));
+
         rootLayout.getChildren().add(monopolyLayout);
     }
 
@@ -223,7 +231,6 @@ public class MonopolyView {
         gameUpdates.getChildren().clear();
         gameUpdates.setPrefWidth(300);
         gameUpdates.setAlignment(Pos.TOP_CENTER);
-        gameUpdates.setId("gameUpdatesBox");
         gameUpdates.setPadding(new Insets(100,0,100,0));
 
         VBox infoTextAndButtons = new VBox(20);
@@ -239,6 +246,9 @@ public class MonopolyView {
         infoTextAndButtons.getChildren().add(infoText);
 
         houseButtonsBox.getChildren().add(buyHouseButton);
+        houseButtonsBox.setAlignment(Pos.CENTER);
+        jailButtonsBox.setAlignment(Pos.CENTER);
+
         infoTextAndButtons.getChildren().add(diceBox);
         infoTextAndButtons.getChildren().add(houseButtonsBox);
         infoTextAndButtons.getChildren().add(jailButtonsBox);

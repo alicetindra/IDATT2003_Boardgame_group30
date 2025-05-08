@@ -38,8 +38,8 @@ public class MenuView {
   private final VBox gameInfoMenuBox = new VBox(20);
   private final HBox diceImagesBox = new HBox(10);
   private final VBox boardBox = new VBox(10); //Holds the text 'Board' with the pull down menu in game menu
-  HBox startOrMainButtons = new HBox(20);
-  VBox diceSection = new VBox(10);
+  private final HBox startOrMainButtons = new HBox(20);
+  private final VBox diceSection = new VBox(10);
 
   /*Radio buttons*/
   private final ToggleGroup toggleGroup = new ToggleGroup();
@@ -55,13 +55,13 @@ public class MenuView {
   public ComboBox<String> playerColorMenu = new ComboBox<>();
 
   /*player list*/
-  private ObservableList<String> playerData = FXCollections.observableArrayList();
+  private final ObservableList<String> playerData = FXCollections.observableArrayList();
   private ListView<String> playerList;
 
   /*Layouts */
   private StackPane menuLayout;
 
-  Text titleText;
+  private Text titleText;
 
   /*Font*/
   Font customFont = Font.loadFont(
@@ -85,11 +85,11 @@ public class MenuView {
     return addPlayerButton;
   }
   public Button getSetUpSnakesLaddersGameButton() {
-    setUpSnakesLaddersGameButton.setId("setUpSnakesLaddersGame");
+    setUpSnakesLaddersGameButton.setId("setUpGame");
     return setUpSnakesLaddersGameButton;
   }
   public Button getSetUpMonopolyGameButton() {
-    setUpMonopolyGameButton.setId("setUpSnakesLaddersGame");
+    setUpMonopolyGameButton.setId("setUpGame");
     return setUpMonopolyGameButton;
   }
   public Button getPlusOneButton() {
@@ -114,6 +114,10 @@ public class MenuView {
 
   public Button getMainMenuButton(){
     return mainMenuButton;
+  }
+
+  public VBox getDiceSection(){
+    return diceSection;
   }
 
   /*Get pull down menus*/
@@ -170,7 +174,7 @@ public class MenuView {
 
   /*Create methods, different menus*/
   public void createMainMenu(){
-    Text titleText = new Text("Choose your game");
+    titleText = new Text("Choose your game");
     titleText.setFont(customFont);
     titleText.getStyleClass().add("title");
     VBox titleBox = new VBox(20);
@@ -196,9 +200,6 @@ public class MenuView {
     menuLayout.getChildren().clear();
     menuLayout.getChildren().addAll(gameInfoMenuBox);
     menuLayout.getStyleClass().add("rootMainMenu");
-  }
-  public VBox getDiceSection(){
-    return diceSection;
   }
 
   public void createSLMenu(){

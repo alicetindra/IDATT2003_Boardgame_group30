@@ -106,9 +106,6 @@ public class MenuController{
 
     boardGame.addPlayer(writtenName,selectedColor);
 
-    System.out.println("Added player " + writtenName);
-    System.out.println(boardGame.getListOfPlayers());
-
     for (int i = 0; i < menuView.getPlayerData().size(); i++) {
       if (menuView.getPlayerData().get(i).isBlank()) { // Find first empty slot
         menuView.getPlayerData().set(i, writtenName + " - " + selectedColor);
