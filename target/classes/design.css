@@ -98,7 +98,7 @@ Buttons
     -fx-border-radius: 20px;
     -fx-background-radius: 20px;
 }
-.start-round-button, #main-menu-button, #restartGameButton, .monopolyButtons{
+.start-round-button, #main-menu-button, #restartGameButton, #monopolyButtons{
     -fx-background-color: #92b8e3;
     -fx-text-fill: #1d528e;
     -fx-background-radius: 20px;
@@ -150,8 +150,14 @@ Texts
     -fx-border-radius: 10;
     -fx-border-color: rgba(225, 221, 221, 0.62);
 }
-.infoText, #playerInfo, #boardSizeText, #fileText, #diceText, #nameText, #colorText, #moneyText {
+.infoText, #playerInfo, #boardSizeText, #fileText, #diceText, #nameText, #colorText, #moneyText, #releaseText, #bankRuptcyText {
     -fx-font-size: 18px;
+    -fx-fill: #1d528e;
+    -fx-font-family: Georgia;
+}
+
+#anouncementTextWinner{
+    -fx-font-size: 20px;
     -fx-fill: #1d528e;
     -fx-font-family: Georgia;
 }
@@ -218,20 +224,58 @@ Board grid, tiles and boxes
 }
 
 .monopolyTileBox{
-    -fx-max-height: 90px;
-    -fx-min-height: 90px;
-    -fx-max-width: 90px;
-    -fx-min-width: 90px;
+    -fx-max-height: 100px;
+    -fx-min-height: 100px;
+    -fx-max-width: 100px;
+    -fx-min-width: 100px;
     -fx-border-color: black;
-    -fx-background-color: #ffffff;
 }
 
-.jailBox{
-    -fx-background-color: #ff2727;
+.drawCard{
+    -fx-background-color: rgb(134, 105, 191);
 }
-.startBox{
-    -fx-background-color: #64ff3d;
+.jailTile{
+    -fx-background-color: #cc8f8f;
 }
+.goToJailTile{
+    -fx-background-color: #adc5df;
+}
+.startTile{
+    -fx-background-color: #416c42;
+}
+.parkingTile{
+    -fx-background-color: #7ea7d5;
+}
+
+.chocolateRiver{
+    -fx-border-color: black;
+    -fx-background-color: #7D5D41;
+}
+
+.cookieDessert{
+    -fx-border-color: black;
+    -fx-background-color: #ecd6b6;
+}
+
+.sugarTopMountain{
+    -fx-border-color: black;
+    -fx-background-color: #ede3d0;
+}
+
+.cottonCandyStreet{
+    -fx-border-color: black;
+}
+
+.gummyBearForrest{
+    -fx-border-color: black;
+    -fx-background-color: #5b855c;
+}
+
+.ocean{
+    -fx-border-color: black;
+    -fx-background-color: #3277c6;
+}
+
 
 #gameUpdatesBox, #moneyBox, #buttonBox{
     -fx-font-size: 18px;

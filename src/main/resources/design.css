@@ -98,7 +98,7 @@ Buttons
     -fx-border-radius: 20px;
     -fx-background-radius: 20px;
 }
-.start-round-button, #main-menu-button, #restartGameButton, .monopolyButtons{
+.start-round-button, #main-menu-button, #restartGameButton, #monopolyButtons{
     -fx-background-color: #92b8e3;
     -fx-text-fill: #1d528e;
     -fx-background-radius: 20px;
@@ -224,31 +224,57 @@ Board grid, tiles and boxes
 }
 
 .monopolyTileBox{
-    -fx-max-height: 90px;
-    -fx-min-height: 90px;
-    -fx-max-width: 90px;
-    -fx-min-width: 90px;
+    -fx-max-height: 100px;
+    -fx-min-height: 100px;
+    -fx-max-width: 100px;
+    -fx-min-width: 100px;
     -fx-border-color: black;
-    -fx-background-color: #ffffff;
 }
 
 .drawCard{
-    -fx-background-color: #389bd1;
+    -fx-background-color: rgb(134, 105, 191);
 }
 .jailTile{
-    -fx-background-color: #f19f41;
+    -fx-background-color: #cc8f8f;
 }
 .goToJailTile{
-    -fx-background-color: #054bcd;
+    -fx-background-color: #adc5df;
 }
 .startTile{
-    -fx-background-color: #575757;
+    -fx-background-color: #416c42;
 }
 .parkingTile{
-    -fx-background-color: #cc2525;
+    -fx-background-color: #7ea7d5;
 }
 
+.chocolateRiver{
+    -fx-border-color: black;
+    -fx-background-color: #7D5D41;
+}
 
+.cookieDessert{
+    -fx-border-color: black;
+    -fx-background-color: #ecd6b6;
+}
+
+.sugarTopMountain{
+    -fx-border-color: black;
+    -fx-background-color: #ede3d0;
+}
+
+.cottonCandyStreet{
+    -fx-border-color: black;
+}
+
+.gummyBearForrest{
+    -fx-border-color: black;
+    -fx-background-color: #5b855c;
+}
+
+.ocean{
+    -fx-border-color: black;
+    -fx-background-color: #3277c6;
+}
 
 
 #gameUpdatesBox, #moneyBox, #buttonBox{

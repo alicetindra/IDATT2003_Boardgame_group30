@@ -314,6 +314,7 @@ public class MonopolyController implements BoardGameObserver {
         menuView.getPlayerData().clear();
         menuView.setPlayerColorBox();
         menuView.getDiceField().clear();
+        menuView.getDiceSection().getChildren().clear();
         menuView.getBoardSizeMenu().setDisable(false);
         menuView.createMainMenu();
     }

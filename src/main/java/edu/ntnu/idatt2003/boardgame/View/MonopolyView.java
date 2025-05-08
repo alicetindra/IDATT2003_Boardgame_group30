@@ -7,6 +7,7 @@ import edu.ntnu.idatt2003.boardgame.Model.actions.DrawCardAction;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
@@ -43,7 +44,7 @@ public class MonopolyView {
     }
     public Text getReleaseText(Player player){
         Text releaseText = new Text(player.getName()+", "+player.getColor()+" is released from jail");
-        releaseText.getStyleClass().add("releaseText");
+        releaseText.setId("releaseText");
         return releaseText;
     }
 
@@ -78,16 +79,16 @@ public class MonopolyView {
     }
 
     public Button getStartRoundButton(){
-        startRoundButton.getStyleClass().add("monopolyButtons");
+        startRoundButton.setId("monopolyButtons");
         return startRoundButton;
     }
     public Button getBuyHouseButton(){
-        buyHouseButton.getStyleClass().add("monopolyButtons");
+        buyHouseButton.setId("monopolyButtons");
         return buyHouseButton;
     }
 
     public Button getSellHouseButton(){
-        sellHouseButton.getStyleClass().add("monopolyButtons");
+        sellHouseButton.setId("monopolyButtons");
         return sellHouseButton;
     }
 
@@ -214,22 +215,49 @@ public class MonopolyView {
             tile.getTileBox().getChildren().add(new Text("Draw card"));
         }
 
+        if(tile.getId() == 1){
+            tile.getTileBox().getStyleClass().add("startTile");
+            tile.getTileBox().getChildren().add(new Text("Go!"));
+        }
+        if(tile.getId() == 2 || tile.getId() == 3){
+            tile.getTileBox().getStyleClass().add("chocolateRiver");
+        }
+        if(tile.getId() == 5 || tile.getId() == 6 || tile.getId() == 7){
+            tile.getTileBox().getStyleClass().add("cookieDessert");
+        }
         if(tile.getId() == 8){
             tile.getTileBox().getStyleClass().add("jailTile");
             tile.getTileBox().getChildren().add(new Text("Jail"));
+        }
+        if(tile.getId() == 9 || tile.getId() == 10 || tile.getId() == 12){
+            tile.getTileBox().getStyleClass().add("sugarTopMountain");
         }
         if(tile.getId() == 14){
             tile.getTileBox().getStyleClass().add("parkingTile");
             tile.getTileBox().getChildren().add(new Text("Parking"));
         }
+        if(tile.getId() == 15 || tile.getId() == 16 || tile.getId() == 17){
+            BackgroundImage cloudCastleBackground = new BackgroundImage(
+                new Image("images/cloudCastle.PNG"),
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true)
+            );
+            tile.getTileBox().getStyleClass().add("cottonCandyStreet");
+            tile.getTileBox().setBackground(new Background(cloudCastleBackground));
+        }
+        if(tile.getId() == 18 || tile.getId() == 19 || tile.getId() == 20){
+            tile.getTileBox().getStyleClass().add("gummyBearForrest");
+        }
         if(tile.getId() == 21){
             tile.getTileBox().getStyleClass().add("goToJailTile");
             tile.getTileBox().getChildren().add(new Text("Go to jail!"));
         }
-        if(tile.getId() == 1){
-            tile.getTileBox().getStyleClass().add("startTile");
-            tile.getTileBox().getChildren().add(new Text("Go!"));
+        if(tile.getId() == 23 || tile.getId() == 24 || tile.getId() == 26){
+            tile.getTileBox().getStyleClass().add("ocean");
         }
+
     }
     public Text getWinnerAnnouncement(){
         Text winnerText = new Text(" is the winner!");
