@@ -81,6 +81,7 @@ public class MonopolyController implements BoardGameObserver {
                 monopolyView.getStartRoundButton().setDisable(true);
                 break;
             case "drewCard":
+                update("playerMoved", boardGame);
                 getAlert(boardGame.getCardManager().sendAlert());
                 updateMoneyBox();
         }
