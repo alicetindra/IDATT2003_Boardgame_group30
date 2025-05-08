@@ -82,7 +82,7 @@ public class MonopolyController implements BoardGameObserver {
                 break;
             case "drewCard":
                 update("playerMoved", boardGame);
-                getAlert(boardGame.getCardManager().sendAlert());
+                getAlert("Card",boardGame.getCardManager().sendAlert());
                 updateMoneyBox();
         }
     }
@@ -142,7 +142,7 @@ public class MonopolyController implements BoardGameObserver {
     private void payReleaseFee() {
         Player p = boardGame.getPlayerHolder().getCurrentPlayer();
         if(p.getMoney()<=200){
-            getAlert("You dont have enough money to get out of jail");
+            getAlert("Message","You dont have enough money to buy out of jail");
             throw new IllegalArgumentException("You dont have enough money to get out of jail");
         }
         else{
@@ -158,7 +158,7 @@ public class MonopolyController implements BoardGameObserver {
         Player owner = boardGame.getPlayerHolder().getCurrentPlayer();
 
         if(owner.getMoney()<=propertyHolder.getPrice(tile.getId())){
-            getAlert("You cant afford this house \n You have "+owner.getMoney()+" and need over "+propertyHolder.getPrice(tile.getId()));
+            getAlert("Message","You cant afford this house \n You have "+owner.getMoney()+" money, and need over "+propertyHolder.getPrice(tile.getId())+" money");
             throw new IllegalArgumentException("Player cant afford this house");
         }
 
@@ -227,6 +227,8 @@ public class MonopolyController implements BoardGameObserver {
                         }
                     }
                 }
+                String message = "Oh no! "+player.getName()+", "+player.getColor()+" went bankrupt!";
+                getAlert("Bankrupt", message );
                 ImageView newImage = new ImageView(new Image("/images/"+player.getColor()+".png"));
                 newImage.setFitHeight(60);
                 newImage.setPreserveRatio(true);
@@ -328,11 +330,18 @@ public class MonopolyController implements BoardGameObserver {
         displayDice();
     }
 
-    private void getAlert(String message) {
+    private void getAlert(String title,String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Message");
+        alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
+        alert.setGraphic(null);
+        if(title.equals("Card")){
+            alert.getDialogPane().setStyle("-fx-background-color: #4fb6ff; -fx-font-size: 24px; -fx-pref-width: 200px;-fx-pref-height: 300px");
+        }
+        else{
+            alert.getDialogPane().setStyle("-fx-background-color: #fb5866; -fx-font-size: 24px; -fx-pref-width: 200px;-fx-pref-height: 300px");
+        }
         alert.showAndWait();
     }
 
