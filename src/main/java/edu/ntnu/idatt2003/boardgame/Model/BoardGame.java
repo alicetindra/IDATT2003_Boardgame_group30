@@ -13,12 +13,24 @@ import java.util.List;
 
 public class BoardGame {
     private List<BoardGameObserver> observers = new ArrayList<>();
+    private List<String> listOfPlayers = new ArrayList<>();
+
     private Board board;
     private Dice dice;
     private PlayerHolder playerHolder;
     private Player winner = null;
+    private boolean customBoardLoaded = false;
+    private String gameType;
+    private CardManager cardManager;
 
     public BoardGame() {
+    }
+
+    public void setCardManager(CardManager cardManager) {
+        this.cardManager = cardManager;
+    }
+    public CardManager getCardManager() {
+        return cardManager;
     }
 
     public void addObserver(BoardGameObserver observer) {
@@ -42,19 +54,32 @@ public class BoardGame {
 
         BoardFileReaderGson reader = new BoardFileReaderGson();
         this.board = reader.readTilesFromFile(filename);
+        this.gameType = chosenGame;
+        System.out.println(chosenGame);
+    }
+    public String getGameType() {
+        return gameType;
     }
 
     //Skips over chosen game, size and filename. Just loads the board it gets
     public void loadCustomBoard(String filePath) {
         BoardFileReaderGson reader = new BoardFileReaderGson();
         this.board = reader.readTilesFromFile(filePath);
+        customBoardLoaded = true;
+    }
+
+    public void undoCustomBoardLoad(){
+        customBoardLoaded = false;
+    }
+
+    public boolean isCustomBoardLoaded(){
+        return customBoardLoaded;
     }
 
 
     public void initializeDice(int numberOfDice){
         this.dice = new Dice(numberOfDice);
     }
-
 
     //Players
     public void createPlayerHolder(String filename, List<String> playerString) throws IOException {
@@ -67,6 +92,10 @@ public class BoardGame {
         return playerHolder;
     }
 
+    public void alertRelease(){
+        notifyObservers("release");
+    }
+
     public void play() {
 
         playerHolder = getPlayerHolder();
@@ -74,9 +103,26 @@ public class BoardGame {
 
         int totalEyes = dice.roll();
 
-        playerHolder.getCurrentPlayer().move(totalEyes);
 
+        if(playerHolder.getCurrentPlayer().isInJail()){
+            notifyObservers("inJail");
+            return;
+        }
+
+        playerHolder.getCurrentPlayer().move(totalEyes);
         notifyObservers("playerMoved");
+    }
+
+    public void addPlayer(String name, String color){
+        listOfPlayers.add(name + "," + color);
+    }
+    public void removePlayer(Player player){
+        listOfPlayers.remove(player.getName());
+    }
+
+
+    public List<String> getListOfPlayers(){
+        return listOfPlayers;
     }
 
     public void declareWinner(Player winner) {
@@ -96,12 +142,16 @@ public class BoardGame {
         return board;
     }
 
+    public void clearBoard(){
+        board = null;
+        listOfPlayers.clear();
+    }
+
     public Dice getDice() {
         return dice;
     }
 
 }
-
 
 
 

@@ -1,15 +1,20 @@
 package edu.ntnu.idatt2003.boardgame.Model;
 
 
-import javafx.scene.image.Image;
+import edu.ntnu.idatt2003.boardgame.Model.actions.PassStartAction;
 import javafx.scene.image.ImageView;
 
+import java.util.Random;
+
 public class Player {
-    private String name;
-    private String color;
+    private final String name;
+    private final String color;
     private Tile currentTile;
     private BoardGame boardGame;
     private ImageView imageView;
+    private int money = 0;
+    private boolean inJail = false;
+    private int jailTurnsLeft = 3;
 
     public Player(String name, String color) {
         this.name = name;
@@ -32,20 +37,80 @@ public class Player {
         this.currentTile = board.getTiles().get(id-1);
     }
 
+    public void editMoney(int value){
+        money += value;
+        if(money <= 0){
+            getBoardGame().notifyObservers("bankrupt");
+        }
+    }
+    public int getMoney(){
+        return money;
+    }
+
+
+    public void setInJail(boolean inJail) {
+        this.inJail = inJail;
+        this.jailTurnsLeft = inJail ? 3 : 0;
+    }
+
+    public boolean isInJail() {
+        return inJail;
+    }
+
+    public void decrementJailTurn() {
+        if (inJail && jailTurnsLeft > 0) {
+            jailTurnsLeft--;
+            if (jailTurnsLeft == 0) {
+                boardGame.notifyObservers("usedUpTurns");
+                jailTurnsLeft = 3;
+            }
+        }
+    }
+
+    public void releaseFromJail() {
+        this.inJail = false;
+        this.jailTurnsLeft = 0;
+        boardGame.alertRelease();
+    }
+
+
+    public void attemptRollExit(int dieRoll) {
+        if (dieRoll == 6) {
+            releaseFromJail();
+        } else {
+            decrementJailTurn();
+        }
+    }
+
+    public void payToExit() {
+        editMoney(-50);
+        releaseFromJail();
+    }
 
     public void move(int steps){
         int destTile = this.currentTile.getId() + steps;
         Board board = this.boardGame.getBoard();
 
+
         if(destTile <= board.getTiles().size() && board.getTiles().get(destTile - 1).getAction() != null){
             board.getTiles().get(destTile -1).getAction().perform(this);
         } else if(destTile > board.getTiles().size()){
-            destTile = (2*board.getTiles().size() - destTile);
-            this.placeOnTile(board, destTile);
-            if(board.getTiles().get(destTile - 1).getAction() != null){
+            if( this.boardGame.getGameType().equals("Snakes and ladders")) {
+                destTile = (2 * board.getTiles().size() - destTile);
+                this.placeOnTile(board, destTile);
+
+            }
+            else{
+                destTile = destTile - board.getTiles().size();
+                PassStartAction passStartAction = new PassStartAction("Player passed start and gets 100 money");
+                passStartAction.perform(this);
+                this.placeOnTile(board, destTile);
+            }
+            if (board.getTiles().get(destTile - 1).getAction() != null) {
                 board.getTiles().get(destTile - 1).getAction().perform(this);
             }
-        }else{
+        }
+        else{
             this.placeOnTile(board, destTile);
         }
 

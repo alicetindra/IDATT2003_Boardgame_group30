@@ -1,0 +1,35 @@
+[
+  {
+    "text": "You won the lottery! You get 150 $",
+    "money": 150
+  },
+  {
+    "text": "You must pay a parking fee. 50 $",
+    "money": -50
+  },
+  {
+    "text": "Move to Go and collect 100 $.",
+    "moveTo": 1,
+    "money": 100
+  },
+  {
+    "text": "Go directly to Jail. Do not pass Go.",
+    "goToJail": true
+  },
+  {
+    "text": "There was a bank error. Collect 100 $.",
+    "money": 100
+  },
+  {
+    "text": "Doctor's fee. Pay 50 $.",
+    "money": -50
+  },
+  {
+    "text": "You inherit 300 $.",
+    "money": 300
+  },
+  {
+    "text": "Go to tile 10.",
+    "moveTo": 10
+  }
+]

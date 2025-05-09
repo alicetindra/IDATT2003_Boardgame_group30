@@ -24,7 +24,7 @@ Background colors and images
 /*
 Main menu components
  */
-#userInfoBox{
+#gameInfoMenuBox{
     -fx-background-color: transparent;
     -fx-font-size: 18px;
     -fx-font-family: Georgia;
@@ -91,14 +91,14 @@ Buttons
     -fx-border-width: 2px;
 }
 
-#addPlayerButton, #makeGameButton, #menuButtonBack{
+#addPlayerButton, #setUpGame, #menuButtonBack{
     -fx-background-color: #92b8e3;
     -fx-border-color: #1d528e;
     -fx-text-fill: #1d528e;
     -fx-border-radius: 20px;
     -fx-background-radius: 20px;
 }
-#start-round-button, #main-menu-button, #restartGameButton{
+.start-round-button, #main-menu-button, #restartGameButton, #monopolyButtons{
     -fx-background-color: #92b8e3;
     -fx-text-fill: #1d528e;
     -fx-background-radius: 20px;
@@ -108,7 +108,7 @@ Buttons
     -fx-max-height: 150px;
 }
 
-#SLButton, #CLButton, #customButton{
+#SLButton, #MButton{
     -fx-text-fill: #1d528e;
 }
 
@@ -128,7 +128,7 @@ Buttons
     -fx-background-radius: 10px;
 }
 
-.infoBox{
+.infoBox, #updatedMoneyBox{
     -fx-font-size: 18px;
     -fx-max-height: 100px;
     -fx-min-height: 100px;
@@ -143,20 +143,28 @@ Texts
     -fx-border-radius: 10px;
 }
 
-#ruleText, #infoText{
+#ruleText, #infoText, #textBoxMoney, #infoTextAndButtons{
     -fx-background-color: rgba(225, 221, 221, 0.62);
     -fx-background-radius: 10;
     -fx-border-width: 2px;
     -fx-border-radius: 10;
     -fx-border-color: rgba(225, 221, 221, 0.62);
+    -fx-wrap-text: 200;
 }
-.infoText, #playerInfo, #boardSizeText, #fileText, #diceText, #nameText, #colorText {
+.infoText, #playerInfo, #boardSizeText, #fileText, #diceText, #nameText, #colorText, #moneyText, #releaseText, #bankRuptcyText, #nextPlayerInfoBox {
     -fx-font-size: 18px;
+    -fx-fill: #1d528e;
+    -fx-text-fill: #1d528e;
+    -fx-font-family: Georgia;
+}
+
+#announcementTextWinner{
+    -fx-font-size: 20px;
     -fx-fill: #1d528e;
     -fx-font-family: Georgia;
 }
 
-#infoColumn{
+#infoColumn, #moneyBox, #gameUpdatesBox{
     -fx-background-color: transparent;
 }
 
@@ -217,6 +225,55 @@ Board grid, tiles and boxes
     -fx-background-color: #D3F9D8;
 }
 
+.monopolyTileBox{
+    -fx-max-height: 100px;
+    -fx-min-height: 100px;
+    -fx-max-width: 100px;
+    -fx-min-width: 100px;
+    -fx-border-color: black;
+}
 
+.drawCard{
+    -fx-background-color: rgb(134, 105, 191);
+}
+.jailTile{
+    -fx-background-color: #cc8f8f;
+}
+.goToJailTile{
+    -fx-background-color: #adc5df;
+}
+.startTile{
+    -fx-background-color: #416c42;
+}
+.parkingTile{
+    -fx-background-color: #7ea7d5;
+}
 
+.chocolateRiver{
+    -fx-border-color: black;
+    -fx-background-color: #7D5D41;
+}
 
+.cookieDessert{
+    -fx-border-color: black;
+    -fx-background-color: #ecd6b6;
+}
+
+.sugarTopMountain{
+    -fx-border-color: black;
+    -fx-background-color: #ede3d0;
+}
+
+.cottonCandyStreet{
+    -fx-border-color: black;
+}
+
+.gummyBearForrest{
+    -fx-border-color: black;
+    -fx-background-color: #5b855c;
+}
+
+.ocean{
+    -fx-border-color: black;
+    -fx-background-color: #3277c6;
+}

@@ -27,25 +27,36 @@ public class BoardFactory {
       }
     }
 
-    //CandyLand map will come soon
-    else if(chosenGame.toLowerCase().contains("candy")) {
-      JsonArray candyJsonArray = new JsonArray();
+    else if(chosenGame.toLowerCase().contains("monopoly")) {
+      JsonArray monopolyJsonArray = new JsonArray();
 
-      for (int i = 1; i <= n; i++) {
+      for (int i = 1; i <=26; i++) {
         //Tile map
         JsonObject tileJson = new JsonObject();
         tileJson.addProperty("id", i);
-
-        //adding the next tile
-        if (i < n) {
+        if(i==26){
+          tileJson.addProperty("next", 1);
+        }
+        else{
           tileJson.addProperty("next", i + 1);
         }
 
-        //action map comes here...
+        if (i == 21) {
+          JsonObject actionObj = new JsonObject();
+          actionObj.addProperty("type", "jail");
+          actionObj.addProperty("destination", 8);
+          tileJson.add("action", actionObj);
+        }
+        if(i == 4 || i == 11 || i == 22){
+          JsonObject actionObj = new JsonObject();
+          actionObj.addProperty("type", "draw");
+          actionObj.addProperty("destination", 1);
+          tileJson.add("action", actionObj);
+        }
 
-        candyJsonArray.add(tileJson);
+        monopolyJsonArray.add(tileJson);
       }
-      tileBook.add("tiles", candyJsonArray);
+      tileBook.add("tiles", monopolyJsonArray);
     }
 
     return tileBook;
