@@ -149,8 +149,9 @@ Texts
     -fx-border-width: 2px;
     -fx-border-radius: 10;
     -fx-border-color: rgba(225, 221, 221, 0.62);
+    -fx-wrap-text: 200;
 }
-.infoText, #playerInfo, #boardSizeText, #fileText, #diceText, #nameText, #colorText, #moneyText, #releaseText, #bankRuptcyText {
+.infoText, #playerInfo, #boardSizeText, #fileText, #diceText, #nameText, #colorText, #moneyText, #releaseText, #bankRuptcyText, #nextPlayerInfoBox {
     -fx-font-size: 18px;
     -fx-fill: #1d528e;
     -fx-text-fill: #1d528e;

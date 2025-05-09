@@ -27,6 +27,7 @@ public class MonopolyView {
     private final VBox updatedMoneyBox = new VBox(10);
     private final HBox titleBox = new HBox();
     private final VBox diceBox = new VBox(10);
+    private final VBox nextPlayerInfoBox = new VBox(10);
     private final VBox gameUpdates = new VBox(10);
     private final VBox jailButtonsBox = new VBox(10);
     private final VBox houseButtonsBox = new VBox(10);
@@ -74,6 +75,11 @@ public class MonopolyView {
 
     public VBox getDiceBox() {
         return diceBox;
+    }
+
+    public VBox getNextPlayerInfoBox(){
+        nextPlayerInfoBox.setId("nextPlayerInfoBox");
+        return nextPlayerInfoBox;
     }
 
     public HBox getTitleBox() {
@@ -168,6 +174,7 @@ public class MonopolyView {
         updatedMoneyBox.getChildren().clear();
         Text moneyText = new Text(s);
         moneyText.setId("moneyText");
+        moneyText.setWrappingWidth(200);
         updatedMoneyBox.getChildren().addAll(moneyText, bankRuptcyBox);
     }
 
@@ -247,11 +254,18 @@ public class MonopolyView {
 
         houseButtonsBox.getChildren().add(buyHouseButton);
         houseButtonsBox.setAlignment(Pos.CENTER);
+        nextPlayerInfoBox.setAlignment(Pos.CENTER);
         jailButtonsBox.setAlignment(Pos.CENTER);
 
         infoTextAndButtons.getChildren().add(diceBox);
-        infoTextAndButtons.getChildren().add(houseButtonsBox);
         infoTextAndButtons.getChildren().add(jailButtonsBox);
+        infoTextAndButtons.getChildren().add(houseButtonsBox);
+
+        Region spacer = new Region();
+        VBox.setVgrow(spacer, Priority.ALWAYS);
+        infoTextAndButtons.getChildren().add(spacer);
+
+        infoTextAndButtons.getChildren().add(nextPlayerInfoBox);
         infoTextAndButtons.getChildren().add(startRoundButton);
         gameUpdates.setId("gameUpdatesBox");
 

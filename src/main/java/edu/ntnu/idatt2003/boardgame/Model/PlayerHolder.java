@@ -20,6 +20,11 @@ public class PlayerHolder {
     public Player getCurrentPlayer(){
         return currentPlayer;
     }
+
+    public int getPlayerIndex(){
+        return players.indexOf(currentPlayer);
+    }
+
     public int getNextPlayerIndex(){
         int i = players.indexOf(currentPlayer);
         if(i<players.size()-1){
@@ -27,6 +32,10 @@ public class PlayerHolder {
         }else{
             return 0;
         }
+    }
+
+    public String getPlayerNameWithIndex(int index){
+        return players.get(index).getName();
     }
 
 }

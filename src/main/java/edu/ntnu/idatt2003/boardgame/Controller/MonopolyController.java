@@ -76,7 +76,7 @@ public class MonopolyController implements BoardGameObserver {
                 monopolyView.getGameUpdates().getChildren().clear();
                 ImageView newImage = new ImageView(new Image("/images/"+boardGame.getPlayerHolder().getPlayers().getFirst().getColor()+"_winner.png"));
                 newImage.setPreserveRatio(true);
-                newImage.setFitHeight(60);
+                newImage.setFitHeight(90);
                 monopolyView.getGameUpdates().getChildren().addAll(newImage, monopolyView.getWinnerAnnouncement());
                 monopolyView.getStartRoundButton().setDisable(true);
                 break;
@@ -201,7 +201,7 @@ public class MonopolyController implements BoardGameObserver {
     public void updateMoneyBox(){
         String s = "";
         for(Player player: boardGame.getPlayerHolder().getPlayers()){
-            s += "Player '" + player.getName() + ", " + player.getColor() +"' : "+ player.getMoney() + " $\n";
+            s += "Player " + player.getName() + ", " + player.getColor() +" : "+ player.getMoney() + " $\n";
         }
         monopolyView.updateMoneyBox(s);
     }
@@ -303,6 +303,7 @@ public class MonopolyController implements BoardGameObserver {
 
         monopolyView.getMonopolyLayout().getChildren().clear();
         monopolyView.getDiceBox().getChildren().clear();
+        monopolyView.getNextPlayerInfoBox().getChildren().clear();
         monopolyView.getMoneyBox().getChildren().clear();
         monopolyView.getGameUpdates().getChildren().clear();
         monopolyView.getHouseButtonsBox().getChildren().clear();
@@ -333,10 +334,14 @@ public class MonopolyController implements BoardGameObserver {
 
     public void displayDice(){
         monopolyView.getDiceBox().getChildren().clear();
+        monopolyView.getNextPlayerInfoBox().getChildren().clear();
         Player p = boardGame.getPlayerHolder().getCurrentPlayer();
-        monopolyView.getDiceBox().getChildren().add(new Text("Player '"+p.getName()+", "+p.getColor() + "' \n threw a"));
+        String nextPlayerName = boardGame.getPlayerHolder().getPlayerNameWithIndex(boardGame.getPlayerHolder().getNextPlayerIndex());
+        Text roleInfo = new Text("Player '"+p.getName()+", "+p.getColor() + "' \n threw a");
+        roleInfo.setWrappingWidth(200);
+        monopolyView.getDiceBox().getChildren().add(roleInfo);
         if(p.isInJail()){
-          monopolyView.getDiceBox().getChildren().add(new Text("\nYou are in jail. \n Roll for 6 in three tries \n or pay a 50$ fee"));
+            monopolyView.getDiceBox().getChildren().add(new Text("\nYou are in jail. \n Roll for 6 in three tries \n or pay a 50$ fee"));
         }
          else{
             for(Die d : boardGame.getDice().getListOfDice()){
@@ -347,6 +352,9 @@ public class MonopolyController implements BoardGameObserver {
                 monopolyView.getDiceBox().setAlignment(Pos.CENTER);
             }
         }
+         Text nextPlayerText = new Text("Next player to roll dice: " + nextPlayerName);
+         nextPlayerText.setWrappingWidth(200);
+         monopolyView.getNextPlayerInfoBox().getChildren().add(nextPlayerText);
 
     }
 
