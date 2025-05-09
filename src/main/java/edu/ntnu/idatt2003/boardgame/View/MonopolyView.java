@@ -38,6 +38,7 @@ public class MonopolyView {
     private final Button rollForSixButton = new Button("Roll for six ");
     private final VBox bankRuptcyBox = new VBox(20);
     private final Text moneyHeader = new Text("Monopoly money");
+    private final Text bankruptcyHeader = new Text("Bankrupt players:");
 
     Font customFont = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
 
@@ -144,7 +145,7 @@ public class MonopolyView {
 
         moneyBox.setPrefWidth(300);
         moneyBox.setAlignment(Pos.TOP_CENTER);
-        moneyBox.setId("moneyBox");
+        //moneyBox.setId("moneyBox");
         moneyBox.setPadding(new Insets(100,0,100,0));
 
         VBox textBoxMoney = new VBox(20);
@@ -163,9 +164,18 @@ public class MonopolyView {
         textBoxMoney.getChildren().add(updatedMoneyBox);
         moneyBox.getChildren().add(textBoxMoney);
 
+        /*
         Region spacer = new Region();
         VBox.setVgrow(spacer, Priority.ALWAYS);
         moneyBox.getChildren().add(spacer);
+         */
+
+        bankRuptcyBox.setAlignment(Pos.CENTER);
+        bankRuptcyBox.setId("bankRuptcyBox");
+        bankRuptcyBox.setPadding(new Insets(20));
+        bankRuptcyBox.setSpacing(10);
+        bankRuptcyBox.getChildren().add(getBankRuptcyText());
+        moneyBox.getChildren().add(bankRuptcyBox);
 
 
     }
@@ -175,7 +185,7 @@ public class MonopolyView {
         Text moneyText = new Text(s);
         moneyText.setId("moneyText");
         moneyText.setWrappingWidth(200);
-        updatedMoneyBox.getChildren().addAll(moneyText, bankRuptcyBox);
+        updatedMoneyBox.getChildren().addAll(moneyText);
     }
 
     public void createTitleBox(){
@@ -311,7 +321,7 @@ public class MonopolyView {
             tile.getTileBox().getStyleClass().add("parkingTile");
             tile.getTileBox().getChildren().add(new Text("Parking"));
         }
-        if(tile.getId() == 15 || tile.getId() == 16 || tile.getId() == 17){
+        if(tile.getId() == 13 || tile.getId() == 15 || tile.getId() == 16){
             BackgroundImage cloudCastleBackground = new BackgroundImage(
                 new Image("images/cloudCastle.PNG"),
                 BackgroundRepeat.NO_REPEAT,
@@ -335,15 +345,15 @@ public class MonopolyView {
 
     }
     public Text getWinnerAnnouncement(){
-        Text winnerText = new Text(" is the winner!");
+        Text winnerText = new Text(" Winner!");
         winnerText.setId("announcementTextWinner");
         return winnerText;
     }
 
     public Node getBankRuptcyText() {
-        Text bankRuptcyText = new Text(" went bankrupt");
-        bankRuptcyText.setId("bankRuptcyText");
-        return bankRuptcyText;
+        bankruptcyHeader.setFont(customFont);
+        bankruptcyHeader.getStyleClass().add("subTitle");
+        return bankruptcyHeader;
     }
 }
 

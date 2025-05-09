@@ -74,6 +74,7 @@ public class MonopolyController implements BoardGameObserver {
 
             case "winner":
                 monopolyView.getGameUpdates().getChildren().clear();
+                monopolyView.getUpdatedMoneyBox().getChildren().clear();
                 ImageView newImage = new ImageView(new Image("/images/"+boardGame.getPlayerHolder().getPlayers().getFirst().getColor()+"_winner.png"));
                 newImage.setPreserveRatio(true);
                 newImage.setFitHeight(90);
@@ -230,9 +231,9 @@ public class MonopolyController implements BoardGameObserver {
                     }
                 }
                 ImageView newImage = new ImageView(new Image("/images/"+player.getColor()+".png"));
-                newImage.setFitHeight(60);
+                newImage.setFitHeight(20);
                 newImage.setPreserveRatio(true);
-                monopolyView.getBankRuptcyBox().getChildren().addAll(newImage, monopolyView.getBankRuptcyText());
+                monopolyView.getBankRuptcyBox().getChildren().addAll(newImage);
                 toRemove.add(player);
             }
         }
@@ -241,8 +242,6 @@ public class MonopolyController implements BoardGameObserver {
             boardGame.getPlayerHolder().getPlayers().remove(player);
             boardGame.removePlayer(player);
         }
-
-        System.out.println("Remaining players: " + boardGame.getPlayerHolder().getPlayers().size());
 
         if (boardGame.getPlayerHolder().getPlayers().size() == 1 || boardGame.getListOfPlayers().size() == 1) {
             update("winner", boardGame);
@@ -310,6 +309,10 @@ public class MonopolyController implements BoardGameObserver {
 
         monopolyView.getMonopolyLayout().getChildren().clear();
         monopolyView.getDiceBox().getChildren().clear();
+        monopolyView.getUpdatedMoneyBox().getChildren().clear();
+        monopolyView.getStartRoundButton().setDisable(false);
+
+
         monopolyView.getNextPlayerInfoBox().getChildren().clear();
         monopolyView.getMoneyBox().getChildren().clear();
         monopolyView.getGameUpdates().getChildren().clear();

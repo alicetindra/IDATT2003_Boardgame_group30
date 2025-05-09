@@ -41,13 +41,13 @@ public class BoardFactory {
           tileJson.addProperty("next", i + 1);
         }
 
-        if (i == 21) {
+        if (i == 21 || i == 8) {
           JsonObject actionObj = new JsonObject();
           actionObj.addProperty("type", "jail");
           actionObj.addProperty("destination", 8);
           tileJson.add("action", actionObj);
         }
-        if(i == 4 || i == 11 || i == 22){
+        if(i == 4 || i == 11 || i == 17 || i == 22 || i == 25){
           JsonObject actionObj = new JsonObject();
           actionObj.addProperty("type", "draw");
           actionObj.addProperty("destination", 1);

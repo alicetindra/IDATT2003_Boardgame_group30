@@ -31,5 +31,25 @@
   {
     "text": "Go to tile 10.",
     "moveTo": 10
+  },
+  {
+    "text": "You have been robbed. he took 500$",
+    "money": -500
+  },
+  {
+    "text": "Go to tile 26.",
+    "moveTo": 26
+  },
+  {
+    "text": "Go to park 14.",
+    "moveTo": 14
+  },
+  {
+    "text": "Vet's fee. Pay 100 $.",
+    "money": -100
+  },
+  {
+    "text": "You went shopping. I hope It was pretty. Paid 150 $.",
+    "money": -150
   }
 ]
