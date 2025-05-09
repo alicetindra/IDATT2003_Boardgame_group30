@@ -27,7 +27,6 @@ public class BoardFactory {
       }
     }
 
-    //Monopoly map will come soon
     else if(chosenGame.toLowerCase().contains("monopoly")) {
       JsonArray monopolyJsonArray = new JsonArray();
 
@@ -48,7 +47,7 @@ public class BoardFactory {
           actionObj.addProperty("destination", 8);
           tileJson.add("action", actionObj);
         }
-        if(i == 4 || i == 11 || i == 13 || i == 22 || i == 25){
+        if(i == 4 || i == 11 || i == 22){
           JsonObject actionObj = new JsonObject();
           actionObj.addProperty("type", "draw");
           actionObj.addProperty("destination", 1);

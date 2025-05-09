@@ -98,15 +98,16 @@ public class Player {
             if( this.boardGame.getGameType().equals("Snakes and ladders")) {
                 destTile = (2 * board.getTiles().size() - destTile);
                 this.placeOnTile(board, destTile);
-                if (board.getTiles().get(destTile - 1).getAction() != null) {
-                    board.getTiles().get(destTile - 1).getAction().perform(this);
-                }
+
             }
             else{
                 destTile = destTile - board.getTiles().size();
                 PassStartAction passStartAction = new PassStartAction("Player passed start and gets 100 money");
                 passStartAction.perform(this);
                 this.placeOnTile(board, destTile);
+            }
+            if (board.getTiles().get(destTile - 1).getAction() != null) {
+                board.getTiles().get(destTile - 1).getAction().perform(this);
             }
         }
         else{
