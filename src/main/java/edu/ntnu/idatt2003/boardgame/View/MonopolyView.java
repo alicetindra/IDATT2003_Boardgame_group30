@@ -301,8 +301,16 @@ public class MonopolyView {
         }
 
         if(tile.getId() == 1){
-            tile.getTileBox().getStyleClass().add("startTile");
-            tile.getTileBox().getChildren().add(new Text("Go!"));
+            BackgroundImage cloudCastleBackground = new BackgroundImage(
+                new Image("images/Start.png"),
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true)
+            );
+            tile.getTileBox().setBackground(new Background(cloudCastleBackground));
+            //tile.getTileBox().getStyleClass().add("startTile");
+            //tile.getTileBox().getChildren().add(new Text("Go!"));
         }
         if(tile.getId() == 2 || tile.getId() == 3){
             tile.getTileBox().getStyleClass().add("chocolateRiver");
@@ -318,8 +326,16 @@ public class MonopolyView {
             tile.getTileBox().getStyleClass().add("sugarTopMountain");
         }
         if(tile.getId() == 14){
-            tile.getTileBox().getStyleClass().add("parkingTile");
-            tile.getTileBox().getChildren().add(new Text("Parking"));
+            BackgroundImage cloudCastleBackground = new BackgroundImage(
+                new Image("images/Park.png"),
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true)
+            );
+            tile.getTileBox().setBackground(new Background(cloudCastleBackground));
+            //tile.getTileBox().getStyleClass().add("parkingTile");
+            //tile.getTileBox().getChildren().add(new Text("Parking"));
         }
         if(tile.getId() == 13 || tile.getId() == 15 || tile.getId() == 16){
             BackgroundImage cloudCastleBackground = new BackgroundImage(
@@ -329,15 +345,23 @@ public class MonopolyView {
                 BackgroundPosition.CENTER,
                 new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true)
             );
-            tile.getTileBox().getStyleClass().add("cottonCandyStreet");
+            //tile.getTileBox().getStyleClass().add("cottonCandyStreet");
             tile.getTileBox().setBackground(new Background(cloudCastleBackground));
         }
         if(tile.getId() == 18 || tile.getId() == 19 || tile.getId() == 20){
             tile.getTileBox().getStyleClass().add("gummyBearForrest");
         }
         if(tile.getId() == 21){
-            tile.getTileBox().getStyleClass().add("goToJailTile");
-            tile.getTileBox().getChildren().add(new Text("Go to jail!"));
+            BackgroundImage cloudCastleBackground = new BackgroundImage(
+                new Image("images/GoToJail.png"),
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true)
+            );
+            tile.getTileBox().setBackground(new Background(cloudCastleBackground));
+            //tile.getTileBox().getStyleClass().add("goToJailTile");
+            //tile.getTileBox().getChildren().add(new Text("Go to jail!"));
         }
         if(tile.getId() == 23 || tile.getId() == 24 || tile.getId() == 26){
             tile.getTileBox().getStyleClass().add("ocean");
