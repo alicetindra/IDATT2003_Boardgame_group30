@@ -5,8 +5,8 @@ import java.util.logging.Logger;
 
 public class LadderAction implements TileAction {
     private static final Logger log = Logger.getLogger(LadderAction.class.getName());
-    private int destinationTileId;
-    private String description;
+    private final int destinationTileId;
+    private final String description;
 
     public LadderAction(int destinationTile, String description) {
         this.destinationTileId = destinationTile;

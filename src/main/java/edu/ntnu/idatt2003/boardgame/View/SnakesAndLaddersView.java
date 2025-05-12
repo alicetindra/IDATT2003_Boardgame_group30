@@ -2,14 +2,8 @@ package edu.ntnu.idatt2003.boardgame.View;
 
 import edu.ntnu.idatt2003.boardgame.Model.*;
 import edu.ntnu.idatt2003.boardgame.Model.actions.*;
-import javafx.animation.FadeTransition;
-import javafx.animation.KeyFrame;
-import javafx.animation.ParallelTransition;
-import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.control.*;
 
 import javafx.scene.image.Image;
@@ -17,16 +11,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-
-
 import java.util.*;
 
-import javafx.util.Duration;
 import java.util.logging.Logger;
 
 public class SnakesAndLaddersView {
@@ -378,14 +367,6 @@ public class SnakesAndLaddersView {
             tileBox.getStyleClass().add("snakeBox");
         }
         else if(tileAction instanceof PortalAction){
-            /*
-            tileBox.getStyleClass().add("portalBox");
-            ImageView portalImage = new ImageView(new Image("images/portal.png"));
-            portalImage.setFitHeight(65);
-            portalImage.setFitWidth(65);
-            tileBox.setAlignment(Pos.CENTER);
-            tileBox.getChildren().add(portalImage);
-             */
             BackgroundImage backgroundImagePortal = new BackgroundImage(
                 new Image("images/portal.png"),
                 BackgroundRepeat.NO_REPEAT,

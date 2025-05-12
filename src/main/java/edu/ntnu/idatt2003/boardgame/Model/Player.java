@@ -4,7 +4,6 @@ package edu.ntnu.idatt2003.boardgame.Model;
 import edu.ntnu.idatt2003.boardgame.Model.actions.PassStartAction;
 import javafx.scene.image.ImageView;
 
-import java.util.Random;
 
 public class Player {
     private final String name;

@@ -4,8 +4,8 @@ import edu.ntnu.idatt2003.boardgame.Model.Player;
 import java.util.logging.Logger;
 
 public class DrawCardAction implements TileAction {
-    private static final Logger log = Logger.getLogger(JailAction.class.getName());
-    private String description;
+    private static final Logger log = Logger.getLogger(DrawCardAction.class.getName());
+    private final String description;
 
     public DrawCardAction(int nrOfCards, String description) {
         this.description = description;

@@ -1,7 +1,6 @@
 package edu.ntnu.idatt2003.boardgame.Model;
 
 import edu.ntnu.idatt2003.boardgame.readers.CardReaderGson;
-import edu.ntnu.idatt2003.boardgame.readers.CardReaderGson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +22,8 @@ public class CardManager{
     cards = CardReaderGson.readCardsFromFile(filename);
   }
 
-  public Card drawCard() {
+  public void drawCard() {
     lastDrawnCard = cards.get(random.nextInt(cards.size()));
-    return lastDrawnCard;
   }
   public Card getLastDrawnCard() {
     return lastDrawnCard;

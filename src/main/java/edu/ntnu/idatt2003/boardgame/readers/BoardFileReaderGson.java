@@ -6,7 +6,6 @@ import com.google.gson.GsonBuilder;
 
 import edu.ntnu.idatt2003.boardgame.Model.Board;
 import edu.ntnu.idatt2003.boardgame.Model.actions.TileAction;
-import edu.ntnu.idatt2003.boardgame.writers.BoardFileWriterGson;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.logging.Logger;

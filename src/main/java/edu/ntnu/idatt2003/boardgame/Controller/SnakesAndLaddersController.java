@@ -6,14 +6,11 @@ import edu.ntnu.idatt2003.boardgame.View.MenuView;
 import edu.ntnu.idatt2003.boardgame.View.SnakesAndLaddersView;
 import java.util.logging.Logger;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -25,7 +22,7 @@ public class SnakesAndLaddersController implements BoardGameObserver {
 
     private final SnakesAndLaddersView snakesLaddersView;
     private final MenuView menuView;
-    private BoardGame boardGame;
+    private final BoardGame boardGame;
     private Board board;
     private Stage primaryStage;
 

@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 
 public class PassStartAction implements TileAction {
     private static final Logger log = Logger.getLogger(PassStartAction.class.getName());
-    private String description;
+    private final String description;
 
     public PassStartAction(String description) {
         this.description = description;

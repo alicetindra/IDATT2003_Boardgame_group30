@@ -5,8 +5,8 @@ import java.util.logging.Logger;
 
 public class JailAction implements TileAction {
     private static final Logger log = Logger.getLogger(JailAction.class.getName());
-    private String description;
-    private int destination;
+    private final String description;
+    private final int destination;
 
     public JailAction(int destination,String description) {
         this.description = description;

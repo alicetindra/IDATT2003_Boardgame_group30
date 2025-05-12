@@ -5,8 +5,8 @@ import java.util.logging.Logger;
 
 public class WinAction implements TileAction {
     private static final Logger log = Logger.getLogger(WinAction.class.getName());
-    private int destinationTileId;
-    private String description;
+    private final int destinationTileId;
+    private final String description;
 
     public WinAction(int destinationTileId, String description) {
         this.destinationTileId = destinationTileId;

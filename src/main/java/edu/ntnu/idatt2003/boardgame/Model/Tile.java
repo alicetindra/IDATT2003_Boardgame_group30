@@ -4,9 +4,8 @@ import edu.ntnu.idatt2003.boardgame.Model.actions.TileAction;
 import javafx.scene.layout.VBox;
 
 public class Tile {
-    private int id;
+    private final int id;
     private TileAction action;
-    private int next;
     private transient VBox tileBox;
 
     public Tile(int tileId){

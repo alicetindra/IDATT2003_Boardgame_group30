@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BoardGame {
-    private List<BoardGameObserver> observers = new ArrayList<>();
-    private List<String> listOfPlayers = new ArrayList<>();
+    private final List<BoardGameObserver> observers = new ArrayList<>();
+    private final List<String> listOfPlayers = new ArrayList<>();
 
     private Board board;
     private Dice dice;

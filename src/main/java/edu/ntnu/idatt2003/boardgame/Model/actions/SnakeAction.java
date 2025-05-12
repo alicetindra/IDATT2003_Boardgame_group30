@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 public class SnakeAction implements TileAction {
     private static final Logger log = Logger.getLogger(SnakeAction.class.getName());
-    private int destinationTileId;
+    private final int destinationTileId;
     private String description;
 
     public SnakeAction(int destinationTile, String description) {
