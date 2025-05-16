@@ -21,6 +21,7 @@ public class DiceTest {
     assertTrue(result >= 5 && result <= 30, "Total roll result should be between 5 and 30");
   }
 
+
   @Test
   public void testGetDie() {
     dice.roll();

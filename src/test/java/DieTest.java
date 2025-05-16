@@ -12,6 +12,7 @@ public class DieTest {
     die = new Die();
   }
 
+
   //-------------------------Positive Tests----------------------------
   @Test
   public void testRoll() {

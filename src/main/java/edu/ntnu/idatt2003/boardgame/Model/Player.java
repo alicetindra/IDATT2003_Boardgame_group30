@@ -17,6 +17,12 @@ public class Player {
     private int jailTurnsLeft = 3;
 
     public Player(String name, String color) {
+        if(name == null || color == null) {
+            throw new NullPointerException("Player name and color cannot be null");
+        }
+        else if(name.isBlank() || color.isBlank()){
+            throw new IllegalArgumentException("Player name and color cannot be blank.");
+        }
         this.name = name;
         this.color = color;
     }
