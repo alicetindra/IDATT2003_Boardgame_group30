@@ -30,6 +30,7 @@ public class BoardTest {
         }
     }
 
+
     //--------------------------Negative tests-------------------------
 
     @Test

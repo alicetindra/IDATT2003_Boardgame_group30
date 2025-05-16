@@ -28,6 +28,7 @@ public class PlayerTest {
         player.editMoney(10);
         assertEquals(10,player.getMoney());
     }
+
     @Test
     public void testSetAndGetImageView() {
         ImageView dummyView = new ImageView();

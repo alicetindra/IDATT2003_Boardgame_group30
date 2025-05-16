@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
-public class PortalActionTest {
+public class LadderActionTest {
     Player player;
     BoardGame boardGame;
     Board board;
@@ -23,10 +23,10 @@ public class PortalActionTest {
     //------------------------Positive tests--------------------------------
 
     @Test
-    public void teleportPlayerTest(){
-        player.placeOnTile(board,48);
+    public void performLadderActionTest() {
+        player.placeOnTile(board,4);
         player.move(1);
-        assertNotEquals(49, player.getCurrentTile().getId());
+        assertEquals(25, player.getCurrentTile().getId());
     }
 
 
