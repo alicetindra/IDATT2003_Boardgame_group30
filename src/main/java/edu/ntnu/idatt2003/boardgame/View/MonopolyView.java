@@ -296,75 +296,115 @@ public class MonopolyView {
         tile.getTileBox().getStyleClass().add("monopolyTileBox");
 
         if(tile.getAction() instanceof DrawCardAction){
-            tile.getTileBox().getStyleClass().add("drawCard");
-            tile.getTileBox().getChildren().add(new Text("Draw card"));
+            BackgroundImage cardBackground = new BackgroundImage(
+                new Image("images/tiles/card.png"),
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true)
+            );
+            tile.getTileBox().setBackground(new Background(cardBackground));
         }
 
         if(tile.getId() == 1){
-            BackgroundImage cloudCastleBackground = new BackgroundImage(
-                new Image("images/Start.png"),
+            BackgroundImage startBackground = new BackgroundImage(
+                new Image("images/tiles/Start.png"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
                 new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true)
             );
-            tile.getTileBox().setBackground(new Background(cloudCastleBackground));
-            //tile.getTileBox().getStyleClass().add("startTile");
-            //tile.getTileBox().getChildren().add(new Text("Go!"));
+            tile.getTileBox().setBackground(new Background(startBackground));
         }
         if(tile.getId() == 2 || tile.getId() == 3){
-            tile.getTileBox().getStyleClass().add("chocolateRiver");
-        }
-        if(tile.getId() == 5 || tile.getId() == 6 || tile.getId() == 7){
-            tile.getTileBox().getStyleClass().add("cookieDessert");
-        }
-        if(tile.getId() == 8){
-            tile.getTileBox().getStyleClass().add("jailTile");
-            tile.getTileBox().getChildren().add(new Text("Jail"));
-        }
-        if(tile.getId() == 9 || tile.getId() == 10 || tile.getId() == 12){
-            tile.getTileBox().getStyleClass().add("sugarTopMountain");
-        }
-        if(tile.getId() == 14){
-            BackgroundImage cloudCastleBackground = new BackgroundImage(
-                new Image("images/Park.png"),
+            BackgroundImage chocolateBackground = new BackgroundImage(
+                new Image("images/tiles/chocolate.png"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
                 new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true)
             );
-            tile.getTileBox().setBackground(new Background(cloudCastleBackground));
-            //tile.getTileBox().getStyleClass().add("parkingTile");
-            //tile.getTileBox().getChildren().add(new Text("Parking"));
+            tile.getTileBox().setBackground(new Background(chocolateBackground));
+        }
+        if(tile.getId() == 5 || tile.getId() == 6 || tile.getId() == 7){
+            BackgroundImage cookieBackground = new BackgroundImage(
+                new Image("images/tiles/dessert.png"),
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true)
+            );
+            tile.getTileBox().setBackground(new Background(cookieBackground));
+        }
+        if(tile.getId() == 8){
+            BackgroundImage jailBackground = new BackgroundImage(
+                new Image("images/tiles/jailTile.png"),
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true)
+            );
+            tile.getTileBox().setBackground(new Background(jailBackground));
+        }
+        if(tile.getId() == 9 || tile.getId() == 10 || tile.getId() == 12){
+            BackgroundImage mountainBackground = new BackgroundImage(
+                new Image("images/tiles/sugar_mountain.png"),
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true)
+            );
+            tile.getTileBox().setBackground(new Background(mountainBackground));
+        }
+        if(tile.getId() == 14){
+            BackgroundImage parkBackground = new BackgroundImage(
+                new Image("images/tiles/Park.png"),
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true)
+            );
+            tile.getTileBox().setBackground(new Background(parkBackground));
         }
         if(tile.getId() == 13 || tile.getId() == 15 || tile.getId() == 16){
             BackgroundImage cloudCastleBackground = new BackgroundImage(
-                new Image("images/cloudCastle.PNG"),
+                new Image("images/tiles/cotton.png"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
                 new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true)
             );
-            //tile.getTileBox().getStyleClass().add("cottonCandyStreet");
             tile.getTileBox().setBackground(new Background(cloudCastleBackground));
         }
         if(tile.getId() == 18 || tile.getId() == 19 || tile.getId() == 20){
-            tile.getTileBox().getStyleClass().add("gummyBearForrest");
-        }
-        if(tile.getId() == 21){
-            BackgroundImage cloudCastleBackground = new BackgroundImage(
-                new Image("images/GoToJail.png"),
+            BackgroundImage forestBackground = new BackgroundImage(
+                new Image("images/tiles/forest.png"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
                 new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true)
             );
-            tile.getTileBox().setBackground(new Background(cloudCastleBackground));
-            //tile.getTileBox().getStyleClass().add("goToJailTile");
-            //tile.getTileBox().getChildren().add(new Text("Go to jail!"));
+            tile.getTileBox().setBackground(new Background(forestBackground));
+        }
+        if(tile.getId() == 21){
+            BackgroundImage goToJailBackground = new BackgroundImage(
+                new Image("images/tiles/ToJail.png"),
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true)
+            );
+            tile.getTileBox().setBackground(new Background(goToJailBackground));
         }
         if(tile.getId() == 23 || tile.getId() == 24 || tile.getId() == 26){
-            tile.getTileBox().getStyleClass().add("ocean");
+            BackgroundImage oceanBackground = new BackgroundImage(
+                new Image("images/tiles/ocean.png"),
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true)
+            );
+            tile.getTileBox().setBackground(new Background(oceanBackground));
         }
 
     }
