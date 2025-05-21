@@ -317,6 +317,7 @@ public class MonopolyController implements BoardGameObserver {
         monopolyView.getMoneyBox().getChildren().clear();
         monopolyView.getGameUpdates().getChildren().clear();
         monopolyView.getHouseButtonsBox().getChildren().clear();
+        monopolyView.getBankRuptcyBox().getChildren().clear();
         monopolyView.getTitleBox().getChildren().clear();
         monopolyView.getJailButtonsBox().getChildren().clear();
 
