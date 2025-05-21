@@ -117,7 +117,7 @@ public class BoardGame {
         listOfPlayers.add(name + "," + color);
     }
     public void removePlayer(Player player){
-        listOfPlayers.remove(player.getName());
+        listOfPlayers.remove(player.getName()+","+player.getColor());
     }
 
 
