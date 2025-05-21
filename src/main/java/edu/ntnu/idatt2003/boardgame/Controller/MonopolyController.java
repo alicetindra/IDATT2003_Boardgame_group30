@@ -18,15 +18,38 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Controls the flow and interactions of the Monopoly game.
+ *
+ *  <p>This class acts as the main controller for the Monopoly game, managing
+ *  user inputs, game state updates, and interactions between the view and model.
+ *  It listens for game state changes and ensures updates are properly reflected
+ *  in the UI. Implements {@code BoardGameObserver} to track and respond to
+ *  changes in the game state.
+ */
 public class MonopolyController implements BoardGameObserver {
 
     private final MonopolyView monopolyView;
     private final MenuView menuView;
     private final BoardGame boardGame;
     private Board board;
-    private final Map<Tile, ImageView> houseViews = new HashMap<>();
     private final PropertyHolder propertyHolder = new PropertyHolder();
+    /**
+     * Mapping of tiles to their associated house image.
+     */
+    private final Map<Tile, ImageView> houseViews = new HashMap<>();
 
+    /**
+     * Constructs a {@code MonopolyController} with the specified views and game instance.
+     *
+     * <p>This constructor initializes the controller by setting up the {@code MonopolyView},
+     * {@code MenuView}, and {@code BoardGame} references. It then calls {@code initialize()}
+     * on the {@code MonopolyView} and attaches event handlers to handle user interactions.
+     *
+     * @param monopolyView the main game view responsible for displaying the board and game elements
+     * @param menuView the menu view for player setup and game options
+     * @param boardGame the game logic handler managing players, tiles, and game mechanics
+     */
     public MonopolyController(MonopolyView monopolyView, MenuView menuView ,BoardGame boardGame) {
         this.monopolyView = monopolyView;
         this.menuView = menuView;
@@ -36,6 +59,28 @@ public class MonopolyController implements BoardGameObserver {
         attachEventHandlers();
     }
 
+    /**
+     * Updates the game state based on the specified event.
+     *
+     * <p>This method is triggered whenever the game state changes, responding to various
+     * events such as player movement, jail status, bankruptcy, or winning the game.
+     * UI elements are dynamically updated based on the event, ensuring the correct visuals
+     * and game flow are maintained.
+     *
+     * <p>Recognized event types:
+     * <ul>
+     *   <li>{@code "playerMoved"} - Updates the player's position on the board, processes fees, and adjusts buttons.</li>
+     *   <li>{@code "inJail"} - Disables certain actions and enables jail-related options.</li>
+     *   <li>{@code "usedUpTurns"} - Clears jail options and re-enables the round start button.</li>
+     *   <li>{@code "release"} - Handles player release from jail and updates UI elements.</li>
+     *   <li>{@code "bankrupt"} - Declares a player bankrupt.</li>
+     *   <li>{@code "winner"} - Displays the winning player's details and disables gameplay.</li>
+     *   <li>{@code "drewCard"} - Updates player position and displays a card alert.</li>
+     * </ul>
+     *
+     * @param event the game event that has occurred
+     * @param boardGame the game instance containing relevant player and board information
+     */
     @Override
     public void update(String event, BoardGame boardGame){
         switch (event) {
@@ -89,6 +134,9 @@ public class MonopolyController implements BoardGameObserver {
         }
     }
 
+    /**
+     * Method handles the action of paying fees from the deck of cards with actions.
+     */
     private void payAndGetFees() {
         Player currentPlayer = boardGame.getPlayerHolder().getCurrentPlayer();
         Tile tile = boardGame.getPlayerHolder().getCurrentPlayer().getCurrentTile();
@@ -100,6 +148,9 @@ public class MonopolyController implements BoardGameObserver {
         }
     }
 
+    /**
+     * This method handles the state of the 'Buy House' button. Disabling it on certain tiles, if the player on the tile already owns a house there, and if a house already exists on the tile.
+     */
     private void updateBuyHouseButton() {
         Tile tile = boardGame.getPlayerHolder().getCurrentPlayer().getCurrentTile();
         boolean housePresent = false;
@@ -122,6 +173,9 @@ public class MonopolyController implements BoardGameObserver {
 
     }
 
+    /**
+     * This method handles the actions of the buttons in the monopoly game. Set on action for each occurring button.
+     */
     private void attachEventHandlers() {
         menuView.getMainMenuButton().setOnAction(e -> clearGame());
         monopolyView.getStartRoundButton().setOnAction(e -> startRound());
@@ -131,6 +185,9 @@ public class MonopolyController implements BoardGameObserver {
         monopolyView.getRollForSixButton().setOnAction(e -> throwDieForRelease());
     }
 
+    /**
+     * This method handles the action of rolling the dice to get out of jail.
+     */
     private void throwDieForRelease() {
         Player p = boardGame.getPlayerHolder().getCurrentPlayer();
         Die die = new Die();
@@ -141,6 +198,9 @@ public class MonopolyController implements BoardGameObserver {
         monopolyView.getDiceBox().getChildren().add(diceImage);
     }
 
+    /**
+     * This method handles the action of paying the fee to get out of jail.
+     */
     private void payReleaseFee() {
         Player p = boardGame.getPlayerHolder().getCurrentPlayer();
         if(p.getMoney()<50){
@@ -155,6 +215,10 @@ public class MonopolyController implements BoardGameObserver {
         displayDice();
     }
 
+    /**
+     * This method handles the functionality of buying a house.
+     * @throws IllegalArgumentException if the player cannot afford the house.
+     */
     private void buyHouse() {
         Tile tile = boardGame.getPlayerHolder().getCurrentPlayer().getCurrentTile();
         Player owner = boardGame.getPlayerHolder().getCurrentPlayer();
@@ -173,6 +237,9 @@ public class MonopolyController implements BoardGameObserver {
         updateMoneyBox();
     }
 
+    /**
+     * This method handles the function of selling a house the player owns.
+     */
     private void sellHouse() {
         Player owner = boardGame.getPlayerHolder().getCurrentPlayer();
         Tile tile = owner.getCurrentTile();
@@ -188,8 +255,10 @@ public class MonopolyController implements BoardGameObserver {
         updateMoneyBox();
     }
 
-
-
+    /**
+     * This method adds an image of the house with the current player color to the designated tile provided.
+     * @param tile is the tile the image is added to.
+     */
     public void addHouseToTile(Tile tile) {
         ImageView houseImage = propertyHolder.getImage(tile.getId());
         houseImage.setFitHeight(35);
@@ -198,21 +267,40 @@ public class MonopolyController implements BoardGameObserver {
         houseViews.put(tile, houseImage);
     }
 
-
+    /**
+     * Initializes the game board with the specified dimensions.
+     *
+     * <p>This method sets up the Monopoly board by initializing it in the {@code BoardGame}
+     * instance with a predefined configuration. It calculates the total number of tiles
+     * based on the given width and height, retrieves the board, and then instructs the
+     * {@code MonopolyView} to generate the board grid accordingly.
+     *
+     * @param width the width of the board
+     * @param height the height of the board
+     */
     public void initializeBoard(int width, int height) {
         boardGame.initializeBoard("monopoly", (width*2+height*2), "hardcodedBoards.json");
         board = boardGame.getBoard();
         monopolyView.createBoardGrid(width, height, board);
     }
 
+    /**
+     * Updates the text in the money box, with the correct amount of money for each player.
+     */
     public void updateMoneyBox(){
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for(Player player: boardGame.getPlayerHolder().getPlayers()){
-            s += "Player " + player.getName() + ", " + player.getColor() +" : "+ player.getMoney() + " $\n";
+            s.append("Player ").append(player.getName()).append(", ").append(player.getColor())
+                .append(" : ").append(player.getMoney()).append(" $\n");
         }
-        monopolyView.updateMoneyBox(s);
+        monopolyView.updateMoneyBox(s.toString());
     }
 
+    /**
+     * Handles the functionality of declaring bankruptcy for a player. Adding the player image to
+     * the bankruptcy box. Also declaring winner id there is only one player left after the current
+     * player has gone bankrupt.
+     */
     private void declareBankrupt() {
         ArrayList<Player> toRemove = new ArrayList<>();
 
@@ -248,7 +336,11 @@ public class MonopolyController implements BoardGameObserver {
         }
     }
 
-
+    /**
+     * Sets up and initializes the Monopoly-style board game environment.
+     *
+     * @throws IOException if there is an error reading player or card resources from file
+     */
     public void setUpMonopolyGame() throws IOException {
         boardGame.removeObserver(this);
         boardGame.addObserver(this);
@@ -290,6 +382,15 @@ public class MonopolyController implements BoardGameObserver {
         updateMoneyBox();
     }
 
+    /**
+     * Adds the player's image to the tile with the specified ID on the game board.
+     * <p>
+     * If the tile exists and does not already contain the player's image, the image is added
+     * to the tile's visual component.
+     *
+     * @param player    the player whose image should be added to the tile
+     * @param newTileId the ID of the tile to place the player's image on
+     */
     private void addPlayerImageToNewTile(Player player, int newTileId){
         for (Tile t : board.getTiles()) {
             if (t.getId() == newTileId) {
@@ -302,6 +403,9 @@ public class MonopolyController implements BoardGameObserver {
     }
 
 
+    /**
+     * Clears the game monopoly and all it's components. Removes winner. Clears board. Disable and removes buttons. And Create the main menu.
+     */
     public void clearGame() {
         boardGame.undoWinner(boardGame.getWinner());
         boardGame.clearBoard();
@@ -330,11 +434,20 @@ public class MonopolyController implements BoardGameObserver {
         menuView.createMainMenu();
     }
 
+    /**
+     * Starts round for the current player in monopoly. Calls for the play method in the BoardGame class.
+     */
     private void startRound() {
         boardGame.play();
         displayDice();
     }
 
+    /**
+     * Displays a styled error alert dialog with the given title and message. The alert represents the chance card in the monopoly game.
+     *
+     * @param title   the title of the alert dialog (also used to determine styling)
+     * @param message the message to be displayed in the alert content
+     */
     private void getAlert(String title,String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -342,14 +455,17 @@ public class MonopolyController implements BoardGameObserver {
         alert.setContentText(message);
         alert.setGraphic(null);
         if(title.equals("Card")){
-            alert.getDialogPane().setStyle("-fx-background-color: #4fb6ff; -fx-font-size: 24px; -fx-pref-width: 200px;-fx-pref-height: 300px");
+            alert.getDialogPane().setStyle("-fx-background-color: #32649e; -fx-font-size: 24px; -fx-pref-width: 250px;-fx-pref-height: 350px");
         }
         else{
-            alert.getDialogPane().setStyle("-fx-background-color: #fb5866; -fx-font-size: 24px; -fx-pref-width: 200px;-fx-pref-height: 300px");
+            alert.getDialogPane().setStyle("-fx-background-color: #934343; -fx-font-size: 24px; -fx-pref-width: 250px;-fx-pref-height: 350px");
         }
         alert.showAndWait();
     }
 
+    /**
+     * Displays the dice box with information text. Including what the current player rolled, information about jail, and who the next player is.
+     */
     public void displayDice(){
         monopolyView.getDiceBox().getChildren().clear();
         monopolyView.getNextPlayerInfoBox().getChildren().clear();
