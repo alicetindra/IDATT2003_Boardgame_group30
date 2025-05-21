@@ -2,14 +2,8 @@ package edu.ntnu.idatt2003.boardgame.View;
 
 import edu.ntnu.idatt2003.boardgame.Model.*;
 import edu.ntnu.idatt2003.boardgame.Model.actions.*;
-import javafx.animation.FadeTransition;
-import javafx.animation.KeyFrame;
-import javafx.animation.ParallelTransition;
-import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.control.*;
 
 import javafx.scene.image.Image;
@@ -17,8 +11,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -26,7 +18,6 @@ import javafx.scene.text.Text;
 
 import java.util.*;
 
-import javafx.util.Duration;
 import java.util.logging.Logger;
 
 public class SnakesAndLaddersView {
@@ -254,7 +245,8 @@ public class SnakesAndLaddersView {
 
     public void createTitleBox() {
         //Snake image
-        ImageView snakeImageView = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/snake.png")).toExternalForm()));
+        ImageView snakeImageView = new ImageView(new Image(Objects.requireNonNull(getClass().getResource(
+            "/images/misc/snake.png")).toExternalForm()));
         snakeImageView.setFitHeight(90);
         snakeImageView.setFitWidth(90);
         snakeImageView.setPreserveRatio(true);
@@ -265,7 +257,8 @@ public class SnakesAndLaddersView {
         title.getStyleClass().add("title");
 
         //Ladder image
-        Image ladderImage = new Image(Objects.requireNonNull(getClass().getResource("/images/ladders.png")).toExternalForm());
+        Image ladderImage = new Image(Objects.requireNonNull(getClass().getResource(
+            "/images/misc/ladders.png")).toExternalForm());
         ImageView ladderImageView = new ImageView(ladderImage);
         ladderImageView.setFitHeight(90);
         ladderImageView.setFitWidth(90);
@@ -387,7 +380,7 @@ public class SnakesAndLaddersView {
             tileBox.getChildren().add(portalImage);
              */
             BackgroundImage backgroundImagePortal = new BackgroundImage(
-                new Image("images/portal.png"),
+                new Image("images/misc/portal.png"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
@@ -397,7 +390,7 @@ public class SnakesAndLaddersView {
         }
         else if(tileAction instanceof WinAction){
             BackgroundImage backgroundImageWin = new BackgroundImage(
-                new Image("images/finish.png"),
+                new Image("images/tiles/finish.png"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
