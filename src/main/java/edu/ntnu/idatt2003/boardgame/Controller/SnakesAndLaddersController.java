@@ -6,6 +6,7 @@ import edu.ntnu.idatt2003.boardgame.View.MenuView;
 import edu.ntnu.idatt2003.boardgame.View.SnakesAndLaddersView;
 import java.util.logging.Logger;
 import javafx.geometry.Pos;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -243,8 +244,11 @@ public class SnakesAndLaddersController implements BoardGameObserver {
         BorderPane gameLayout = snakesLaddersView.createSnakesLaddersLayout(boardGrid, snakesLaddersView.getTitleBox(),
             snakesLaddersView.getRulesColumn(), snakesLaddersView.getInfoColumn());
 
+        ScrollPane scrollableGameLayout = new ScrollPane(gameLayout);
+        scrollableGameLayout.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
         menuView.getMenuLayout().getChildren().clear();
-        menuView.getMenuLayout().getChildren().add(gameLayout);
+        menuView.getMenuLayout().getChildren().add(scrollableGameLayout);
         StackPane.setAlignment(gameLayout, Pos.CENTER);
 
         for(Player p : boardGame.getPlayerHolder().getPlayers()){
