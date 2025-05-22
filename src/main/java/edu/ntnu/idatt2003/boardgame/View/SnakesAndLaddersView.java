@@ -5,6 +5,7 @@ import edu.ntnu.idatt2003.boardgame.Model.actions.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,6 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 import java.util.*;
@@ -403,17 +405,34 @@ public class SnakesAndLaddersView {
             Point2D start = getTilePosition(startTile, 75, rows);
             Point2D end = getTilePosition(endTile, 75, rows);
 
-            Line line = new Line(start.getX(), start.getY(), end.getX(), end.getY());
+            double dx = end.getX() - start.getX();
+            double dy = end.getY() - start.getY();
+            double length = Math.hypot(dx, dy);
+            double angle = Math.toDegrees(Math.atan2(dy, dx));
 
-            if ("snake".equals(type)) {
-                line.setStroke(Color.RED);
-            } else if ("ladder".equals(type)) {
-                line.setStroke(Color.GREEN);
+            String imagePath = type.equals("snake") ? "/images/misc/snakeForBoard.png" : "/images/misc/ladderForBoard.png";
+            Image image = new Image(imagePath);
+            ImageView imageView = new ImageView(image);
+
+            imageView.setFitHeight(length);
+            if(type.equals("snake")){
+                imageView.setFitWidth(75);
+            }else{
+                imageView.setFitWidth(40);
             }
+            imageView.setPreserveRatio(false);
 
-            line.setStrokeWidth(4);
-            snakesAndLaddersIcons.getChildren().add(line);
+            Group imageGroup = new Group(imageView);
+
+            Rotate rotate = new Rotate(angle-90, imageView.getFitWidth() / 2, 0);
+            imageView.getTransforms().add(rotate);
+
+            imageGroup.setLayoutX(start.getX() - imageView.getFitWidth() / 2);
+            imageGroup.setLayoutY(start.getY());
+
+            snakesAndLaddersIcons.getChildren().add(imageGroup);
         }
+
     }
     /**
      * Finds the screen position of a tile based on its number.
