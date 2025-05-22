@@ -7,6 +7,7 @@ import edu.ntnu.idatt2003.boardgame.View.SnakesAndLaddersView;
 import java.util.logging.Logger;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -246,6 +247,9 @@ public class SnakesAndLaddersController implements BoardGameObserver {
 
         ScrollPane scrollableGameLayout = new ScrollPane(gameLayout);
         scrollableGameLayout.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollableGameLayout.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+        scrollableGameLayout.setFitToWidth(true);
+        scrollableGameLayout.setFitToHeight(true);
 
         menuView.getMenuLayout().getChildren().clear();
         menuView.getMenuLayout().getChildren().add(scrollableGameLayout);

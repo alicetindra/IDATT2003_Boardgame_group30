@@ -109,6 +109,10 @@ public class PropertyHolder {
     }
 
 
+    /**
+     * Returns HashMap of properties, with player, and it's property on the specific tile.
+     * @return properties.
+     */
     public HashMap<Integer, Player> getProperties() {
         return properties;
     }

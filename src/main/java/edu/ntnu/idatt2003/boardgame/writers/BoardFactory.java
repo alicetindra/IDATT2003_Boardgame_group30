@@ -296,7 +296,7 @@ public class BoardFactory {
       if (i == 52) {
         JsonObject actionObj = new JsonObject();
         actionObj.addProperty("type", "snake");
-        actionObj.addProperty("destination", 20);
+        actionObj.addProperty("destination", 11);
         tileJson.add("action", actionObj);
       }
       if (i == 62) {
