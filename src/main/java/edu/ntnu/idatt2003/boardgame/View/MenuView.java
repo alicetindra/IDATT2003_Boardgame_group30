@@ -25,7 +25,9 @@ import javafx.util.Duration;
 
 public class MenuView {
 
-  /*Buttons*/
+  /**
+   * Buttons used in the menu view.
+   */
   private final Button addPlayerButton = new Button("Add Player");
   private final Button setUpSnakesLaddersGameButton = new Button("Start game");
   private final Button setUpMonopolyGameButton = new Button("Start game");
@@ -34,41 +36,57 @@ public class MenuView {
   private final Button minusOneButton = new Button("-");
   private final Button mainMenuButton = new Button("Main menu");
 
-  /*Boxes*/
+  /**
+   * Boxes used in the menu view.
+   */
   private final VBox gameInfoMenuBox = new VBox(20);
   private final HBox diceImagesBox = new HBox(10);
-  private final VBox boardBox = new VBox(10); //Holds the text 'Board' with the pull down menu in game menu
+  private final VBox boardBox = new VBox(10);
   private final HBox startOrMainButtons = new HBox(20);
   private final VBox diceSection = new VBox(10);
 
-  /*Radio buttons*/
+  /**
+   * Radio buttons used in the menu view to choose game.
+   */
   private final ToggleGroup toggleGroup = new ToggleGroup();
   private final RadioButton SLButton = new RadioButton("Snakes and ladders");
   private final RadioButton MButton = new RadioButton("Monopoly");
 
-  /*TextFields*/
+  /**
+   * TextFields used in menu view.
+   */
   private final TextField diceField = new TextField();
   private final TextField playerName = new TextField();
 
-  /*ComboBoxes*/
+  /**
+   * ComboBoxes used when choosing size of board in snakes and ladders menu. As well as choosing colors for the player in both menus.
+   */
   private final ComboBox<Integer> boardSizeMenu = new ComboBox<>();
   public ComboBox<String> playerColorMenu = new ComboBox<>();
 
-  /*player list*/
+  /**
+   * Observable list of player data that is used to collect the players.
+   */
   private final ObservableList<String> playerData = FXCollections.observableArrayList();
-  private ListView<String> playerList;
 
-  /*Layouts */
+  /**
+   * Layouts
+   */
   private StackPane menuLayout;
 
+  /**
+   * Text for the titles of the scenes.
+   */
   private Text titleText;
 
-  /*Font*/
+  /**
+   * Our custom font.
+   */
   Font customFont = Font.loadFont(
       Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
 
   /**
-   *
+   * Initializes the menu view by setting up the main menu, setting the board size, player color box and creating the player list.
    */
   public void initialize(){
     menuLayout = new StackPane();
@@ -76,10 +94,13 @@ public class MenuView {
     createMainMenu();
     setBoardSizeBox();
     setPlayerColorBox();
-    initializePlayerList();
+    createPlayerList();
   }
 
-  /*Get buttons*/
+  /**
+   * Get buttons methods.
+   * @return each button.
+   * */
   public Button getAddPlayerButton() {
     addPlayerButton.setId("addPlayerButton");
     return addPlayerButton;
@@ -104,23 +125,28 @@ public class MenuView {
     loadCustomBoardButton.setId("loadCustomBoardButton");
     return loadCustomBoardButton;
   }
-
   public RadioButton getSLButton() {
     return SLButton;
   }
   public RadioButton getMButton() {
     return MButton;
   }
-
   public Button getMainMenuButton(){
     return mainMenuButton;
   }
 
+  /**
+   * Get dice section.
+   * @return the VBox diceSection.
+   */
   public VBox getDiceSection(){
     return diceSection;
   }
 
-  /*Get pull down menus*/
+  /**
+   * Get pull down menus, for board size and player colors.
+   * @return each ComboBox
+   */
   public ComboBox<Integer> getBoardSizeMenu() {
     return boardSizeMenu;
   }
@@ -128,7 +154,10 @@ public class MenuView {
     return playerColorMenu;
   }
 
-  /*Get text fields*/
+  /**
+   * Get text fields. Player name textfield and dice field.
+   * @return each TextField.
+   */
   public TextField getPlayerName() {
     return playerName;
   }
@@ -136,26 +165,37 @@ public class MenuView {
     return diceField;
   }
 
-  /*Get menu data*/
+  /**
+   * Get data form the menu components. This collects the name of the selected game.
+   * @return String of the name of the selected game.
+   */
   public String getGameName(){
     Toggle selectedToggle = toggleGroup.getSelectedToggle();
     RadioButton selectedRadioButton = (RadioButton) selectedToggle;
     return selectedRadioButton.getText();
   }
 
-  public ListView<String> getPlayerList() {
-    return playerList;
-  }
+  /**
+   * Getter for the player data.
+   * @return observable list of string with player information.
+   */
   public ObservableList<String> getPlayerData(){
     return playerData;
   }
 
-  /*Get layouts*/
+  /**
+   * Get StackPane of the menu layout.
+   * @return menuLayout
+   */
   public StackPane getMenuLayout() {
     return menuLayout;
   }
 
   /*Set pull down menu data*/
+
+  /**
+   * Set pull down menu of board size with 50, 90, and 110 tiles.
+   */
   public void setBoardSizeBox(){
     ObservableList<Integer> options = FXCollections.observableArrayList();
     options.addAll(50,90,110);
@@ -164,6 +204,9 @@ public class MenuView {
     boardSizeMenu.getStyleClass().add("pullDownMenu");
   }
 
+  /**
+   * Set pull down menu with choices of player colors. Blue, green, red, yellow, pink, black.
+   */
   public void setPlayerColorBox(){
     ObservableList<String> colors = FXCollections.observableArrayList();
     colors.addAll("blue","green","red","yellow","pink","black");
@@ -173,6 +216,10 @@ public class MenuView {
   }
 
   /*Create methods, different menus*/
+
+  /**
+   * Create main menu where you can choose game. Monopoly or Snakes And Ladders.
+   */
   public void createMainMenu(){
     titleText = new Text("Choose your game");
     titleText.setFont(customFont);
@@ -202,6 +249,11 @@ public class MenuView {
     menuLayout.getStyleClass().add("rootMainMenu");
   }
 
+  /**
+   * Creates the game menu part for the Snakes And Ladders game. Where you can choose board size. Load custom board.
+   * Choose amount of dice between 1-6. "And create title Snakes And Ladders".
+   * And then calls createGameMenu(); to create rest of the game menu.
+   */
   public void createSLMenu(){
     diceField.setText("2");
     Text boardText = new Text("Board size");
@@ -226,6 +278,10 @@ public class MenuView {
     setUpSnakesLaddersGameButton.setFont(customFont);
     createGameMenu();
   }
+  /**
+   * Creates the game menu part for the Monopoly game. Dice size is set to 1. Title "Monopoly" is created.
+   * And then calls createGameMenu(); to create rest of the game menu.
+   */
   public void createMMenu() {
     diceField.setText("1");
     boardBox.getChildren().clear();
@@ -244,6 +300,17 @@ public class MenuView {
     createGameMenu();
   }
 
+  /**
+   * Created rest of game menu with
+   * This method performs the following operations:
+   * <li> Sets up the player name section. With title, and text field for user to write player name.</li>
+   * <li> Sets up the player color section. With title, and pull down menu with all colors.</li>
+   * <li> Sets up the add player button to the left column.</li>
+   * <li> Creates an player list where the created players will be added to.</li>
+   * <li> Creates a dice images for the amount of dice chosen by the user.</li>
+   * <li> Sets up the main menu button.</li>
+   * <li> Sets up the start game button.</li>
+   */
   public void createGameMenu(){
     gameInfoMenuBox.getChildren().clear();
     diceField.setDisable(true);
@@ -324,7 +391,9 @@ public class MenuView {
     StackPane.setAlignment(gameInfoMenuBox, Pos.CENTER);
   }
 
-
+  /**
+   * Adds image of dice to diceImageBox.
+   */
   public void placeDice(){
     diceImagesBox.getChildren().clear();
     for(int i = 1; i<= Integer.parseInt(diceField.getText()); i++){
@@ -335,19 +404,20 @@ public class MenuView {
     }
   }
 
+  /**
+   * Creates main menu button.
+   */
   public void createMainMenuButton(){
     mainMenuButton.setFont(customFont);
     mainMenuButton.setId("main-menu-button");
 
     VBox.setMargin(mainMenuButton, new Insets(20,0,0,0));
-
   }
 
-  /* Initialize and create player list fpr the menu */
-  private void initializePlayerList(){
-    playerList = createPlayerList();
-  }
-
+  /**
+   * Creates player list view with 6 empty rows with alternating colors.
+   * @return List view of 6 rows for the players created.
+   */
   private ListView<String> createPlayerList(){
     ListView<String> playerList = new ListView<>(playerData);
     playerList.setId("playerList");
@@ -384,6 +454,9 @@ public class MenuView {
     return playerList;
   }
 
+  /**
+   * Plays confetti when winner is announced in snakes and ladders game.
+   */
   public void playConfettiEffect() {
     // Create a group for confetti
     Group confettiGroup = new Group();

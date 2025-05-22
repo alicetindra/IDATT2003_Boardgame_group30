@@ -36,7 +36,7 @@ public class MonopolyView {
     private final Button sellHouseButton = new Button("Sell house");
     private final Button payFeeButton = new Button("Pay fee");
     private final Button rollForSixButton = new Button("Roll for six ");
-    private final VBox bankRuptcyBox = new VBox(20);
+    private final VBox bankruptcyBox = new VBox(20);
     private final Text moneyHeader = new Text("Monopoly money");
     private final Text bankruptcyHeader = new Text("Bankrupt players:");
 
@@ -61,8 +61,8 @@ public class MonopolyView {
         return updatedMoneyBox;
     }
 
-    public VBox getBankRuptcyBox() {
-        return bankRuptcyBox;
+    public VBox getBankruptcyBox() {
+        return bankruptcyBox;
     }
 
     public StackPane getRootLayout() {
@@ -164,18 +164,12 @@ public class MonopolyView {
         textBoxMoney.getChildren().add(updatedMoneyBox);
         moneyBox.getChildren().add(textBoxMoney);
 
-        /*
-        Region spacer = new Region();
-        VBox.setVgrow(spacer, Priority.ALWAYS);
-        moneyBox.getChildren().add(spacer);
-         */
-
-        bankRuptcyBox.setAlignment(Pos.CENTER);
-        bankRuptcyBox.setId("bankRuptcyBox");
-        bankRuptcyBox.setPadding(new Insets(20));
-        bankRuptcyBox.setSpacing(10);
-        bankRuptcyBox.getChildren().add(getBankRuptcyText());
-        moneyBox.getChildren().add(bankRuptcyBox);
+        bankruptcyBox.setAlignment(Pos.CENTER);
+        bankruptcyBox.setId("bankruptcyBox");
+        bankruptcyBox.setPadding(new Insets(20));
+        bankruptcyBox.setSpacing(10);
+        bankruptcyBox.getChildren().add(getBankruptcyText());
+        moneyBox.getChildren().add(bankruptcyBox);
 
 
     }
@@ -414,7 +408,7 @@ public class MonopolyView {
         return winnerText;
     }
 
-    public Node getBankRuptcyText() {
+    public Node getBankruptcyText() {
         bankruptcyHeader.setFont(customFont);
         bankruptcyHeader.getStyleClass().add("subTitle");
         return bankruptcyHeader;

@@ -71,7 +71,6 @@ public class MenuController{
     //Add players
     menuView.getAddPlayerButton().setOnAction(e -> handleAddPlayer());
 
-    //Start snakes and ladders by setting up the board and layout
     menuView.getSetUpSnakesLaddersGameButton().setOnAction(e -> {
       if(boardGame.getListOfPlayers().isEmpty() || menuView.getDiceField() == null || menuView.getBoardSizeMenu().getSelectionModel().isEmpty()) {
         getAlert("To start the game, you need the type of game, players, dice and board size!");
