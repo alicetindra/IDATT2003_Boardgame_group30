@@ -22,7 +22,21 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-
+/**
+ * The {@code MenuView} class is responsible for managing all visual aspects
+ * of the game's main menu interface.
+ * <p>
+ * This includes displaying menu options, handling basic view-related updates,
+ * and rendering visual elements of the menu. It does not contain business logic,
+ * but acts as the View component in the Model-View-Controller (MVC) pattern.
+ * </p>
+ *
+ * <p>
+ * Typical responsibilities include:
+ *   <li>Displaying the main menu screen</li>
+ *   <li>Showing buttons for choosing game, "Start Game", "Load Game", "Main menu"</li>
+ * </p>
+ */
 public class MenuView {
 
   /**
@@ -82,7 +96,7 @@ public class MenuView {
   /**
    * Our custom font.
    */
-  Font customFont = Font.loadFont(
+  private final Font customFont = Font.loadFont(
       Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
 
   /**
