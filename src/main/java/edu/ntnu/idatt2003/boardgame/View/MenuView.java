@@ -328,7 +328,7 @@ public class MenuView {
   public void placeDice(){
     diceImagesBox.getChildren().clear();
     for(int i = 1; i<= Integer.parseInt(diceField.getText()); i++){
-      ImageView diceImageView = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/dice"+i+".png")).toExternalForm()));
+      ImageView diceImageView = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/dice/dice"+i+".png")).toExternalForm()));
       diceImageView.setFitHeight(40);
       diceImageView.setPreserveRatio(true);
       diceImagesBox.getChildren().add(diceImageView);

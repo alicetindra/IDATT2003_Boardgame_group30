@@ -306,7 +306,7 @@ public class SnakesAndLaddersView {
     }
 
     private ImageView createWinnerImage(String color){
-        String winnerImagePath = "/images/" + color.toLowerCase() + "_winner.png";
+        String winnerImagePath = "/images/winners/" + color.toLowerCase() + "_winner.png";
 
         Image winnerImage = new Image(Objects.requireNonNull(getClass().getResource(winnerImagePath)).toExternalForm());
         ImageView winnerImageView = new ImageView(winnerImage);

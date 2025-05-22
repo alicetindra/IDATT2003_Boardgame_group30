@@ -120,7 +120,7 @@ public class MonopolyController implements BoardGameObserver {
             case "winner":
                 monopolyView.getGameUpdates().getChildren().clear();
                 monopolyView.getUpdatedMoneyBox().getChildren().clear();
-                ImageView newImage = new ImageView(new Image("/images/"+boardGame.getPlayerHolder().getPlayers().getFirst().getColor()+"_winner.png"));
+                ImageView newImage = new ImageView(new Image("/images/winners/"+boardGame.getPlayerHolder().getPlayers().getFirst().getColor()+"_winner.png"));
                 newImage.setPreserveRatio(true);
                 newImage.setFitHeight(90);
                 monopolyView.getGameUpdates().getChildren().addAll(newImage, monopolyView.getWinnerAnnouncement());
@@ -318,7 +318,7 @@ public class MonopolyController implements BoardGameObserver {
                         }
                     }
                 }
-                ImageView newImage = new ImageView(new Image("/images/"+player.getColor()+".png"));
+                ImageView newImage = new ImageView(new Image("/images/players/"+player.getColor()+".png"));
                 newImage.setFitHeight(20);
                 newImage.setPreserveRatio(true);
                 monopolyView.getBankRuptcyBox().getChildren().addAll(newImage);
@@ -368,7 +368,7 @@ public class MonopolyController implements BoardGameObserver {
             throw new RuntimeException(ex);
         }
         for(Player p : boardGame.getPlayerHolder().getPlayers()){
-            ImageView imageView = new ImageView(new Image("images/"+p.getColor()+".png"));
+            ImageView imageView = new ImageView(new Image("images/players/"+p.getColor()+".png"));
             p.setImageView(imageView);
             p.setBoardGame(boardGame);
             p.placeOnTile(board,1);
@@ -479,7 +479,7 @@ public class MonopolyController implements BoardGameObserver {
         }
          else{
             for(Die d : boardGame.getDice().getListOfDice()){
-                ImageView die = new ImageView(new Image("/images/dice"+d.getValue()+".png"));
+                ImageView die = new ImageView(new Image("/images/dice/dice"+d.getValue()+".png"));
                 die.setFitHeight(40);
                 die.setFitWidth(40);
                 monopolyView.getDiceBox().getChildren().add(die);
