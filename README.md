@@ -24,7 +24,7 @@ A JavaFX-based desktop application that supports multiple board game variants. D
 - JavaFX SDK
 - Maven
 
-## 🚀 How to Run
+## How to Run
 
 1. Clone the repository:
 ```bash
