@@ -226,7 +226,7 @@ public class SnakesAndLaddersController implements BoardGameObserver {
 
         //Create BoardGrid
         snakesLaddersView.createGridBoard(board);
-        GridPane boardGrid = snakesLaddersView.getGrid();
+        StackPane boardGrid = snakesLaddersView.getStackableBoardWithIcons();
         boardGrid.setAlignment(Pos.CENTER);
 
         snakesLaddersView.createTitleBox();

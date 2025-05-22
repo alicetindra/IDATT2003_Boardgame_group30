@@ -3,14 +3,19 @@ package edu.ntnu.idatt2003.boardgame.View;
 import edu.ntnu.idatt2003.boardgame.Model.*;
 import edu.ntnu.idatt2003.boardgame.Model.actions.*;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -52,11 +57,14 @@ public class SnakesAndLaddersView {
     private final VBox infoColumn = new VBox(30);
     private final VBox winnerOverlay = new VBox(10);
 
+
     /**
      * Panes used in the SnakesAndLadders view.
      */
     private final GridPane grid = new GridPane();
     private BorderPane layout;
+    private final StackPane stackableBoard = new StackPane();
+    private final Pane snakesAndLaddersIcons = new Pane();
 
     /**
      * Out custom font for titles and button texts.
@@ -95,7 +103,14 @@ public class SnakesAndLaddersView {
     public GridPane getGrid(){
         return grid;
     }
-
+    public StackPane getStackableBoardWithIcons(){
+        stackableBoard.getChildren().clear();
+        stackableBoard.getChildren().addAll(getGrid(),getSnakesAndLaddersIcons());
+        return stackableBoard;
+    }
+    public Pane getSnakesAndLaddersIcons(){
+        return snakesAndLaddersIcons;
+    }
 
     /**
      * Getter for all boxes in SnakesAndLadders view.
@@ -140,7 +155,7 @@ public class SnakesAndLaddersView {
      * @param infoColumn is the box with player and round information along with the rolled dice.
      * @return a borderpane with the game layout.
      */
-    public BorderPane createSnakesLaddersLayout(GridPane boardGrid, HBox titleWithImage, VBox rulesColumn, VBox infoColumn){
+    public BorderPane createSnakesLaddersLayout(StackPane boardGrid, HBox titleWithImage, VBox rulesColumn, VBox infoColumn){
         layout.setTop(titleWithImage);
         layout.setLeft(rulesColumn);
         layout.setCenter(boardGrid);
@@ -184,6 +199,7 @@ public class SnakesAndLaddersView {
             tile.setTileBox(tileBox);
 
             grid.add(tileBox, col, row);
+            makeSnakesAndLaddersOverlay(board);
         }
     }
 
@@ -369,6 +385,74 @@ public class SnakesAndLaddersView {
         winnerOverlay.requestFocus();
 
     }
+    public void makeSnakesAndLaddersOverlay(Board board) {
+        snakesAndLaddersIcons.getChildren().clear();
+        snakesAndLaddersIcons.getStyleClass().add("snakesAndLaddersIcons");
+
+        List<Map<String, Object>> dests = collectActionPaths(board);
+
+        for (Map<String, Object> path : dests) {
+            String type = (String) path.get("type");
+            int startTile = (int) path.get("start");
+            int endTile = (int) path.get("end");
+
+            Point2D start = getTilePosition(startTile, 75, 9);
+            Point2D end = getTilePosition(endTile, 75, 9);
+
+            double dx = end.getX() - start.getX();
+            double dy = end.getY() - start.getY();
+            double length = Math.hypot(dx, dy);
+            double angle = Math.toDegrees(Math.atan2(dy, dx));
+
+            // Choose the image
+            String imagePath = type.equals("snake") ? "snakeForBoard.png" : "ladderForBoard.png";
+            Image image = new Image(getClass().getResourceAsStream(imagePath));
+            ImageView imageView = new ImageView(image);
+
+            // Set size: width = length between tiles, height = your image height
+            imageView.setFitWidth(length);
+            imageView.setFitHeight(50); // Adjust based on your image proportions
+            imageView.setPreserveRatio(false);
+
+            // Rotate the image to face the correct direction
+            imageView.setRotate(angle);
+
+            // Position imageView so it starts at the starting tile
+            imageView.setLayoutX(start.getX());
+            imageView.setLayoutY(start.getY());
+
+            // Optional: shift image to center on the line
+            imageView.setTranslateX(-imageView.getFitWidth() / 2);
+            imageView.setTranslateY(-imageView.getFitHeight() / 2);
+
+            snakesAndLaddersIcons.getChildren().add(imageView);
+        }
+    }
+
+    public Point2D getTilePosition(int tileNumber, int cellSize, int numRows) {
+        int index = tileNumber - 1;  // 0-based index
+
+        int rowFromBottom = index / 10;  // which row, starting from bottom (0 = bottom)
+        int row = (numRows - 1) - rowFromBottom;  // convert to top-down row index for JavaFX
+
+        int colInRow = index % 10;
+
+        int col;
+        if (rowFromBottom % 2 == 0) {
+            // Even row from bottom: left to right
+            col = colInRow;
+        } else {
+            // Odd row from bottom: right to left
+            col = 9 - colInRow;
+        }
+
+        // Pixel position (center of the tile)
+        int x = col * cellSize + cellSize / 2;
+        int y = row * cellSize + cellSize / 2;
+
+        return new Point2D(x, y);
+    }
+
 
     /**
      * Created winner image.
@@ -411,6 +495,35 @@ public class SnakesAndLaddersView {
         return destinations;
     }
 
+    public List<Map<String, Object>> collectActionPaths(Board board) {
+        List<Map<String, Object>> paths = new ArrayList<>();
+
+        for (Tile t : board.getTiles()) {
+            int start = t.getId(); // or however you get tile number
+
+            if (t.getAction() instanceof SnakeAction snake) {
+                int end = snake.getDestinationTileId();
+
+                Map<String, Object> entry = new HashMap<>();
+                entry.put("start", start);
+                entry.put("end", end);
+                entry.put("type", "snake");
+
+                paths.add(entry);
+            } else if (t.getAction() instanceof LadderAction ladder) {
+                int end = ladder.getDestinationTileId();
+
+                Map<String, Object> entry = new HashMap<>();
+                entry.put("start", start);
+                entry.put("end", end);
+                entry.put("type", "ladder");
+
+                paths.add(entry);
+            }
+        }
+
+        return paths;
+    }
     /**
      * Adds text to displayInfoBox with the information about the round and the current player.
      * @param message of the players moves.
