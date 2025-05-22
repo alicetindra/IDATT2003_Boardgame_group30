@@ -16,13 +16,36 @@ import javafx.scene.text.Text;
 
 import java.util.Objects;
 
-
+/**
+ * The {@code MonopolyView} class is responsible for handling the visual
+ * representation of the Monopoly-style game board and in-game user interface.
+ * <p>
+ * It displays the current state of the board, including tiles, players,
+ * dice rolls, and actions. This class forms the View component in the
+ * Model-View-Controller (MVC) design pattern and focuses solely on rendering
+ * output without managing game logic.
+ * </p>
+ *
+ * <p>
+ * Key responsibilities include:
+ *   <li>Displaying the Monopoly board and its tiles</li>
+ *   <li>Updating player positions visually as the game progresses</li>
+ *   <li>Rendering dice roll outcomes and other animations</li>
+ *   <li>Showing information about player turns, actions, and tile effects</li>
+ * </p>
+ */
 public class MonopolyView {
+
+    /**
+     * Panes used in monopoly game.
+     */
     private BorderPane monopolyLayout;
     private GridPane monopolyGrid;
     private StackPane rootLayout;
 
-    //Boxes
+    /**
+     * Boxes used in monopoly view.
+     */
     private final VBox moneyBox = new VBox(30);
     private final VBox updatedMoneyBox = new VBox(10);
     private final HBox titleBox = new HBox();
@@ -31,66 +54,91 @@ public class MonopolyView {
     private final VBox gameUpdates = new VBox(10);
     private final VBox jailButtonsBox = new VBox(10);
     private final VBox houseButtonsBox = new VBox(10);
+    private final VBox bankruptcyBox = new VBox(20);
+
+    /**
+     * Buttons used in the monopoly view.
+     */
     private final Button startRoundButton = new Button("Roll dice");
     private final Button buyHouseButton = new Button("Buy house");
     private final Button sellHouseButton = new Button("Sell house");
     private final Button payFeeButton = new Button("Pay fee");
     private final Button rollForSixButton = new Button("Roll for six ");
-    private final VBox bankruptcyBox = new VBox(20);
+
+    /**
+     * Texts in monopoly view
+     */
     private final Text moneyHeader = new Text("Monopoly money");
     private final Text bankruptcyHeader = new Text("Bankrupt players:");
 
-    Font customFont = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
+    /**
+     * Our custom font used in titles.
+     */
+    private final Font customFont = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
 
+    /**
+     * Initializes the monopoly view by creating the different panes and layouts.
+     */
     public void initialize() {
         rootLayout = new StackPane();
         monopolyLayout = new BorderPane();
         monopolyGrid = new GridPane();
     }
+
+    /**
+     * Getter for the release text displaying when a player is released from jail.
+     * @param player who is released from jail.
+     * @return text with information.
+     */
     public Text getReleaseText(Player player){
         Text releaseText = new Text(player.getName()+", "+player.getColor()+" is released from jail");
         releaseText.setId("releaseText");
         return releaseText;
     }
 
+    /**
+     * Getter for boxes
+     * @return each box.
+     */
     public VBox getMoneyBox() {
         return moneyBox;
     }
-
     public VBox getUpdatedMoneyBox() {
         return updatedMoneyBox;
     }
-
     public VBox getBankruptcyBox() {
         return bankruptcyBox;
     }
+    public VBox getDiceBox() {
+        return diceBox;
+    }
+    public VBox getNextPlayerInfoBox(){
+        nextPlayerInfoBox.setId("nextPlayerInfoBox");
+        return nextPlayerInfoBox;
+    }
+    public HBox getTitleBox() {
+        return titleBox;
+    }
+    public VBox getGameUpdates() {
+        return gameUpdates;
+    }
 
+    /**
+     * Getter for panes, layouts.
+     * @return layouts.
+     */
     public StackPane getRootLayout() {
         return rootLayout;
     }
-
     public BorderPane getMonopolyLayout() {
         return monopolyLayout;
     }
 
 
-    public VBox getDiceBox() {
-        return diceBox;
-    }
-
-    public VBox getNextPlayerInfoBox(){
-        nextPlayerInfoBox.setId("nextPlayerInfoBox");
-        return nextPlayerInfoBox;
-    }
-
-    public HBox getTitleBox() {
-        return titleBox;
-    }
-
-    public VBox getGameUpdates() {
-        return gameUpdates;
-    }
-
+    /**
+     * Getter for all buttons in monopoly view.
+     * @return each button.
+     */
     public Button getStartRoundButton(){
         startRoundButton.setId("monopolyButtons");
         startRoundButton.setFont(customFont);
@@ -103,14 +151,18 @@ public class MonopolyView {
         buyHouseButton.setAlignment(Pos.CENTER);
         return buyHouseButton;
     }
-
     public Button getSellHouseButton(){
         sellHouseButton.setId("monopolyButtons");
         sellHouseButton.setFont(customFont);
         return sellHouseButton;
     }
 
-
+    /**
+     * Creates monopoly board grid.
+     * @param width width of grid.
+     * @param height height of grid.
+     * @param board The board created for the game.
+     */
     public void createBoardGrid(int width, int height, Board board) {
         monopolyGrid.setGridLinesVisible(true);
         monopolyGrid.getChildren().clear();
@@ -140,6 +192,9 @@ public class MonopolyView {
         monopolyGrid.setAlignment(Pos.CENTER);
     }
 
+    /**
+     * Creates money box. Including information about the player and their money. As well as bankrupt players.
+     */
     public void createMoneyBox(){
         moneyBox.getChildren().clear();
 
@@ -174,6 +229,10 @@ public class MonopolyView {
 
     }
 
+    /**
+     * Creates updated money box when players' money is changed.
+     * @param s the sting with the new correct balance for the player's money.
+     */
     public void updateMoneyBox(String s){
         updatedMoneyBox.getChildren().clear();
         Text moneyText = new Text(s);
@@ -182,6 +241,9 @@ public class MonopolyView {
         updatedMoneyBox.getChildren().addAll(moneyText);
     }
 
+    /**
+     * Creates header for monopoly game.
+     */
     public void createTitleBox(){
         Text title = new Text("Monopoly");
         title.getStyleClass().add("title");
@@ -191,6 +253,9 @@ public class MonopolyView {
         titleBox.setPadding(new Insets(20));
     }
 
+    /**
+     * Creates dice box and disables buy house button.
+     */
     public void createDiceBox(){
         diceBox.getChildren().clear();
         diceBox.setAlignment(Pos.CENTER);
@@ -198,6 +263,10 @@ public class MonopolyView {
         buyHouseButton.setDisable(true);
     }
 
+    /**
+     * getters for buttons
+     * @return each button in monopoly view.
+     */
     public Button getPayFeeButton(){
         payFeeButton.setId("monopolyButtons");
         payFeeButton.setFont(customFont);
@@ -210,7 +279,6 @@ public class MonopolyView {
         rollForSixButton.setAlignment(Pos.CENTER);
         return rollForSixButton;
     }
-
     public VBox getJailButtonsBox(){
         return jailButtonsBox;
     }
@@ -218,7 +286,9 @@ public class MonopolyView {
         return houseButtonsBox;
     }
 
-
+    /**
+     * Creates the monopoly layout with all it's components.
+     */
     public void createMonopolyLayout(){
         monopolyLayout.getChildren().clear();
 
@@ -238,6 +308,9 @@ public class MonopolyView {
         rootLayout.getChildren().add(monopolyLayout);
     }
 
+    /**
+     * Creates game updates box. Including information about the current round.
+     */
     private void createGameUpdatesBox() {
         gameUpdates.getChildren().clear();
         gameUpdates.setPrefWidth(300);
@@ -277,6 +350,11 @@ public class MonopolyView {
 
     }
 
+    /**
+     * Fetches player image.
+     * @param p the player whose image is fetched.
+     * @return Imageview of the player image.
+     */
     public ImageView getPlayerImage(Player p) {
             ImageView imageView = p.getImageView();
             imageView.setFitHeight(30);
@@ -284,7 +362,10 @@ public class MonopolyView {
             return imageView;
     }
 
-
+    /**
+     * Set the styles for each tile in the monopoly board.
+     * @param tile that is changed.
+     */
     public void styliseTileBox(Tile tile){
         tile.getTileBox().getChildren().add(new Text(tile.getId()+""));
         tile.getTileBox().getStyleClass().add("monopolyTileBox");
@@ -402,12 +483,21 @@ public class MonopolyView {
         }
 
     }
+
+    /**
+     * Getter for winner announcement text.
+     * @return text with winner announcement.
+     */
     public Text getWinnerAnnouncement(){
         Text winnerText = new Text(" Winner!");
         winnerText.setId("announcementTextWinner");
         return winnerText;
     }
 
+    /**
+     * Gets node for bankruptcy text.
+     * @return node bankruptcy header.
+     */
     public Node getBankruptcyText() {
         bankruptcyHeader.setFont(customFont);
         bankruptcyHeader.getStyleClass().add("subTitle");
