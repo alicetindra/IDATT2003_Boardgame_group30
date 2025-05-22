@@ -23,12 +23,7 @@ public class PropertyHolder {
         properties = new HashMap<>();
     }
 
-    /**
-     * Assigns a player as the owner of a specific property.
-     *
-     * @param integer the property ID
-     * @param player the player to assign as owner
-     */
+
     public void setOwner(Integer integer, Player player) {
         properties.put(integer, player);
     }
@@ -108,11 +103,7 @@ public class PropertyHolder {
         return getPrice(integer)/4;
     }
 
-    /**
-     * Returns the map of properties and their owners.
-     *
-     * @return a {@link HashMap} mapping property IDs to players
-     */
+
     public HashMap<Integer, Player> getProperties() {
         return properties;
     }

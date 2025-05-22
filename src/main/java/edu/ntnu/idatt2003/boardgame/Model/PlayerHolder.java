@@ -49,12 +49,7 @@ public class PlayerHolder {
         return currentPlayer;
     }
 
-    /**
-     * Returns the index of the next player in turn order.
-     * Wraps around to the start of the list if the current player is last.
-     *
-     * @return the index of the next player
-     */
+
     public int getNextPlayerIndex(){
         int i = players.indexOf(currentPlayer);
         if(i<players.size()-1){

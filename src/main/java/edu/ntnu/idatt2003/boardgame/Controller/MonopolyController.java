@@ -8,6 +8,7 @@ import edu.ntnu.idatt2003.boardgame.View.MonopolyView;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -356,8 +357,11 @@ public class MonopolyController implements BoardGameObserver {
         BorderPane gameLayout = monopolyView.getMonopolyLayout();
         monopolyView.getMoneyBox().getChildren().add(menuView.getMainMenuButton());
 
+        ScrollPane scrollableGameLayout = new ScrollPane(gameLayout);
+        scrollableGameLayout.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
         menuView.getMenuLayout().getChildren().clear();
-        menuView.getMenuLayout().getChildren().add(gameLayout);
+        menuView.getMenuLayout().getChildren().add(scrollableGameLayout);
 
 
         boardGame.initializeDice(Integer.parseInt(menuView.getDiceField().getText()));

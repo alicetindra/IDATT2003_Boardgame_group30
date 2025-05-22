@@ -83,6 +83,7 @@ public class MonopolyView {
         rootLayout = new StackPane();
         monopolyLayout = new BorderPane();
         monopolyGrid = new GridPane();
+        monopolyLayout.getStyleClass().add("rootSL");
     }
 
     /**

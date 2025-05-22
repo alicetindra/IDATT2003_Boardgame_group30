@@ -42,9 +42,7 @@ public class CardManager{
     cards = CardReaderGson.readCardsFromFile(filename);
   }
 
-  /**
-   * Draws a random card from the deck and stores it as the last drawn card.
-   */
+
   public void drawCard() {
     lastDrawnCard = cards.get(random.nextInt(cards.size()));
   }
@@ -57,6 +55,9 @@ public class CardManager{
   public Card getLastDrawnCard() {
     return lastDrawnCard;
   }
+  public List<Card> getCards() {
+    return cards;
+  }
 
   /**
    * Applies the effect of the specified card to the given player.
@@ -66,7 +67,6 @@ public class CardManager{
    * @param player the player to apply the card effect to
    */
   public void applyCard(Card card, Player player) {
-    System.out.println(card.text);
     if (card.money != null) player.editMoney(card.money);
     if (card.moveTo != null) player.placeOnTile(player.getBoardGame().getBoard(), card.moveTo);
     if (Boolean.TRUE.equals(card.goToJail)) {
