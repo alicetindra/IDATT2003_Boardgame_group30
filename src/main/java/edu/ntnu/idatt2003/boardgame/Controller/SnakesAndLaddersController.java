@@ -141,7 +141,7 @@ public class SnakesAndLaddersController implements BoardGameObserver {
     public void displayDice(){
         snakesLaddersView.getDieBox().getChildren().clear();
         for(Die d : boardGame.getDice().getListOfDice()){
-            ImageView die = new ImageView(new Image("/images/dice"+d.getValue()+".png"));
+            ImageView die = new ImageView(new Image("/images/dice/dice"+d.getValue()+".png"));
             die.setFitHeight(40);
             die.setFitWidth(40);
             snakesLaddersView.getDieBox().getChildren().add(die);
@@ -209,7 +209,7 @@ public class SnakesAndLaddersController implements BoardGameObserver {
             throw new RuntimeException(ex);
         }
         for(Player p : boardGame.getPlayerHolder().getPlayers()){
-            ImageView imageView = new ImageView(new Image("images/"+p.getColor()+".png"));
+            ImageView imageView = new ImageView(new Image("images/players/"+p.getColor()+".png"));
             p.setImageView(imageView);
             p.setBoardGame(boardGame);
         }
