@@ -42,7 +42,9 @@ public class CardManager{
     cards = CardReaderGson.readCardsFromFile(filename);
   }
 
-
+  /**
+   * Draws a random card in the card deck.
+   */
   public void drawCard() {
     lastDrawnCard = cards.get(random.nextInt(cards.size()));
   }

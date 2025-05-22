@@ -49,7 +49,10 @@ public class PlayerHolder {
         return currentPlayer;
     }
 
-
+    /**
+     * Returns the next player index.
+     * @return player index of the next player in line.
+     */
     public int getNextPlayerIndex(){
         int i = players.indexOf(currentPlayer);
         if(i<players.size()-1){
