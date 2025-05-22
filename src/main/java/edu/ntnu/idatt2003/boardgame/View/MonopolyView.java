@@ -204,17 +204,20 @@ public class MonopolyView {
         //moneyBox.setId("moneyBox");
         moneyBox.setPadding(new Insets(100,0,100,0));
 
-        VBox textBoxMoney = new VBox(20);
-        textBoxMoney.setPadding(new Insets(20));
+        VBox textBoxMoney = new VBox(10);
+        textBoxMoney.setPadding(new Insets(10));
         textBoxMoney.setSpacing(10);
-        textBoxMoney.setAlignment(Pos.CENTER);
+        textBoxMoney.setAlignment(Pos.TOP_CENTER);
         textBoxMoney.setId("textBoxMoney");
+
+        textBoxMoney.setPrefHeight(300);
+
 
         moneyHeader.setFont(customFont);
         moneyHeader.getStyleClass().add("subTitle");
         textBoxMoney.getChildren().add(moneyHeader);
 
-        updatedMoneyBox.setAlignment(Pos.CENTER);
+        updatedMoneyBox.setAlignment(Pos.TOP_CENTER);
         updatedMoneyBox.setId("updatedMoneyBox");
 
         textBoxMoney.getChildren().add(updatedMoneyBox);

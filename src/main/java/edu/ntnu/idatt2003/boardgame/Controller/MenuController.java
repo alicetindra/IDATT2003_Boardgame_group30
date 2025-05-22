@@ -136,9 +136,15 @@ public class MenuController{
   private void handleAddPlayer() throws RuntimeException {
     String selectedColor = menuView.getPlayerColorMenu().getSelectionModel().getSelectedItem();
     String writtenName = menuView.getPlayerName().getText();
+
     if(selectedColor == null || writtenName.isEmpty()) {
       getAlert("Please select a name and color for the player");
       throw new RuntimeException("Color or name is not selected");
+    }
+
+    if(writtenName.length() > 10){
+      getAlert("Player name must be 10 characters or fewer.");
+      throw new RuntimeException("Player name too long.");
     }
 
     boardGame.addPlayer(writtenName,selectedColor);

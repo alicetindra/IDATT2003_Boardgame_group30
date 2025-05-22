@@ -9,6 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -359,6 +360,9 @@ public class MonopolyController implements BoardGameObserver {
 
         ScrollPane scrollableGameLayout = new ScrollPane(gameLayout);
         scrollableGameLayout.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollableGameLayout.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+        scrollableGameLayout.setFitToWidth(true);
+        scrollableGameLayout.setFitToHeight(true);
 
         menuView.getMenuLayout().getChildren().clear();
         menuView.getMenuLayout().getChildren().add(scrollableGameLayout);
