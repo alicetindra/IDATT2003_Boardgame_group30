@@ -20,7 +20,7 @@ public class PropertyHolder {
     }
 
     public void makeImage(Integer integer) {
-        houseImage = new ImageView(new Image("/images/"+properties.get(integer).getColor()+"house.png"));
+        houseImage = new ImageView(new Image("/images/houses/"+properties.get(integer).getColor()+"house.png"));
 
     }
 
