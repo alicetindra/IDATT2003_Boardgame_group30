@@ -24,6 +24,11 @@ public class PropertyHolder {
     }
 
 
+    /**
+     * Set owner of a house.
+     * @param integer integer of tile id where the house is.
+     * @param player the owner of the house.
+     */
     public void setOwner(Integer integer, Player player) {
         properties.put(integer, player);
     }
