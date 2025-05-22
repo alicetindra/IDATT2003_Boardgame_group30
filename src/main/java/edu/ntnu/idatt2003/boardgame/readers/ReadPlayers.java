@@ -9,10 +9,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * Utility class for reading {@link Player} objects from a CSV file.
+ * <p>
+ * Each line in the file is expected to contain a player's name and color, separated by a comma.
+ * This class provides a static method that reads these lines, creates {@code Player} objects,
+ * and returns them as a list.
+ * <p>
+ * Logs the number of players successfully read, or an error if the file could not be processed.
+ */
 public class ReadPlayers {
 
     private static final Logger log = Logger.getLogger(ReadPlayers.class.getName());
 
+    /**
+     * Reads player data from a file and returns a list of {@link Player} objects.
+     *
+     * <p>The expected format for each line in the file is:
+     * {@code name,color}
+     *
+     * @param fileName the path to the CSV file containing player data
+     * @return a list of {@code Player} objects read from the file; may be empty if the file is not found or is invalid
+     */
     public static List<Player> readPlayersFromFile(String fileName) {
         List<Player> players = new ArrayList<>();
 

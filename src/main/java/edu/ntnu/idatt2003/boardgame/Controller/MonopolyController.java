@@ -124,6 +124,7 @@ public class MonopolyController implements BoardGameObserver {
                 newImage.setPreserveRatio(true);
                 newImage.setFitHeight(90);
                 monopolyView.getGameUpdates().getChildren().addAll(newImage, monopolyView.getWinnerAnnouncement());
+                menuView.playConfettiEffect();
                 monopolyView.getStartRoundButton().setDisable(true);
                 break;
             case "drewCard":
@@ -225,7 +226,7 @@ public class MonopolyController implements BoardGameObserver {
 
 
         if(owner.getMoney()<=propertyHolder.getPrice(tile.getId())){
-            getAlert("Message","You cant afford this house \n You have "+owner.getMoney()+" money, and need over "+propertyHolder.getPrice(tile.getId())+" money");
+            getAlert("Message","You cant afford this house \n You have "+owner.getMoney()+" $, and need over "+propertyHolder.getPrice(tile.getId())+" $");
             throw new IllegalArgumentException("Player cant afford this house");
         }
 
@@ -321,7 +322,7 @@ public class MonopolyController implements BoardGameObserver {
                 ImageView newImage = new ImageView(new Image("/images/players/"+player.getColor()+".png"));
                 newImage.setFitHeight(20);
                 newImage.setPreserveRatio(true);
-                monopolyView.getBankRuptcyBox().getChildren().addAll(newImage);
+                monopolyView.getBankruptcyBox().getChildren().addAll(newImage);
                 toRemove.add(player);
             }
         }
@@ -421,7 +422,7 @@ public class MonopolyController implements BoardGameObserver {
         monopolyView.getMoneyBox().getChildren().clear();
         monopolyView.getGameUpdates().getChildren().clear();
         monopolyView.getHouseButtonsBox().getChildren().clear();
-        monopolyView.getBankRuptcyBox().getChildren().clear();
+        monopolyView.getBankruptcyBox().getChildren().clear();
         monopolyView.getTitleBox().getChildren().clear();
         monopolyView.getJailButtonsBox().getChildren().clear();
 

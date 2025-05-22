@@ -143,7 +143,7 @@ Texts
     -fx-border-radius: 10px;
 }
 
-#ruleText, #infoText, #textBoxMoney, #infoTextAndButtons, #bankRuptcyBox{
+#ruleText, #infoText, #textBoxMoney, #infoTextAndButtons, #bankruptcyBox{
     -fx-background-color: rgba(225, 221, 221, 0.62);
     -fx-background-radius: 10;
     -fx-border-width: 2px;

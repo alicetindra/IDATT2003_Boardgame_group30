@@ -3,12 +3,38 @@ package edu.ntnu.idatt2003.boardgame.writers;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+/**
+ * A utility class for generating hardcoded board configurations for different board games
+ * in JSON format.
+ * <p>
+ * Each method in this class is responsible for serializing tile layouts with specific
+ * game rules and tile actions such as ladders, snakes, portals, jail, and draw actions.
+ * <p>
+ * This class supports several predefined game types, including:
+ * <ul>
+ *   <li>"ladders" with 50, 90, or 110 tiles</li>
+ *   <li>"monopoly" with 26 tiles</li>
+ * </ul>
+ * <p>
+ * This class cannot be instantiated.
+ */
 public class BoardFactory {
 
+  /**
+   * Private constructor to prevent instantiation of this utility class.
+   * Throws {@link UnsupportedOperationException} if called.
+   */
   private BoardFactory() {
     throw new UnsupportedOperationException("Utility class");
   }
 
+  /**
+   * Serializes the tile layout and tile actions for a specified game type and board size.
+   *
+   * @param chosenGame the name of the game (e.g., "ladders", "monopoly")
+   * @param n the number of tiles on the board
+   * @return a {@link JsonObject} representing the serialized tile configuration
+   */
   public static JsonObject serializeTiles(String chosenGame, int n) {
     JsonObject tileBook = new JsonObject();
 
@@ -31,7 +57,6 @@ public class BoardFactory {
       JsonArray monopolyJsonArray = new JsonArray();
 
       for (int i = 1; i <=26; i++) {
-        //Tile map
         JsonObject tileJson = new JsonObject();
         tileJson.addProperty("id", i);
         if(i==26){
@@ -62,6 +87,12 @@ public class BoardFactory {
     return tileBook;
   }
 
+  /**
+   * Returns a JSON array of tiles for a 50-tile ladders game.
+   *
+   * @param n the number of tiles (should be 50)
+   * @return a {@link JsonArray} representing the tile layout
+   */
   private static JsonArray getJsonElements50(int n) {
     JsonArray ladderJsonArray = new JsonArray();
 
@@ -123,6 +154,12 @@ public class BoardFactory {
     return ladderJsonArray;
   }
 
+  /**
+   * Returns a JSON array of tiles for a 90-tile ladders game.
+   *
+   * @param n the number of tiles (should be 90)
+   * @return a {@link JsonArray} representing the tile layout
+   */
   private static JsonArray getJsonElements90(int n) {
     JsonArray ladderJsonArray = new JsonArray();
 
@@ -200,6 +237,12 @@ public class BoardFactory {
     return ladderJsonArray;
   }
 
+  /**
+   * Returns a JSON array of tiles for a 110-tile ladders game.
+   *
+   * @param n the number of tiles (should be 110)
+   * @return a {@link JsonArray} representing the tile layout
+   */
   private static JsonArray getJsonElements110(int n) {
     JsonArray ladderJsonArray = new JsonArray();
 

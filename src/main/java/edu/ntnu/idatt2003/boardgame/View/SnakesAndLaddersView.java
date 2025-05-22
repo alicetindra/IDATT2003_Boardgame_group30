@@ -371,14 +371,6 @@ public class SnakesAndLaddersView {
             tileBox.getStyleClass().add("snakeBox");
         }
         else if(tileAction instanceof PortalAction){
-            /*
-            tileBox.getStyleClass().add("portalBox");
-            ImageView portalImage = new ImageView(new Image("images/portal.png"));
-            portalImage.setFitHeight(65);
-            portalImage.setFitWidth(65);
-            tileBox.setAlignment(Pos.CENTER);
-            tileBox.getChildren().add(portalImage);
-             */
             BackgroundImage backgroundImagePortal = new BackgroundImage(
                 new Image("images/misc/portal.png"),
                 BackgroundRepeat.NO_REPEAT,
