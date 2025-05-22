@@ -5,53 +5,77 @@ import edu.ntnu.idatt2003.boardgame.Model.actions.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
-
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-
-
-
 import java.util.*;
-
 import java.util.logging.Logger;
 
+/**
+ * The {@code SnakesAndLaddersView} class is responsible for handling the visual
+ * representation of the Snakes And Ladders-style game board and in-game user interface.
+ * <p>
+ * It displays the current state of the board, including tiles, players,
+ * dice rolls, and actions. This class forms the View component in the
+ * Model-View-Controller (MVC) design pattern and focuses solely on rendering
+ * output without managing game logic.
+ * </p>
+ *
+ * <p>
+ * Key responsibilities include:
+ *   <li>Displaying the Snakes And Ladders board and its tiles</li>
+ *   <li>Updating player positions visually as the game progresses</li>
+ *   <li>Rendering dice roll outcomes and other animations</li>
+ *   <li>Showing information about player turns, actions, and tile effects</li>
+ * </p>
+ */
 public class SnakesAndLaddersView {
     private MenuView menuView;
-    //Logger
     private static final Logger log = Logger.getLogger(SnakesAndLaddersView.class.getName());
 
-    //Buttons
+    /**
+     * Buttons used in the SnakesAndLadders View
+     */
     private final Button startRoundButton = new Button("Roll dice");
     private final Button restartGame = new Button("Restart");
 
-    //Boxes
+    /**
+     * Boxes used in the SnakesAndLadders view.
+     */
     private final HBox dieBox = new HBox();
     private VBox rulesColumn = new VBox(30);
     private final VBox displayInfoBox = new VBox();
-
     private HBox titleBox;
     private final VBox infoColumn = new VBox(30);
     private final VBox winnerOverlay = new VBox(10);
 
-    //Panes
+    /**
+     * Panes used in the SnakesAndLadders view.
+     */
     private final GridPane grid = new GridPane();
     private BorderPane layout;
 
-    //Font
-    Font customFont = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
+    /**
+     * Out custom font for titles and button texts.
+     */
+    private final Font customFont = Font.loadFont(Objects.requireNonNull(getClass().getResource("/font/LuckiestGuy-Regular.ttf")).toExternalForm(),15);
 
+    /**
+     * Initializes the SnakesAndLadders view by creating the border pane layout and create start button.
+     */
     public void initialize(){
         layout = new BorderPane();
         layout.getStyleClass().add("rootSL");
         createStartButton();
     }
 
-    //Get button methods
+    /**
+     * Getters fot buttons in SnakesAndLadders view.
+     * @return each button.
+     */
     public Button getRestartGameButton() {
         restartGame.setFont(customFont);
         restartGame.setId("restartGameButton");
@@ -61,41 +85,46 @@ public class SnakesAndLaddersView {
         return startRoundButton;
     }
 
-    //get layouts
+    /**
+     * Getter for panes in SnakesAndLadders view.
+     * @return each pane, layout
+     */
     public BorderPane getLayout(){
         return layout;
     }
-
     public GridPane getGrid(){
         return grid;
     }
 
 
-    //Get game layout components
+    /**
+     * Getter for all boxes in SnakesAndLadders view.
+     * @return each box
+     */
     public VBox getRulesColumn(){
         return rulesColumn;
     }
-
     public VBox getInfoColumn(){
         return infoColumn;
     }
-
     public VBox getDisplayInfoBox() {
         return displayInfoBox;
     }
-
     public VBox getWinnerBox(){
         return winnerOverlay;
     }
-
     public HBox getDieBox() {
         return dieBox;
     }
-
     public HBox getTitleBox(){
         return titleBox;
     }
 
+    /**
+     * Getter for the player image.
+     * @param p player whose image is fetched.
+     * @return imageview of player image.
+     */
     public ImageView getPlayerImage(Player p) {
         ImageView imageView = p.getImageView();
         imageView.setFitHeight(30);
@@ -103,7 +132,14 @@ public class SnakesAndLaddersView {
         return imageView;
     }
 
-    //Create methods
+    /**
+     * Creates the SnakesAndLadders layout with all its components.
+     * @param boardGrid is the grid of the board.
+     * @param titleWithImage is the box with the title along with images.
+     * @param rulesColumn is the box with information about the rules of the game.
+     * @param infoColumn is the box with player and round information along with the rolled dice.
+     * @return a borderpane with the game layout.
+     */
     public BorderPane createSnakesLaddersLayout(GridPane boardGrid, HBox titleWithImage, VBox rulesColumn, VBox infoColumn){
         layout.setTop(titleWithImage);
         layout.setLeft(rulesColumn);
@@ -117,6 +153,10 @@ public class SnakesAndLaddersView {
         return layout;
     }
 
+    /**
+     * Creates SnakesAndLadders grid board with numbered tiles in alternating directions like a snakes movement.
+     * @param board the board that is to be created.
+     */
     public void createGridBoard(Board board){
         grid.setGridLinesVisible(true);
 
@@ -147,6 +187,13 @@ public class SnakesAndLaddersView {
         }
     }
 
+    /**
+     * Creates the rules column on the right side of the layout.
+     * <p>
+     * Initializes the column if needed, sets styling and alignment,
+     * and adds the game rules text.
+     * </p>
+     */
     public void createRulesColumn() {
         if (rulesColumn == null) {
             rulesColumn = new VBox(30);
@@ -184,6 +231,14 @@ public class SnakesAndLaddersView {
         }
     }
 
+    /**
+     * Creates the info column on the left side of the layout.
+     * <p>
+     *   Initializes the column if needed, sets styling and alignment,
+     *   and adds the player information from the playerHolder and dice.
+     * </p></>
+     * @param playerHolder the information about the players in the game.
+     */
     public void createInfoColumn(PlayerHolder playerHolder){
         infoColumn.getChildren().clear();
         infoColumn.setPrefWidth(300);
@@ -234,6 +289,9 @@ public class SnakesAndLaddersView {
         }
     }
 
+    /**
+     * Creates start round button.
+     */
     public void createStartButton(){
 
         startRoundButton.setFont(customFont);
@@ -242,7 +300,9 @@ public class SnakesAndLaddersView {
         VBox.setMargin(startRoundButton, new Insets(20,0,0,0));
     }
 
-
+    /**
+     * Creates the title box with the title 'Snakes And Ladders' as well as images of ladders and snakes in the title.
+     */
     public void createTitleBox() {
         //Snake image
         ImageView snakeImageView = new ImageView(new Image(Objects.requireNonNull(getClass().getResource(
@@ -269,7 +329,12 @@ public class SnakesAndLaddersView {
         titleBox.setPadding(new Insets(50,0,0,0));
     }
 
-
+    /**
+     * Created a box when winner is announced.
+     * It is discarded when enter is pressed.
+     * @param winnerName the player name who won.
+     * @param winnerColor the color of the player who won.
+     */
     public void createWinnerBox(String winnerName, String winnerColor){
         winnerOverlay.getChildren().clear();
         winnerOverlay.setAlignment(Pos.CENTER);
@@ -305,6 +370,11 @@ public class SnakesAndLaddersView {
 
     }
 
+    /**
+     * Created winner image.
+     * @param color the color of the player who won.
+     * @return imageview of winner image.
+     */
     private ImageView createWinnerImage(String color){
         String winnerImagePath = "/images/winners/" + color.toLowerCase() + "_winner.png";
 
@@ -316,7 +386,11 @@ public class SnakesAndLaddersView {
         return winnerImageView;
     }
 
-    //Logic methods
+    /**
+     * Collects the destinations of action based tiles and ut the information in a Map.
+     * @param board the board that is used in the game.
+     * @return Map with information about the destinations for each action tile.
+     */
     private Map<String, List<Integer>> collectDestinations(Board board){
         List<Integer> snakeDestination = new ArrayList<>();
         List<Integer> ladderDestination = new ArrayList<>();
@@ -337,6 +411,10 @@ public class SnakesAndLaddersView {
         return destinations;
     }
 
+    /**
+     * Adds text to displayInfoBox with the information about the round and the current player.
+     * @param message of the players moves.
+     */
     public void updateInfoBox(String message){
         Text text = new Text(message);
         text.setId("playerInfo");
@@ -346,7 +424,14 @@ public class SnakesAndLaddersView {
     }
 
 
-
+    /**
+     * Decorated each tile in the snakes and ladders board according to action tiles, finish tiles and others.
+     * @param tileBox the tileBox that is changed in appearance.
+     * @param tileAction the action of the tile in question.
+     * @param tileId the ID of the tile.
+     * @param snakeDestination the destination tiles for snake action tiles.
+     * @param ladderDestination the destination tiles for ladder action tiles.
+     */
     public void decorateTileBox(VBox tileBox, TileAction tileAction, int tileId,List<Integer> snakeDestination, List<Integer> ladderDestination) {
         tileBox.getChildren().add(new Text(tileId+""));
 
@@ -394,7 +479,6 @@ public class SnakesAndLaddersView {
             tileBox.getStyleClass().add("tileBox");
         }
     }
-
 
 
 }
