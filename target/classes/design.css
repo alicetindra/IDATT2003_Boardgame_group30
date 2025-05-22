@@ -9,13 +9,13 @@ Background colors and images
     -fx-background-color: #6f9c6f;
 }
 .rootSL {
-    -fx-background-image: url("images/backgroundCloud.PNG");
+    -fx-background-image: url("images/misc/backgroundCloud.PNG");
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
 .rootMainMenu{
-    -fx-background-image: url("images/backgroundCloud.PNG");
+    -fx-background-image: url("images/misc/backgroundCloud.PNG");
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
