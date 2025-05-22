@@ -12,6 +12,7 @@ public class PropertyHolder {
     public PropertyHolder() {
         properties = new HashMap<>();
     }
+
     public void setOwner(Integer integer, Player player) {
         properties.put(integer, player);
     }
@@ -54,6 +55,7 @@ public class PropertyHolder {
     public int getFee(Integer integer){
         return getPrice(integer)/4;
     }
+
     public HashMap<Integer, Player> getProperties() {
         return properties;
     }
