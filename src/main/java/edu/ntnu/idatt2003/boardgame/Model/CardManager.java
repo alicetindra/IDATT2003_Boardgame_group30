@@ -1,7 +1,6 @@
 package edu.ntnu.idatt2003.boardgame.Model;
 
 import edu.ntnu.idatt2003.boardgame.readers.CardReaderGson;
-import edu.ntnu.idatt2003.boardgame.readers.CardReaderGson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,16 +22,17 @@ public class CardManager{
     cards = CardReaderGson.readCardsFromFile(filename);
   }
 
-  public Card drawCard() {
+  public void drawCard() {
     lastDrawnCard = cards.get(random.nextInt(cards.size()));
-    return lastDrawnCard;
   }
   public Card getLastDrawnCard() {
     return lastDrawnCard;
   }
+  public List<Card> getCards() {
+    return cards;
+  }
 
   public void applyCard(Card card, Player player) {
-    System.out.println(card.text);
     if (card.money != null) player.editMoney(card.money);
     if (card.moveTo != null) player.placeOnTile(player.getBoardGame().getBoard(), card.moveTo);
     if (Boolean.TRUE.equals(card.goToJail)) {
