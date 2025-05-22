@@ -199,7 +199,7 @@ public class SnakesAndLaddersView {
             tile.setTileBox(tileBox);
 
             grid.add(tileBox, col, row);
-            makeSnakesAndLaddersOverlay(board);
+            makeSnakesAndLaddersOverlay(board, rows);
         }
     }
 
@@ -385,7 +385,11 @@ public class SnakesAndLaddersView {
         winnerOverlay.requestFocus();
 
     }
-    public void makeSnakesAndLaddersOverlay(Board board) {
+    /**
+     * Draws the snakes and ladders on the board as colored lines.
+     * Snakes are shown in red, ladders in green.
+     */
+    public void makeSnakesAndLaddersOverlay(Board board, int rows) {
         snakesAndLaddersIcons.getChildren().clear();
         snakesAndLaddersIcons.getStyleClass().add("snakesAndLaddersIcons");
 
@@ -396,57 +400,40 @@ public class SnakesAndLaddersView {
             int startTile = (int) path.get("start");
             int endTile = (int) path.get("end");
 
-            Point2D start = getTilePosition(startTile, 75, 9);
-            Point2D end = getTilePosition(endTile, 75, 9);
+            Point2D start = getTilePosition(startTile, 75, rows);
+            Point2D end = getTilePosition(endTile, 75, rows);
 
-            double dx = end.getX() - start.getX();
-            double dy = end.getY() - start.getY();
-            double length = Math.hypot(dx, dy);
-            double angle = Math.toDegrees(Math.atan2(dy, dx));
+            Line line = new Line(start.getX(), start.getY(), end.getX(), end.getY());
 
-            // Choose the image
-            String imagePath = type.equals("snake") ? "snakeForBoard.png" : "ladderForBoard.png";
-            Image image = new Image(getClass().getResourceAsStream(imagePath));
-            ImageView imageView = new ImageView(image);
+            if ("snake".equals(type)) {
+                line.setStroke(Color.RED);
+            } else if ("ladder".equals(type)) {
+                line.setStroke(Color.GREEN);
+            }
 
-            // Set size: width = length between tiles, height = your image height
-            imageView.setFitWidth(length);
-            imageView.setFitHeight(50); // Adjust based on your image proportions
-            imageView.setPreserveRatio(false);
-
-            // Rotate the image to face the correct direction
-            imageView.setRotate(angle);
-
-            // Position imageView so it starts at the starting tile
-            imageView.setLayoutX(start.getX());
-            imageView.setLayoutY(start.getY());
-
-            // Optional: shift image to center on the line
-            imageView.setTranslateX(-imageView.getFitWidth() / 2);
-            imageView.setTranslateY(-imageView.getFitHeight() / 2);
-
-            snakesAndLaddersIcons.getChildren().add(imageView);
+            line.setStrokeWidth(4);
+            snakesAndLaddersIcons.getChildren().add(line);
         }
     }
-
+    /**
+     * Finds the screen position of a tile based on its number.
+     * The board layout uses a zigzag pattern.
+     */
     public Point2D getTilePosition(int tileNumber, int cellSize, int numRows) {
-        int index = tileNumber - 1;  // 0-based index
+        int index = tileNumber - 1;
 
-        int rowFromBottom = index / 10;  // which row, starting from bottom (0 = bottom)
-        int row = (numRows - 1) - rowFromBottom;  // convert to top-down row index for JavaFX
+        int rowFromBottom = index / 10;
+        int row = (numRows - 1) - rowFromBottom;
 
         int colInRow = index % 10;
 
         int col;
         if (rowFromBottom % 2 == 0) {
-            // Even row from bottom: left to right
             col = colInRow;
         } else {
-            // Odd row from bottom: right to left
             col = 9 - colInRow;
         }
 
-        // Pixel position (center of the tile)
         int x = col * cellSize + cellSize / 2;
         int y = row * cellSize + cellSize / 2;
 
