@@ -297,3 +297,8 @@ Board grid, tiles and boxes
 .scroll-pane .scroll-bar .thumb:hover {
     -fx-background-color: #555;
 }
+
+.snakesAndLaddersIcons{
+    -fx-border-color: black;
+    -fx-border-width: 5px;
+}
