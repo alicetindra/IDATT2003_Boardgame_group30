@@ -358,14 +358,8 @@ public class MonopolyController implements BoardGameObserver {
         BorderPane gameLayout = monopolyView.getMonopolyLayout();
         monopolyView.getMoneyBox().getChildren().add(menuView.getMainMenuButton());
 
-        ScrollPane scrollableGameLayout = new ScrollPane(gameLayout);
-        scrollableGameLayout.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollableGameLayout.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
-        scrollableGameLayout.setFitToWidth(true);
-        scrollableGameLayout.setFitToHeight(true);
-
         menuView.getMenuLayout().getChildren().clear();
-        menuView.getMenuLayout().getChildren().add(scrollableGameLayout);
+        menuView.getMenuLayout().getChildren().add(gameLayout);
 
 
         boardGame.initializeDice(Integer.parseInt(menuView.getDiceField().getText()));

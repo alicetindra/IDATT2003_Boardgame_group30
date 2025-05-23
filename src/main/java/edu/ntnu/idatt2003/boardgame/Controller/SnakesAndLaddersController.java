@@ -14,7 +14,6 @@ import javafx.scene.image.ImageView;
 import java.io.File;
 import java.io.IOException;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -245,14 +244,9 @@ public class SnakesAndLaddersController implements BoardGameObserver {
         BorderPane gameLayout = snakesLaddersView.createSnakesLaddersLayout(boardGrid, snakesLaddersView.getTitleBox(),
             snakesLaddersView.getRulesColumn(), snakesLaddersView.getInfoColumn());
 
-        ScrollPane scrollableGameLayout = new ScrollPane(gameLayout);
-        scrollableGameLayout.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollableGameLayout.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
-        scrollableGameLayout.setFitToWidth(true);
-        scrollableGameLayout.setFitToHeight(true);
 
         menuView.getMenuLayout().getChildren().clear();
-        menuView.getMenuLayout().getChildren().add(scrollableGameLayout);
+        menuView.getMenuLayout().getChildren().add(gameLayout);
         StackPane.setAlignment(gameLayout, Pos.CENTER);
 
         for(Player p : boardGame.getPlayerHolder().getPlayers()){

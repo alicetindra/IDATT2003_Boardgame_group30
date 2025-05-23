@@ -11,12 +11,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
-import javafx.stage.Stage;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -395,9 +392,9 @@ public class SnakesAndLaddersView {
         snakesAndLaddersIcons.getChildren().clear();
         snakesAndLaddersIcons.getStyleClass().add("snakesAndLaddersIcons");
 
-        List<Map<String, Object>> dests = collectActionPaths(board);
+        List<Map<String, Object>> dest = collectActionPaths(board);
 
-        for (Map<String, Object> path : dests) {
+        for (Map<String, Object> path : dest) {
             String type = (String) path.get("type");
             int startTile = (int) path.get("start");
             int endTile = (int) path.get("end");
