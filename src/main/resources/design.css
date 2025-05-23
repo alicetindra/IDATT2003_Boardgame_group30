@@ -98,7 +98,7 @@ Buttons
     -fx-border-radius: 20px;
     -fx-background-radius: 20px;
 }
-.start-round-button, #main-menu-button, #restartGameButton, #monopolyButtons{
+.start-round-button, #main-menu-button, #restartGameButton, #monopolyButtons, #continueButton{
     -fx-background-color: #92b8e3;
     -fx-text-fill: #1d528e;
     -fx-background-radius: 20px;

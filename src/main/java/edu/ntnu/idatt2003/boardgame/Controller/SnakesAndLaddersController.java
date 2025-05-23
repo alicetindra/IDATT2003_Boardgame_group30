@@ -7,14 +7,12 @@ import edu.ntnu.idatt2003.boardgame.View.SnakesAndLaddersView;
 import java.util.logging.Logger;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.File;
 import java.io.IOException;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -53,6 +51,10 @@ public class SnakesAndLaddersController implements BoardGameObserver {
      * The primary JavaFX stage used to display the application's GUI.
      */
     private Stage primaryStage;
+    /**
+     * Scrollable pane.
+     */
+    ScrollPane scrollableGameLayout = new ScrollPane();
 
     /**
      * Constructs a new {@code SnakesAndLaddersController} with the specified view components and game model.
@@ -103,6 +105,7 @@ public class SnakesAndLaddersController implements BoardGameObserver {
             }
             case "winnerDeclared" -> {
                 Player winner = boardGame.getWinner();
+                scrollableGameLayout.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
                 snakesLaddersView.createWinnerBox(winner.getName(), winner.getColor());
                 snakesLaddersView.getStartRoundButton().setDisable(true);
                 menuView.getMenuLayout().getChildren().addAll(snakesLaddersView.getWinnerBox());
@@ -118,7 +121,9 @@ public class SnakesAndLaddersController implements BoardGameObserver {
         snakesLaddersView.getStartRoundButton().setOnAction(e ->handleStartRound());
         snakesLaddersView.getRestartGameButton().setOnAction(e ->handleRestartGame());
         menuView.getMainMenuButton().setOnAction(e -> clearGame());
+        snakesLaddersView.getContinueButton().setOnAction(e -> removeWinnerOverlay());
     }
+
 
     /**
      * Loads the custom board if user chooses this option.
@@ -245,9 +250,8 @@ public class SnakesAndLaddersController implements BoardGameObserver {
         BorderPane gameLayout = snakesLaddersView.createSnakesLaddersLayout(boardGrid, snakesLaddersView.getTitleBox(),
             snakesLaddersView.getRulesColumn(), snakesLaddersView.getInfoColumn());
 
-        ScrollPane scrollableGameLayout = new ScrollPane(gameLayout);
+        scrollableGameLayout = new ScrollPane(gameLayout);
         scrollableGameLayout.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollableGameLayout.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
         scrollableGameLayout.setFitToWidth(true);
         scrollableGameLayout.setFitToHeight(true);
 
@@ -305,6 +309,16 @@ public class SnakesAndLaddersController implements BoardGameObserver {
         menuView.getDiceField().clear();
         menuView.getBoardSizeMenu().setDisable(false);
         menuView.createMainMenu();
+        scrollableGameLayout.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+    }
+    /**
+     * Removes the winner overlay.
+     */
+    private void removeWinnerOverlay() {
+        snakesLaddersView.getWinnerBox().getChildren().clear();
+        menuView.getMenuLayout().getChildren().remove(snakesLaddersView.getWinnerBox());
+        log.info("Winner overlay dismissed with button!");
+        handleRestartGame();
     }
 
 

@@ -9,17 +9,12 @@ import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
-import javafx.stage.Stage;
 
 import java.util.*;
-import java.util.logging.Logger;
 
 /**
  * The {@code SnakesAndLaddersView} class is responsible for handling the visual
@@ -40,14 +35,12 @@ import java.util.logging.Logger;
  * </p>
  */
 public class SnakesAndLaddersView {
-    private MenuView menuView;
-    private static final Logger log = Logger.getLogger(SnakesAndLaddersView.class.getName());
-
     /**
      * Buttons used in the SnakesAndLadders View
      */
     private final Button startRoundButton = new Button("Roll dice");
     private final Button restartGame = new Button("Restart");
+    private final Button continueButton = new Button("Continue");
 
     /**
      * Boxes used in the SnakesAndLadders view.
@@ -93,6 +86,9 @@ public class SnakesAndLaddersView {
     }
     public Button getStartRoundButton(){
         return startRoundButton;
+    }
+    public Button getContinueButton(){
+        return continueButton;
     }
 
     /**
@@ -349,15 +345,16 @@ public class SnakesAndLaddersView {
 
     /**
      * Created a box when winner is announced.
-     * It is discarded when enter is pressed.
+     * It is discarded when button is pressed.
      * @param winnerName the player name who won.
      * @param winnerColor the color of the player who won.
      */
-    public void createWinnerBox(String winnerName, String winnerColor){
+    public void createWinnerBox(String winnerName, String winnerColor) {
         winnerOverlay.getChildren().clear();
         winnerOverlay.setAlignment(Pos.CENTER);
         winnerOverlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7);");
         winnerOverlay.setPadding(new Insets(50));
+        winnerOverlay.setMouseTransparent(false);
 
         ImageView winnerImage = createWinnerImage(winnerColor);
 
@@ -365,28 +362,18 @@ public class SnakesAndLaddersView {
         winnerText.setFont(customFont);
         winnerText.setId("winnerText");
 
-        Text quitMessage = new Text("Press enter to continue");
-        quitMessage.setId("quitMessage");
-
         HBox messageBox = new HBox(20);
         messageBox.setAlignment(Pos.CENTER);
         messageBox.getChildren().addAll(winnerImage, winnerText);
 
-        winnerOverlay.getChildren().addAll(messageBox, quitMessage);
-        winnerOverlay.setMouseTransparent(true);
+        VBox contentBox = new VBox(20);
+        contentBox.setAlignment(Pos.CENTER);
+        continueButton.setId("continueButton");
+        contentBox.getChildren().addAll(messageBox, continueButton);
 
-        // Add a key press handler to remove the winnerOverlay when Enter is pressed
-        winnerOverlay.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.ENTER) {
-                // Remove the winner box from the scene
-                menuView.getMenuLayout().getChildren().remove(winnerOverlay);
-                log.info("Winner overlay dismissed with Enter key!");
-            }
-        });
-        // Request focus for the winnerOverlay so it can receive key events
-        winnerOverlay.requestFocus();
-
+        winnerOverlay.getChildren().add(contentBox);
     }
+
     /**
      * Draws the snakes and ladders on the board as colored lines.
      * Snakes are shown in red, ladders in green.
