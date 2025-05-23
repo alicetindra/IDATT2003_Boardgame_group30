@@ -33,8 +33,8 @@
     "moveTo": 10
   },
   {
-    "text": "You have been robbed. he took 500$",
-    "money": -500
+    "text": "You have been robbed. he took 200$",
+    "money": -200
   },
   {
     "text": "Go to tile 26.",
